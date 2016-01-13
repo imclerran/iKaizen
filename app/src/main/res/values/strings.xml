@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">iKaizen</string>
+    <string name="action_settings">Settings</string>
+    <string name="lblItemDetailsStr">Item Details</string>
+    <string name="lblTypeStr">type:</string>
+    <string name="lblCostStr">cost:</string>
+    <string name="lblQuantityStr">quantity:</string>
+    <string name="lblActionStr">action:</string>
+    <string name="spnItemActionsTotalStr">get total cost</string>
+    <string name="spnItemActionsCostStr">change cost</string>
+    <string name="spnItemActionsQuantityStr">change quantity</string>
+    <string name="spnItemActionsDeleteStr">delete item</string>
+    <string-array name="spnItemActionsArr">
+        <item>@string/spnItemActionsTotalStr</item>
+        <item>@string/spnItemActionsCostStr</item>
+        <item>@string/spnItemActionsQuantityStr</item>
+        <item>@string/spnItemActionsDeleteStr</item>
+    </string-array>
+    <string name="btnActionStr">Perform Action</string>
+</resources>
