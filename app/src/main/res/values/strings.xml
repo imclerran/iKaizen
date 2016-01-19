@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">iKaizen</string>
     <string name="action_settings">Settings</string>
+
+    <!-- strings for ItemDetailsActivity -->
     <string name="lblItemDetailsStr">Item Details</string>
     <string name="lblTypeStr">type:</string>
     <string name="lblCostStr">cost:</string>
@@ -10,11 +12,39 @@
     <string name="spnItemActionsCostStr">change cost</string>
     <string name="spnItemActionsQuantityStr">change quantity</string>
     <string name="spnItemActionsDeleteStr">delete item</string>
+    <string name="spnItemActionsKaizenDetailsStr">Kaizen Details</string>
     <string-array name="spnItemActionsArr">
+        <item>@string/spnItemActionsKaizenDetailsStr</item>
         <item>@string/spnItemActionsTotalStr</item>
         <item>@string/spnItemActionsCostStr</item>
         <item>@string/spnItemActionsQuantityStr</item>
         <item>@string/spnItemActionsDeleteStr</item>
     </string-array>
     <string name="btnActionStr">Perform Action</string>
+
+    <!-- strings for KaizenDetailsActivity -->
+    <string name="title_activity_kaizen_details">Kaizen Details</string>
+    <string name="lblOwnerStr">Owner:</string>
+    <string name="lblDeptStr">Dept:</string>
+    <string name="lblDateStr">Date:</string>
+    <string name="lblProblemStatementStr">Problem Statement:</string>
+    <string name="lblSevenWastesStr">Seven Wastes</string>
+    <string name="lblOverProductionStr">Over Production:</string>
+    <string name="lblTransportationStr">Transportation:</string>
+    <string name="lblMotionStr">Motion:</string>
+    <string name="lblWaitingStr">Waiting:</string>
+    <string name="lblProcessingStr">Processing:</string>
+    <string name="lblInventoryStr">Inventory:</string>
+    <string name="lblDefectsStr">Defects:</string>
+    <string name="lblRootCausesStr">Possible Root Causes:</string>
+    <string name="btnImagesStr">Images</string>
+    <string name="btnSolutionsStr">Solutions</string>
+    <string name="lblTotalWasteStr">Total Waste:</string>
+    <string name="lblMinPerYearStr">min/year</string>
+    <string name="action_edit_kaizen">Edit</string>
+    <string name="action_delete_kaizen">Delete</string>
+
+    <!-- strings for KaizenEditActivity-->
+    <string name="title_activity_kaizen_edit">Edit Kaizen</string>
+    <string name="btnSaveKaizenStr">Save Kaizen</string>
 </resources>

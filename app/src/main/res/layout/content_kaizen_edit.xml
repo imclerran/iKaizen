@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="mclerrani.ikaizen.KaizenEditActivity"
+    tools:showIn="@layout/activity_kaizen_edit">
+    <!--
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    -->
+
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundLight"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/lblOwnerStr"
+                    android:id="@+id/lblOwner" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/txtOwner"
+                    android:hint="Name"
+                    android:editable="false"
+                    android:focusable="true"
+                    android:longClickable="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundLight"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/lblDeptStr"
+                    android:id="@+id/lblDept" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtDept"
+                    android:hint="Department"
+                    android:inputType="none|text"
+                    android:editable="false"
+                    android:focusable="true"
+                    android:longClickable="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundLight"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/lblDateStr"
+                    android:id="@+id/lblDate" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date|none"
+                    android:ems="10"
+                    android:id="@+id/txtDate"
+                    android:editable="false"
+                    android:focusable="true"
+                    android:longClickable="true" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/lblProblemStatementStr"
+                android:id="@+id/lblProblemStatement"
+                android:layout_gravity="center_horizontal" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtProblemStatement"
+                android:focusable="true"
+                android:longClickable="true"
+                android:inputType="text" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/lblSevenWastesStr"
+                    android:id="@+id/lblSevenWastes"
+                    android:layout_gravity="center_horizontal"
+                    android:inputType="none" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblOverProductionStr"
+                        android:id="@+id/lblOverProduction" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtOverProduction"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblTransportationStr"
+                        android:id="@+id/lblTransportation" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtTransportation"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblMotionStr"
+                        android:id="@+id/lblMotion" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtMotion"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblWaitingStr"
+                        android:id="@+id/lblWaiting" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtWaiting"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblProcessingStr"
+                        android:id="@+id/lblProcessing" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtProcessing"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblInventoryStr"
+                        android:id="@+id/lblInventory" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtInventory"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/lblDefectsStr"
+                        android:id="@+id/lblDefects" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtDefects"
+                        android:inputType="none|text"
+                        android:editable="false"
+                        android:focusable="true"
+                        android:longClickable="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/lblRootCausesStr"
+                android:id="@+id/lblRootCauses"
+                android:layout_gravity="center_horizontal" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtRootCauses"
+                android:inputType="none|text"
+                android:singleLine="false"
+                android:focusable="true"
+                android:longClickable="true" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:weightSum="1.0"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/lblTotalWasteStr"
+                    android:id="@+id/lblTotalCost" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/txtTotalWaste"
+                    android:gravity="center_horizontal"
+                    android:longClickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/lblMinPerYearStr"
+                    android:id="@+id/lblMinPerYear" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1.0" >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="@string/btnSaveKaizenStr"
+                    android:id="@+id/btnSaveKaizen"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

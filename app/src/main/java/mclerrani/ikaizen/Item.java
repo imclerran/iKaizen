@@ -4,25 +4,25 @@ package mclerrani.ikaizen;
  * Created by Ian on 1/12/2016.
  */
 public class Item {
-    private String name;
+    private String type;
     private int quantity;
     private int cost;
 
     public Item() {
     }
 
-    public Item(String name, int quantity, int cost) {
-        this.name = name;
+    public Item(String type, int quantity, int cost) {
+        this.type = type;
         this.quantity = quantity;
         this.cost = cost;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getQuantity() {
@@ -41,8 +41,8 @@ public class Item {
         this.cost = cost;
     }
 
-    public Item getTestItem() {
-        Item tmp = new Item("item name", 1, 5);
+    public static Item getTestItem() {
+        Item tmp = new Item("item type", 1, 5);
         return tmp;
     }
 }
