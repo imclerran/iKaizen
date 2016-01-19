@@ -2,26 +2,6 @@
     <string name="app_name">iKaizen</string>
     <string name="action_settings">Settings</string>
 
-    <!-- strings for ItemDetailsActivity -->
-    <string name="lblItemDetailsStr">Item Details</string>
-    <string name="lblTypeStr">type:</string>
-    <string name="lblCostStr">cost:</string>
-    <string name="lblQuantityStr">quantity:</string>
-    <string name="lblActionStr">action:</string>
-    <string name="spnItemActionsTotalStr">get total cost</string>
-    <string name="spnItemActionsCostStr">change cost</string>
-    <string name="spnItemActionsQuantityStr">change quantity</string>
-    <string name="spnItemActionsDeleteStr">delete item</string>
-    <string name="spnItemActionsKaizenDetailsStr">Kaizen Details</string>
-    <string-array name="spnItemActionsArr">
-        <item>@string/spnItemActionsKaizenDetailsStr</item>
-        <item>@string/spnItemActionsTotalStr</item>
-        <item>@string/spnItemActionsCostStr</item>
-        <item>@string/spnItemActionsQuantityStr</item>
-        <item>@string/spnItemActionsDeleteStr</item>
-    </string-array>
-    <string name="btnActionStr">Perform Action</string>
-
     <!-- strings for KaizenDetailsActivity -->
     <string name="title_activity_kaizen_details">Kaizen Details</string>
     <string name="lblOwnerStr">Owner:</string>
@@ -41,6 +21,7 @@
     <string name="btnSolutionsStr">Solutions</string>
     <string name="lblTotalWasteStr">Total Waste:</string>
     <string name="lblMinPerYearStr">min/year</string>
+    <!-- strings for menu_kaizen_details -->
     <string name="action_edit_kaizen">Edit</string>
     <string name="action_delete_kaizen">Delete</string>
 
