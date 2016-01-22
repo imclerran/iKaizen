@@ -27,7 +27,8 @@
             android:name=".KaizenEditActivity"
             android:label="@string/title_activity_kaizen_edit"
             android:parentActivityName=".KaizenDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="KaizenDetailsActivity" />

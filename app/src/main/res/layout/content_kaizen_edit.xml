@@ -102,8 +102,8 @@
                     android:ems="10"
                     android:id="@+id/txtDate"
                     android:editable="false"
-                    android:focusable="true"
-                    android:longClickable="true" />
+                    android:focusable="false"
+                    android:longClickable="false" />
 
             </LinearLayout>
 
@@ -121,7 +121,7 @@
                 android:id="@+id/txtProblemStatement"
                 android:focusable="true"
                 android:longClickable="true"
-                android:inputType="text" />
+                android:inputType="textCapSentences|textImeMultiLine|text|textMultiLine" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -156,7 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtOverProduction"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
                         android:longClickable="true" />
@@ -180,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtTransportation"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
                         android:longClickable="true" />
@@ -204,10 +204,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtMotion"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
-                        android:longClickable="true" />
+                        android:longClickable="true"
+                        android:singleLine="false" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -228,7 +229,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtWaiting"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
                         android:longClickable="true" />
@@ -252,7 +253,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtProcessing"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
                         android:longClickable="true" />
@@ -276,7 +277,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtInventory"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
                         android:longClickable="true" />
@@ -300,7 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtDefects"
-                        android:inputType="none|text"
+                        android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                         android:editable="false"
                         android:focusable="true"
                         android:longClickable="true" />
@@ -320,7 +321,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtRootCauses"
-                android:inputType="none|text"
+                android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
                 android:singleLine="false"
                 android:focusable="true"
                 android:longClickable="true" />
@@ -371,7 +372,9 @@
                     android:layout_gravity="right"
                     android:text="@string/btnSaveKaizenStr"
                     android:id="@+id/btnSaveKaizen"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="btnSaveKaizenOnClick"
+                    android:clickable="false" />
             </LinearLayout>
 
         </LinearLayout>

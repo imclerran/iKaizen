@@ -10,7 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 
 public class KaizenDetailsActivity extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "mclerrani.ikaizen.MESSAGE";
+    public final static String EXTRA_KAIZEN = "mclerrani.ikaizen.KAIZEN";
+    private Kaizen kaizen = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +22,23 @@ public class KaizenDetailsActivity extends AppCompatActivity {
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Populate data
-        Kaizen kaizen = Kaizen.getTestKaizen();
+        // check if intent contains EXTRA_KAIZEN
+        // if it does, deserialize
+        Intent intent = getIntent();
+        if(intent.hasExtra(EXTRA_KAIZEN)) {
+            String extra = intent.getStringExtra(EXTRA_KAIZEN);
+            if(extra != "") {
+                kaizen = Kaizen.fromJson(extra);
+            }
+        }
+        // if intent does not contain EXTRA_KAIZEN
+        // get the test kaizen
+        else {
+            if(null == kaizen) {
+                kaizen = Kaizen.getTestKaizen();
+            }
+        }
+
         populate(kaizen);
     }
 
@@ -36,6 +52,10 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         txtDate.setText(kaizen.getDateCreatedAsString());
         EditText txtProblemStatement = (EditText)findViewById(R.id.txtProblemStatement);
         txtProblemStatement.setText(kaizen.getProblemStatement());
+        /*if(String.valueOf(txtProblemStatement.getText()).equals(""))) {
+            getActionBar();
+        }*/
+
         EditText txtOverProduction = (EditText)findViewById(R.id.txtOverProduction);
         txtOverProduction.setText(kaizen.getOverProductionWaste());
         EditText txtTransportation = (EditText)findViewById(R.id.txtTransportation);
@@ -75,14 +95,39 @@ public class KaizenDetailsActivity extends AppCompatActivity {
                 // delete kaizen
                 return true;
             case R.id.action_edit_kaizen:
-                Intent intent = new Intent(this, KaizenEditActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, "message");
-                startActivity(intent);
+                editKaizen();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void editKaizen() {
+        Intent intent = new Intent(this, KaizenEditActivity.class);
+        intent.putExtra(EXTRA_KAIZEN, kaizen.toJson());
+        startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+                if(data.hasExtra(EXTRA_KAIZEN)) {
+                    kaizen = Kaizen.fromJson(data.getStringExtra(EXTRA_KAIZEN));
+                    populate(kaizen);
+                }
+                // Do something with the contact here (bigger example below)
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     public boolean onSupportNavigateUp() {
         onBackPressed();

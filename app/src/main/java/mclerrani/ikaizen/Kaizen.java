@@ -4,6 +4,7 @@ import android.media.Image;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import com.google.gson.*;
 
 /**
  * Created by Ian on 1/13/2016.
@@ -29,17 +30,16 @@ public class Kaizen {
     private List<Image> images;
 
     public Kaizen() {
-    }
-
-    public Kaizen(String owner, Calendar dateCreated, String dept) {
-        this.owner = owner;
-        this.dateCreated = dateCreated;
-        this.dept = dept;
+        dateCreated = Calendar.getInstance();
+        dateCreated.set(Calendar.HOUR_OF_DAY,0);
+        dateModified = Calendar.getInstance();
+        dateModified.set(Calendar.HOUR_OF_DAY,0);
+        totalWaste = 0;
     }
 
     public Kaizen(String owner, String dept, Calendar dateCreated, Calendar dateModified, String problemStatement,
                   String overProductionWaste, String transportationWaste, String motionWaste, String waitingWaste,
-                  String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste) {
+                  String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste, List<Image> images) {
         this.owner = owner;
         this.dept = dept;
         this.dateCreated = dateCreated;
@@ -54,6 +54,7 @@ public class Kaizen {
         this.defectsWaste = defectsWaste;
         this.rootCauses = rootCauses;
         this.totalWaste = totalWaste;
+        this.images = images;
     }
 
     public String getOwner() {
@@ -198,6 +199,10 @@ public class Kaizen {
         return date;
     }
 
+    public void updateDateModified() {
+        dateModified.set(Calendar.HOUR_OF_DAY, 0);
+    }
+
     public static Kaizen getTestKaizen() {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
@@ -208,7 +213,17 @@ public class Kaizen {
                 "I had to put it away and get it out again",
                 "We had to wait for them to finish!",
                 "They don't need us to do this!", "He ran out of parts!", "I damaged the product!",
-                "1) this definitely had something to do with it\n2) this might have caused it\n3) maybe this is the issue?", 365);
+                "1) this definitely had something to do with it\n2) this might have caused it\n3) maybe this is the issue?", 365, null);
         return test;
+    }
+
+    public String toJson() {
+        String jsonString = new Gson().toJson(this);
+        return jsonString;
+    }
+
+    public static Kaizen fromJson(String jsonString) {
+        Kaizen kaizen = new Gson().fromJson(jsonString, Kaizen.class);
+        return kaizen;
     }
 }
