@@ -44,8 +44,9 @@ public class KaizenListActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, list);
         spnKaizenList.setAdapter(spnAdapter);
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
-        spnAdapter.add(Kaizen.getTestKaizen());
+
+        if(spnAdapter.getCount() == 0)
+            spnAdapter.add(Kaizen.getTestKaizen());
     }
 
     public void btnViewKaizenDetailsOnClick(View view) {
