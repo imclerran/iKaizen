@@ -2,6 +2,7 @@ package mclerrani.ikaizen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 
 public class KaizenDetailsActivity extends AppCompatActivity {
-    public final static String EXTRA_KAIZEN = "mclerrani.ikaizen.KAIZEN";
+    public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
+
+    private DataManager dataManager = DataManager.getDataManager();
     private Kaizen kaizen = null;
 
     @Override
@@ -20,22 +23,20 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // check if intent contains EXTRA_KAIZEN
         // if it does, deserialize
         Intent intent = getIntent();
-        if(intent.hasExtra(EXTRA_KAIZEN)) {
-            String extra = intent.getStringExtra(EXTRA_KAIZEN);
-            if(extra != "") {
-                kaizen = Kaizen.fromJson(extra);
-            }
+        if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
+            kaizen = dataManager.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
         }
         // if intent does not contain EXTRA_KAIZEN
         // get the test kaizen
         else {
             if(null == kaizen) {
                 kaizen = Kaizen.getTestKaizen();
+                dataManager.getKaizenList().add(kaizen);
             }
         }
 
@@ -52,10 +53,6 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         txtDate.setText(kaizen.getDateCreatedAsString());
         EditText txtProblemStatement = (EditText)findViewById(R.id.txtProblemStatement);
         txtProblemStatement.setText(kaizen.getProblemStatement());
-        /*if(String.valueOf(txtProblemStatement.getText()).equals(""))) {
-            getActionBar();
-        }*/
-
         EditText txtOverProduction = (EditText)findViewById(R.id.txtOverProduction);
         txtOverProduction.setText(kaizen.getOverProductionWaste());
         EditText txtTransportation = (EditText)findViewById(R.id.txtTransportation);
@@ -91,11 +88,11 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case R.id.action_delete_kaizen:
-                // delete kaizen
-                return true;
             case R.id.action_edit_kaizen:
                 editKaizen();
+                return true;
+            case R.id.action_delete_kaizen:
+                deleteKaizen();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -104,8 +101,15 @@ public class KaizenDetailsActivity extends AppCompatActivity {
 
     public void editKaizen() {
         Intent intent = new Intent(this, KaizenEditActivity.class);
-        intent.putExtra(EXTRA_KAIZEN, kaizen.toJson());
+        intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
+    }
+
+    public void deleteKaizen() {
+        //KaizenListActivity.spnAdapter.remove(kaizen);
+        dataManager.getKaizenList().remove(kaizen);
+        KaizenListActivity.spnAdapter.notifyDataSetChanged();
+        finish();
     }
 
     @Override
@@ -114,13 +118,11 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-                if(data.hasExtra(EXTRA_KAIZEN)) {
-                    kaizen = Kaizen.fromJson(data.getStringExtra(EXTRA_KAIZEN));
-                    populate(kaizen);
+                if(data.hasExtra(EXTRA_KAIZEN_ID)) {
+                    kaizen = dataManager.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
                 }
-                // Do something with the contact here (bigger example below)
+                populate(kaizen);
+                KaizenListActivity.spnAdapter.notifyDataSetChanged();
             }
         }
 
@@ -128,10 +130,8 @@ public class KaizenDetailsActivity extends AppCompatActivity {
     }
 
 
-
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
 }

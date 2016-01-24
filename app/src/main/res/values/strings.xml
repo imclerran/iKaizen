@@ -28,4 +28,12 @@
     <!-- strings for KaizenEditActivity-->
     <string name="title_activity_kaizen_edit">Edit Kaizen</string>
     <string name="btnSaveKaizenStr">Save Kaizen</string>
+    <string name="title_activity_kaizen_list">KaizenListActivity</string>
+    <string name="title_activity_temp">TempActivity</string>
+
+    <!-- strings for KaizenListActivity -->
+    <string name="btnEditKaizenStr">Edit</string>
+    <string name="btnViewKaizenDetailsStr">Details</string>
+    <string name="lblWelcomeStr">Hi there!</string>
+    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>
 </resources>

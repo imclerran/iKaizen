@@ -2,17 +2,22 @@ package mclerrani.ikaizen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class KaizenEditActivity extends AppCompatActivity {
-    public final static String EXTRA_KAIZEN = "mclerrani.ikaizen.KAIZEN";
+    public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     public final static int EDIT_KAIZEN_REQUEST = 1;
+
+    private ArrayAdapter<Kaizen>  arrayAdapter;
+    private DataManager dataManager = DataManager.getDataManager();
     private Kaizen kaizen;
 
     @Override
@@ -24,19 +29,16 @@ public class KaizenEditActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        arrayAdapter = KaizenListActivity.spnAdapter;
+
         Intent intent = getIntent();
-        if(intent.hasExtra(EXTRA_KAIZEN)) {
-            String extra = intent.getStringExtra(EXTRA_KAIZEN);
-            if(extra != "") {
-                kaizen = Kaizen.fromJson(extra);
-            }
-            else
-                kaizen = new Kaizen();
+        if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
+            kaizen = dataManager.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
         }
         else {
             kaizen = new Kaizen();
-
-            //setHints(kaizen);
+            dataManager.getKaizenList().add(kaizen);
+            arrayAdapter.notifyDataSetChanged();
         }
         populate(kaizen);
     }
@@ -70,7 +72,7 @@ public class KaizenEditActivity extends AppCompatActivity {
         txtTotalWaste.setText(String.valueOf(kaizen.getTotalWaste()));
     }
 
-    private void setHints(Kaizen kaizen) {
+    /*private void setHints(Kaizen kaizen) {
         EditText txtOwner = (EditText)findViewById(R.id.txtOwner);
         txtOwner.setHint(kaizen.getOwner());
         EditText txtDept = (EditText)findViewById(R.id.txtDept);
@@ -97,7 +99,7 @@ public class KaizenEditActivity extends AppCompatActivity {
         txtRootCauses.setHint(kaizen.getRootCauses());
         EditText txtTotalWaste = (EditText)findViewById(R.id.txtTotalWaste);
         txtTotalWaste.setHint(String.valueOf(kaizen.getTotalWaste()));
-    }
+    }*/
 
     public void btnSaveKaizenOnClick(View view) {
         saveKaizen();
@@ -134,8 +136,10 @@ public class KaizenEditActivity extends AppCompatActivity {
         else
             kaizen.setTotalWaste(0);
 
+
+        arrayAdapter.notifyDataSetChanged();
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_KAIZEN, kaizen.toJson());
+        intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         setResult(RESULT_OK, intent);
         finish();
     }

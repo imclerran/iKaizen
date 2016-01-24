@@ -30,7 +30,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/backgroundLight"
+                android:background="@color/primaryColorLight"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 
@@ -58,7 +58,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/backgroundLight"
+                android:background="@color/primaryColorLight"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 
@@ -84,7 +84,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/backgroundLight"
+                android:background="@color/primaryColorLight"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 

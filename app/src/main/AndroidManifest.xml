@@ -8,21 +8,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".KaizenDetailsActivity"
             android:label="@string/title_activity_kaizen_details"
+            android:parentActivityName=".KaizenListActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
-            <!-- launch activity -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="KaizenListActivity" />
         </activity>
-
         <activity
             android:name=".KaizenEditActivity"
             android:label="@string/title_activity_kaizen_edit"
@@ -32,6 +27,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="KaizenDetailsActivity" />
+        </activity>
+        <activity
+            android:name=".KaizenListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- launch activity -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
