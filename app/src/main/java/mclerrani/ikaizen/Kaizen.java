@@ -31,6 +31,7 @@ public class Kaizen implements Comparable<Kaizen> {
     private String rootCauses;
     private int totalWaste;
     private List<Image> images;
+    private boolean deleteMe = false;
 
     public Kaizen() {
         dateCreated = Calendar.getInstance();
@@ -326,5 +327,13 @@ public class Kaizen implements Comparable<Kaizen> {
             return problemStatement;
         }
         return "No problem Statement";
+    }
+
+    public boolean isDeleteMe() {
+        return deleteMe;
+    }
+
+    public void setDeleteMe(boolean deleteMe) {
+        this.deleteMe = deleteMe;
     }
 }

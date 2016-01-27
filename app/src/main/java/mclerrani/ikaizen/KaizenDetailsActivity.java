@@ -111,7 +111,7 @@ public class KaizenDetailsActivity extends AppCompatActivity {
     }
 
     public void deleteKaizen() {
-        dataManager.getKaizenList().remove(kaizen);
+        kaizen.setDeleteMe(true);
         finish();
     }
 

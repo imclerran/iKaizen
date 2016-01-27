@@ -2,6 +2,7 @@ package mclerrani.ikaizen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,8 @@ public class KaizenListActivity extends AppCompatActivity {
     private ArrayList<Kaizen> list;
     private Spinner spnKaizenList;
     private static ArrayAdapter<Kaizen> spnAdapter;
+    private CoordinatorLayout coordinatorLayout;
+    private Kaizen toDelete = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class KaizenListActivity extends AppCompatActivity {
                 newKaizen();
             }
         });
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         spnKaizenList = (Spinner) findViewById(R.id.spnKaizenList);
         list = dataManager.getKaizenList();
@@ -82,7 +88,48 @@ public class KaizenListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        deleteKaizen();
         spnAdapter.notifyDataSetChanged();
+    }
+
+    public boolean deleteKaizen() {
+
+        for(int i=0; i < list.size(); i++) {
+            if(list.get(i).isDeleteMe()) {
+                toDelete = list.remove(i);
+                spnAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
+
+        if(null != toDelete) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Kaizen is deleted", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Kaizen restored!", Snackbar.LENGTH_SHORT);
+                            toDelete.setDeleteMe(false);
+                            snackbar1.show();
+                        }
+                    });
+
+            snackbar.setCallback(new Snackbar.Callback() {
+                @Override
+                public void onDismissed(Snackbar snackbar, int event) {
+                    if(null != toDelete) {
+                        if (!toDelete.isDeleteMe()) {
+                            spnAdapter.add(toDelete);
+                        }
+                    }
+                    toDelete = null;
+                }
+            });
+            snackbar.show();
+        }
+
+        return true;
     }
 
     public void btnViewKaizenDetailsOnClick(View view) {
