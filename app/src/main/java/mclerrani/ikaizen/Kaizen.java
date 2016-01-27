@@ -322,7 +322,7 @@ public class Kaizen implements Comparable<Kaizen> {
     public String toString() {
         if(null != problemStatement) {
             if (problemStatement.equals(""))
-                return "No problem Statement";
+                return "No problem statement";
             return problemStatement;
         }
         return "No problem Statement";

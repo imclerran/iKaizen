@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,7 +31,7 @@ public class KaizenEditActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        arrayAdapter = KaizenListActivity.spnAdapter;
+        //arrayAdapter = KaizenListActivity.spnAdapter;
 
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
@@ -38,9 +40,36 @@ public class KaizenEditActivity extends AppCompatActivity {
         else {
             kaizen = new Kaizen();
             dataManager.getKaizenList().add(kaizen);
-            arrayAdapter.notifyDataSetChanged();
         }
         populate(kaizen);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                launchSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void launchSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void populate(Kaizen kaizen) {
@@ -136,8 +165,6 @@ public class KaizenEditActivity extends AppCompatActivity {
         else
             kaizen.setTotalWaste(0);
 
-
-        arrayAdapter.notifyDataSetChanged();
         Intent intent = new Intent();
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         setResult(RESULT_OK, intent);

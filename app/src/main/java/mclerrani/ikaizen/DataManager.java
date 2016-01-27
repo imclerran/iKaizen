@@ -27,6 +27,7 @@ public class DataManager {
         return dataManager;
     }
 
+
     public ArrayList<Kaizen> getKaizenList() {
         Collections.sort(kaizenList);
         return kaizenList;

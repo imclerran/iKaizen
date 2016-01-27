@@ -43,6 +43,8 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         populate(kaizen);
     }
 
+
+
     // populate layout with kaizen data
     private void populate(Kaizen kaizen) {
         EditText txtOwner = (EditText)findViewById(R.id.txtOwner);
@@ -94,6 +96,9 @@ public class KaizenDetailsActivity extends AppCompatActivity {
             case R.id.action_delete_kaizen:
                 deleteKaizen();
                 return true;
+            case R.id.action_settings:
+                launchSettings();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -106,10 +111,13 @@ public class KaizenDetailsActivity extends AppCompatActivity {
     }
 
     public void deleteKaizen() {
-        //KaizenListActivity.spnAdapter.remove(kaizen);
         dataManager.getKaizenList().remove(kaizen);
-        KaizenListActivity.spnAdapter.notifyDataSetChanged();
         finish();
+    }
+
+    public void launchSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -122,7 +130,6 @@ public class KaizenDetailsActivity extends AppCompatActivity {
                     kaizen = dataManager.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
                 }
                 populate(kaizen);
-                KaizenListActivity.spnAdapter.notifyDataSetChanged();
             }
         }
 
