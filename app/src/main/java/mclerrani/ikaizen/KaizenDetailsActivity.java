@@ -94,7 +94,7 @@ public class KaizenDetailsActivity extends AppCompatActivity {
                 editKaizen();
                 return true;
             case R.id.action_delete_kaizen:
-                deleteKaizen();
+                deleteKaizen(kaizen);
                 return true;
             case R.id.action_settings:
                 launchSettings();
@@ -110,8 +110,8 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
     }
 
-    public void deleteKaizen() {
-        kaizen.setDeleteMe(true);
+    public void deleteKaizen(Kaizen k) {
+        k.setDeleteMe(true);
         finish();
     }
 

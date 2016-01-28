@@ -12,47 +12,80 @@
     tools:context="mclerrani.ikaizen.KaizenListActivity"
     tools:showIn="@layout/activity_kaizen_list">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/lblWelcomeStr"
-            android:id="@+id/lblWelcome" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/lblInstructionsStr"
-            android:id="@+id/lblInstructions" />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/spnKaizenList"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:weightSum="1.0">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <Button
+            <TextView
+                android:id="@+id/lblWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lblWelcomeStr"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/lblInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lblInstructionsStr"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                android:id="@+id/spnKaizenList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btnViewKaizenDetailsStr"
-                android:id="@+id/btnViewKaizenDetails"
-                android:onClick="btnViewKaizenDetailsOnClick"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:weightSum="1.0">
+
+                <Button
+                    android:id="@+id/btnViewKaizenDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="btnViewKaizenDetailsOnClick"
+                    android:text="@string/btnViewKaizenDetailsStr" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1.0">
+
+                <Button
+                    android:id="@+id/btnEditKaizen"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:onClick="btnEditKaizenOnClick"
+                    android:text="@string/btnEditKaizenStr" />
+
+                <Button
+                    android:id="@+id/btnDeleteKaizen"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:onClick="btnDeleteKaizenOnClick"
+                    android:text="@string/btnDeleteKaizenStr" />
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

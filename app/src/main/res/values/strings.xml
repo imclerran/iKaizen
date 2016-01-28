@@ -39,6 +39,7 @@
 
     <!-- strings for SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
-    <string name="lblUISettingsHeadingStr">UI Settings:</string>
+    <string name="lblUISettingsHeadingStr">UI Settings</string>
     <string name="tglDisplayUserInfoStr">Display user info</string>
+    <string name="btnDeleteKaizenStr">Delete</string>
 </resources>

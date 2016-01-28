@@ -8,44 +8,55 @@
     tools:context="mclerrani.ikaizen.SettingsActivity"
     tools:showIn="@layout/activity_settings">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="tglDisplayUserInfoOnClick">
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginLeft="@dimen/settings_item_margin_left"
-            android:layout_marginRight="@dimen/settings_item_margin_right"
-            android:text="@string/lblUISettingsHeadingStr"
-            android:id="@+id/lblUISettingsHeading"
-            android:layout_marginTop="@dimen/settings_heading_margin_top"
-            android:layout_marginBottom="@dimen/settings_heading_margin_bottom" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#c0c0c0" />
-
-        <Switch
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/settings_item_margin_left"
-            android:layout_marginRight="@dimen/settings_item_margin_right"
-            android:text="@string/tglDisplayUserInfoStr"
-            android:id="@+id/tglDisplayUserInfo"
-            android:checked="true"
-            android:layout_marginTop="@dimen/settings_item_margin_top"
-            android:layout_marginBottom="@dimen/settings_item_margin_bottom"
-            android:onClick="tglDisplayUserInfoOnClick" />
+            android:layout_height="match_parent"
+            android:onClick="tglDisplayUserInfoOnClick"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#c0c0c0" />
+            <TextView
+                android:id="@+id/lblUISettingsHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_heading_margin_bottom"
+                android:layout_marginLeft="@dimen/settings_item_margin_left"
+                android:layout_marginRight="@dimen/settings_item_margin_right"
+                android:layout_marginTop="@dimen/settings_heading_margin_top"
+                android:text="@string/lblUISettingsHeadingStr"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#c0c0c0" />
+
+            <Switch
+                android:id="@+id/tglDisplayUserInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_item_margin_bottom"
+                android:layout_marginLeft="@dimen/settings_item_margin_left"
+                android:layout_marginRight="@dimen/settings_item_margin_right"
+                android:layout_marginTop="@dimen/settings_item_margin_top"
+                android:checked="true"
+                android:onClick="tglDisplayUserInfoOnClick"
+                android:text="@string/tglDisplayUserInfoStr"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#c0c0c0" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

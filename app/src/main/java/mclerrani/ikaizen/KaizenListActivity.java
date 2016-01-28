@@ -53,7 +53,7 @@ public class KaizenListActivity extends AppCompatActivity {
         spnKaizenList.setAdapter(spnAdapter);
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        if(spnAdapter.getCount() == 0)
+        if (spnAdapter.getCount() == 0)
             spnAdapter.add(Kaizen.getTestKaizen());
     }
 
@@ -93,19 +93,24 @@ public class KaizenListActivity extends AppCompatActivity {
         spnAdapter.notifyDataSetChanged();
     }
 
+    public void deleteKaizen(Kaizen k) {
+        k.setDeleteMe(true);
+        deleteKaizen();
+    }
+
     public boolean deleteKaizen() {
 
-        for(int i=0; i < list.size(); i++) {
-            if(list.get(i).isDeleteMe()) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isDeleteMe()) {
                 toDelete = list.remove(i);
                 spnAdapter.notifyDataSetChanged();
                 break;
             }
         }
 
-        if(null != toDelete) {
+        if (null != toDelete) {
             Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Kaizen is deleted", Snackbar.LENGTH_LONG)
+                    .make(coordinatorLayout, "Kaizen deleted!", Snackbar.LENGTH_LONG)
                     .setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -118,7 +123,7 @@ public class KaizenListActivity extends AppCompatActivity {
             snackbar.setCallback(new Snackbar.Callback() {
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
-                    if(null != toDelete) {
+                    if (null != toDelete) {
                         if (!toDelete.isDeleteMe()) {
                             spnAdapter.add(toDelete);
                         }
@@ -132,9 +137,24 @@ public class KaizenListActivity extends AppCompatActivity {
         return true;
     }
 
+    public void btnEditKaizenOnClick(View view) {
+        kaizen = (Kaizen) spnKaizenList.getSelectedItem();
+        if (null != kaizen) {
+            Intent intent = new Intent(this, KaizenEditActivity.class);
+            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+            startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
+        }
+    }
+
+    public void btnDeleteKaizenOnClick(View view) {
+        kaizen = (Kaizen) spnKaizenList.getSelectedItem();
+        if (null != kaizen)
+            deleteKaizen(kaizen);
+    }
+
     public void btnViewKaizenDetailsOnClick(View view) {
-        kaizen = (Kaizen)spnKaizenList.getSelectedItem();
-        if(null != kaizen) {
+        kaizen = (Kaizen) spnKaizenList.getSelectedItem();
+        if (null != kaizen) {
             Intent intent = new Intent(this, KaizenDetailsActivity.class);
             intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
             //startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
@@ -144,7 +164,6 @@ public class KaizenListActivity extends AppCompatActivity {
 
     public void newKaizen() {
         kaizen = new Kaizen();
-        //spnAdapter.add(kaizen);
         dataManager.getKaizenList().add(kaizen);
         spnAdapter.notifyDataSetChanged();
 
@@ -159,7 +178,7 @@ public class KaizenListActivity extends AppCompatActivity {
         if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                if(data.hasExtra(EXTRA_KAIZEN_ID)) {
+                if (data.hasExtra(EXTRA_KAIZEN_ID)) {
                     kaizen = dataManager.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
                 }
                 Intent intent = new Intent(this, KaizenDetailsActivity.class);
