@@ -1,5 +1,6 @@
 package mclerrani.ikaizen;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,14 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class KaizenListActivity extends AppCompatActivity {
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
-    private DataManager dataManager = DataManager.getDataManager();
+    // this code belongs in launch activity
+    private static Context appContext;
+    // end launch activity code
+
+    private DataManager dm = DataManager.getInstance();
+    private PreferencesManager pm;
     private Kaizen kaizen;
     private ArrayList<Kaizen> list;
     private Spinner spnKaizenList;
@@ -44,10 +49,15 @@ public class KaizenListActivity extends AppCompatActivity {
             }
         });
 
+        // this code belongs in launch activity
+        appContext = this.getApplicationContext();
+        // end launch activity code
+        pm = PreferencesManager.getInstance(appContext);
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         spnKaizenList = (Spinner) findViewById(R.id.spnKaizenList);
-        list = dataManager.getKaizenList();
+        list = dm.getKaizenList();
         spnAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, list);
         spnKaizenList.setAdapter(spnAdapter);
@@ -56,6 +66,10 @@ public class KaizenListActivity extends AppCompatActivity {
         if (spnAdapter.getCount() == 0)
             spnAdapter.add(Kaizen.getTestKaizen());
     }
+
+    // this code belongs in launch activity
+    public static Context getContext() { return appContext; }
+    // end launch activity code
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -164,7 +178,7 @@ public class KaizenListActivity extends AppCompatActivity {
 
     public void newKaizen() {
         kaizen = new Kaizen();
-        dataManager.getKaizenList().add(kaizen);
+        dm.getKaizenList().add(kaizen);
         spnAdapter.notifyDataSetChanged();
 
         Intent intent = new Intent(this, KaizenEditActivity.class);
@@ -179,7 +193,7 @@ public class KaizenListActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 if (data.hasExtra(EXTRA_KAIZEN_ID)) {
-                    kaizen = dataManager.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
+                    kaizen = dm.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
                 }
                 Intent intent = new Intent(this, KaizenDetailsActivity.class);
                 intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());

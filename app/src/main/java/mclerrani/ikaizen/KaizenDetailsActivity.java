@@ -1,19 +1,20 @@
 package mclerrani.ikaizen;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class KaizenDetailsActivity extends AppCompatActivity {
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
-    private DataManager dataManager = DataManager.getDataManager();
+    private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
+    private DataManager dm = DataManager.getInstance();
     private Kaizen kaizen = null;
 
     @Override
@@ -29,18 +30,45 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         // if it does, deserialize
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
-            kaizen = dataManager.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
+            kaizen = dm.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
         }
         // if intent does not contain EXTRA_KAIZEN
         // get the test kaizen
         else {
             if(null == kaizen) {
                 kaizen = Kaizen.getTestKaizen();
-                dataManager.getKaizenList().add(kaizen);
+                dm.getKaizenList().add(kaizen);
             }
         }
 
         populate(kaizen);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideOwnerData();
+    }
+
+    public void hideOwnerData() {
+        LinearLayout llOwnerLayout = (LinearLayout)findViewById(R.id.llOwnerLayout);
+        LinearLayout llDeptLayout = (LinearLayout)findViewById(R.id.llDeptLayout);
+
+        LinearLayout.LayoutParams paramsShow =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsHide =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+
+
+        if(pm.getShowOwnerData()) {
+
+            llOwnerLayout.setLayoutParams(paramsShow);
+            llDeptLayout.setLayoutParams(paramsShow);
+        }
+        else {
+            llOwnerLayout.setLayoutParams(paramsHide);
+            llDeptLayout.setLayoutParams(paramsHide);
+        }
     }
 
 
@@ -127,7 +155,7 @@ public class KaizenDetailsActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 if(data.hasExtra(EXTRA_KAIZEN_ID)) {
-                    kaizen = dataManager.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
+                    kaizen = dm.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
                 }
                 populate(kaizen);
             }

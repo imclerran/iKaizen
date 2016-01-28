@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="tglDisplayUserInfoOnClick"
+            android:onClick="tglShowOwnerDataOnClick"
             android:orientation="vertical">
 
             <TextView
@@ -40,7 +40,7 @@
                 android:background="#c0c0c0" />
 
             <Switch
-                android:id="@+id/tglDisplayUserInfo"
+                android:id="@+id/tglShowOwnerData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/settings_item_margin_bottom"
@@ -48,8 +48,8 @@
                 android:layout_marginRight="@dimen/settings_item_margin_right"
                 android:layout_marginTop="@dimen/settings_item_margin_top"
                 android:checked="true"
-                android:onClick="tglDisplayUserInfoOnClick"
-                android:text="@string/tglDisplayUserInfoStr"
+                android:onClick="tglShowOwnerDataOnClick"
+                android:text="@string/tglShowOwnerDataStr"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <View

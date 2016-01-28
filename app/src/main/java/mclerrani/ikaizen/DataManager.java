@@ -1,7 +1,5 @@
 package mclerrani.ikaizen;
 
-import android.widget.ArrayAdapter;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,7 +8,7 @@ import java.util.Collections;
  */
 public class DataManager {
 
-    private static DataManager dataManager;
+    private static DataManager dm;
     private ArrayList<Kaizen> kaizenList;
     //private int nextListId;
 
@@ -20,11 +18,11 @@ public class DataManager {
 
     // get the data manager
     // if it doesn't exist, instantiate it
-    public static DataManager getDataManager() {
-        if(null == dataManager) {
-            dataManager = new DataManager();
+    public static DataManager getInstance() {
+        if(null == dm) {
+            dm = new DataManager();
         }
-        return dataManager;
+        return dm;
     }
 
 

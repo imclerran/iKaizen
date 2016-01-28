@@ -2,9 +2,6 @@ package mclerrani.ikaizen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,14 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 public class KaizenEditActivity extends AppCompatActivity {
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     public final static int EDIT_KAIZEN_REQUEST = 1;
 
     private ArrayAdapter<Kaizen>  arrayAdapter;
-    private DataManager dataManager = DataManager.getDataManager();
+    private DataManager dm = DataManager.getInstance();
+    private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
     private Kaizen kaizen;
 
     @Override
@@ -35,11 +33,11 @@ public class KaizenEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
-            kaizen = dataManager.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
+            kaizen = dm.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
         }
         else {
             kaizen = new Kaizen();
-            dataManager.getKaizenList().add(kaizen);
+            dm.getKaizenList().add(kaizen);
         }
         populate(kaizen);
     }
@@ -49,6 +47,33 @@ public class KaizenEditActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideOwnerData();
+    }
+
+    public void hideOwnerData() {
+        LinearLayout llOwnerLayout = (LinearLayout)findViewById(R.id.llOwnerLayout);
+        LinearLayout llDeptLayout = (LinearLayout)findViewById(R.id.llDeptLayout);
+
+        LinearLayout.LayoutParams paramsShow =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams paramsHide =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+
+
+        if(pm.getShowOwnerData()) {
+
+            llOwnerLayout.setLayoutParams(paramsShow);
+            llDeptLayout.setLayoutParams(paramsShow);
+        }
+        else {
+            llOwnerLayout.setLayoutParams(paramsHide);
+            llDeptLayout.setLayoutParams(paramsHide);
+        }
     }
 
     @Override

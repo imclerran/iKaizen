@@ -10,6 +10,9 @@ import android.widget.Switch;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    PreferencesManager pm = PreferencesManager.getInstance(this);
+    Switch tglShowOwnerData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,13 +21,20 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tglShowOwnerData = (Switch)findViewById(R.id.tglShowOwnerData);
+
+        if(pm.getShowOwnerData())
+            tglShowOwnerData.setChecked(true);
+        else
+            tglShowOwnerData.setChecked(false);
     }
 
-    public void tglDisplayUserInfoOnClick(View view) {
-        Switch tglDisplayUserInfo = (Switch)findViewById(R.id.tglDisplayUserInfo);
-
-        if(tglDisplayUserInfo.isChecked())
-            ;
+    public void tglShowOwnerDataOnClick(View view) {
+        if(tglShowOwnerData.isChecked())
+            pm.setShowOwnerData(true);
+        else
+            pm.setShowOwnerData(false);
     }
 
     public boolean onSupportNavigateUp() {
