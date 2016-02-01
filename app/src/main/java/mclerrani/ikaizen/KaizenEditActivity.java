@@ -15,7 +15,6 @@ public class KaizenEditActivity extends AppCompatActivity {
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     public final static int EDIT_KAIZEN_REQUEST = 1;
 
-    private ArrayAdapter<Kaizen>  arrayAdapter;
     private DataManager dm = DataManager.getInstance();
     private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
     private Kaizen kaizen;
@@ -28,8 +27,6 @@ public class KaizenEditActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //arrayAdapter = KaizenListActivity.spnAdapter;
 
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_KAIZEN_ID)) {

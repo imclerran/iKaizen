@@ -6,7 +6,7 @@ import java.util.Collections;
 /**
  * Created by Ian on 1/21/2016.
  */
-public class DataManager {
+public class DataManager { /* SINGLETON */
 
     private static DataManager dm;
     private ArrayList<Kaizen> kaizenList;
@@ -33,24 +33,12 @@ public class DataManager {
 
     public Kaizen getKaizen(int id) {
         int i = 0;
+        int size = kaizenList.size();
         while(id != kaizenList.get(i).getItemID()) {
             i++;
+            if(size <= i)
+                return null;
         }
         return kaizenList.get(i);
     }
-
-    /*public Kaizen newKaizen() {
-        Kaizen k = new Kaizen();
-        kaizenList.add(k);
-        return k;
-    }*/
-
-    /*public boolean deleteKaizen(int id) {
-        Kaizen k = getKaizen(id);
-        if(null == k)
-            return false;
-
-       kaizenList.remove(k);
-        return true;
-    }*/
 }

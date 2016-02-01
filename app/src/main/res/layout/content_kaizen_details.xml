@@ -371,7 +371,8 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:text="@string/btnImagesStr"
-            android:id="@+id/btnImages" />
+            android:id="@+id/btnImages"
+                android:onClick="btnImagesOnClick" />
 
         <Button
             android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package mclerrani.ikaizen;
 import android.media.Image;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import com.google.gson.*;
@@ -12,6 +13,7 @@ import com.google.gson.*;
  * @author Ian McLerran
  */
 public class Kaizen implements Comparable<Kaizen> {
+    // TODO: complete transition from List<Image> to ArrayList<String> for storing image data
 
     private static int count;
     private int itemID;
@@ -30,7 +32,8 @@ public class Kaizen implements Comparable<Kaizen> {
     private String defectsWaste;
     private String rootCauses;
     private int totalWaste;
-    private List<Image> images;
+    //private List<Image> images;
+    private ArrayList<String> imageFiles;
     private boolean deleteMe = false;
 
     public Kaizen() {
@@ -40,12 +43,15 @@ public class Kaizen implements Comparable<Kaizen> {
         dateModified.set(Calendar.HOUR_OF_DAY,0);
         totalWaste = 0;
 
+        imageFiles = new ArrayList<>();
+
         itemID = count++;
     }
 
     public Kaizen(String owner, String dept, Calendar dateCreated, Calendar dateModified, String problemStatement,
                   String overProductionWaste, String transportationWaste, String motionWaste, String waitingWaste,
-                  String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste, List<Image> images) {
+                  String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste,
+                  /*List<Image> images*/ ArrayList<String> imageFiles) {
         this.owner = owner;
         this.dept = dept;
         this.dateCreated = dateCreated;
@@ -60,7 +66,11 @@ public class Kaizen implements Comparable<Kaizen> {
         this.defectsWaste = defectsWaste;
         this.rootCauses = rootCauses;
         this.totalWaste = totalWaste;
-        this.images = images;
+        //this.images = images;
+
+        this.imageFiles = imageFiles;
+        if(null == imageFiles)
+            imageFiles = new ArrayList<>();
 
         itemID = count++;
     }
@@ -190,14 +200,14 @@ public class Kaizen implements Comparable<Kaizen> {
         this.motionWaste = motionWaste;
     }
 
-    public List<Image> getImages() {
+    /*public List<Image> getImages() {
         return images;
     }
 
     public void setImages(List<Image> images) {
         updateDateModified();
         this.images = images;
-    }
+    }*/
 
     public int getItemID() { return itemID; }
 
@@ -205,7 +215,7 @@ public class Kaizen implements Comparable<Kaizen> {
         updateDateModified();
         this.itemID = itemID; }
 
-    public Image addImage(Image image) {
+    /*public Image addImage(Image image) {
         updateDateModified();
         images.add(image);
         return images.get(images.size());
@@ -214,7 +224,7 @@ public class Kaizen implements Comparable<Kaizen> {
     public void removeImage(int i) {
         updateDateModified();
         images.remove(i);
-    }
+    }*/
 
     public String getDateCreatedAsString() {
         SimpleDateFormat formatter=new SimpleDateFormat("MM/DD/yyyy");
@@ -261,7 +271,7 @@ public class Kaizen implements Comparable<Kaizen> {
         return this.dateModified.compareTo(another.dateModified);
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -296,7 +306,7 @@ public class Kaizen implements Comparable<Kaizen> {
             return false;
         return !(images != null ? !images.equals(kaizen.images) : kaizen.images != null);
 
-    }
+    }*/
 
     @Override
     public int hashCode() {
@@ -315,7 +325,7 @@ public class Kaizen implements Comparable<Kaizen> {
         result = 31 * result + (defectsWaste != null ? defectsWaste.hashCode() : 0);
         result = 31 * result + (rootCauses != null ? rootCauses.hashCode() : 0);
         result = 31 * result + totalWaste;
-        result = 31 * result + (images != null ? images.hashCode() : 0);
+        //result = 31 * result + (images != null ? images.hashCode() : 0);
         return result;
     }
 
@@ -335,5 +345,13 @@ public class Kaizen implements Comparable<Kaizen> {
 
     public void setDeleteMe(boolean deleteMe) {
         this.deleteMe = deleteMe;
+    }
+
+    public ArrayList<String> getImageFiles() {
+        return imageFiles;
+    }
+
+    public void setImageFiles(ArrayList<String> imageFiles) {
+        this.imageFiles = imageFiles;
     }
 }

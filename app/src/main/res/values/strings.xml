@@ -42,4 +42,5 @@
     <string name="lblUISettingsHeadingStr">UI Settings</string>
     <string name="tglShowOwnerDataStr">Show owner info</string>
     <string name="btnDeleteKaizenStr">Delete</string>
+    <string name="title_activity_image_viewer">ImageViewerActivity</string>
 </resources>
