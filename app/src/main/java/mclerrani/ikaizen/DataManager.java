@@ -32,6 +32,9 @@ public class DataManager { /* SINGLETON */
     }
 
     public Kaizen getKaizen(int id) {
+        if(id < 0)
+            return null;
+
         int i = 0;
         int size = kaizenList.size();
         while(id != kaizenList.get(i).getItemID()) {

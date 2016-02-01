@@ -183,22 +183,29 @@ public class KaizenDetailsActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             if(null != currentPhotoPath) {
-                Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
-                viewImageIntent.putExtra(EXTRA_FILE_PATH, currentPhotoPath);
-                startActivity(viewImageIntent);
+                kaizen.addImageFile(currentPhotoPath);
+                launchImageViewerActivity();
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void launchImageViewerActivity() {
+        Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
+        viewImageIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+        startActivity(viewImageIntent);
+    }
+
     public void btnImagesOnClick(View view) {
-        if(null == currentPhotoPath) {
+        if(0 >= kaizen.getImageFiles().size())
             dispatchTakePictureIntent();
-        }
+        else
+            launchImageViewerActivity();
     }
 
     private void dispatchTakePictureIntent() {
+        // if android ver. >= marshmallow, check camera permissions
         if(canMakeSmores())
             checkPermissions(Manifest.permission.CAMERA);
 
@@ -226,8 +233,9 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "iKaizen_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString()+"/iKaizen");
+        storageDir.mkdirs();
 
         // if on marshmallow or higher,
         // request WRITE_EXTERNAL_STORAGE permissions
@@ -256,6 +264,7 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         return image;
     }
 
+    // TODO: move methods to PermissionsManager class
     private void checkPermissions(String permission) {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,

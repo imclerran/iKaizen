@@ -1,8 +1,6 @@
 package mclerrani.ikaizen;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,7 +9,7 @@ import android.widget.Switch;
 public class SettingsActivity extends AppCompatActivity {
 
     PreferencesManager pm = PreferencesManager.getInstance(this);
-    Switch tglShowOwnerData;
+    Switch swcShowOwnerData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +20,16 @@ public class SettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        tglShowOwnerData = (Switch)findViewById(R.id.tglShowOwnerData);
+        swcShowOwnerData = (Switch)findViewById(R.id.swcShowOwnerData);
 
         if(pm.getShowOwnerData())
-            tglShowOwnerData.setChecked(true);
+            swcShowOwnerData.setChecked(true);
         else
-            tglShowOwnerData.setChecked(false);
+            swcShowOwnerData.setChecked(false);
     }
 
     public void tglShowOwnerDataOnClick(View view) {
-        if(tglShowOwnerData.isChecked())
+        if(swcShowOwnerData.isChecked())
             pm.setShowOwnerData(true);
         else
             pm.setShowOwnerData(false);

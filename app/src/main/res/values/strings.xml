@@ -36,11 +36,14 @@
     <string name="btnViewKaizenDetailsStr">Details</string>
     <string name="lblWelcomeStr">Hi there!</string>
     <string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>
+    <string name="btnDeleteKaizenStr">Delete</string>
 
     <!-- strings for SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
     <string name="lblUISettingsHeadingStr">UI Settings</string>
-    <string name="tglShowOwnerDataStr">Show owner info</string>
-    <string name="btnDeleteKaizenStr">Delete</string>
-    <string name="title_activity_image_viewer">ImageViewerActivity</string>
+    <string name="swcShowOwnerDataStr">Show owner info</string>
+
+    <!-- strings for ImageViewerActivity -->
+    <string name="title_activity_image_viewer">View Image</string>
+
 </resources>

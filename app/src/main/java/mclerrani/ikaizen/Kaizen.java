@@ -1,6 +1,7 @@
 package mclerrani.ikaizen;
 import android.media.Image;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,10 +14,12 @@ import com.google.gson.*;
  * @author Ian McLerran
  */
 public class Kaizen implements Comparable<Kaizen> {
-    // TODO: complete transition from List<Image> to ArrayList<String> for storing image data
 
+    // meta data fields
     private static int count;
     private int itemID;
+    private boolean deleteMe = false;
+    // end meta data
 
     private String owner;
     private String dept;
@@ -32,9 +35,7 @@ public class Kaizen implements Comparable<Kaizen> {
     private String defectsWaste;
     private String rootCauses;
     private int totalWaste;
-    //private List<Image> images;
     private ArrayList<String> imageFiles;
-    private boolean deleteMe = false;
 
     public Kaizen() {
         dateCreated = Calendar.getInstance();
@@ -51,7 +52,8 @@ public class Kaizen implements Comparable<Kaizen> {
     public Kaizen(String owner, String dept, Calendar dateCreated, Calendar dateModified, String problemStatement,
                   String overProductionWaste, String transportationWaste, String motionWaste, String waitingWaste,
                   String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste,
-                  /*List<Image> images*/ ArrayList<String> imageFiles) {
+                  ArrayList<String> imageFiles)
+    {
         this.owner = owner;
         this.dept = dept;
         this.dateCreated = dateCreated;
@@ -66,11 +68,11 @@ public class Kaizen implements Comparable<Kaizen> {
         this.defectsWaste = defectsWaste;
         this.rootCauses = rootCauses;
         this.totalWaste = totalWaste;
-        //this.images = images;
 
-        this.imageFiles = imageFiles;
-        if(null == imageFiles)
-            imageFiles = new ArrayList<>();
+        if(null != imageFiles)
+            this.imageFiles = imageFiles;
+        else
+            this.imageFiles = new ArrayList<>();
 
         itemID = count++;
     }
@@ -200,14 +202,25 @@ public class Kaizen implements Comparable<Kaizen> {
         this.motionWaste = motionWaste;
     }
 
-    /*public List<Image> getImages() {
-        return images;
+    public ArrayList<String> getImageFiles() {
+        return imageFiles;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImageFiles(ArrayList<String> imageFiles) {
         updateDateModified();
-        this.images = images;
-    }*/
+        this.imageFiles = imageFiles;
+    }
+
+    public String addImageFile(String imageFile) {
+        updateDateModified();
+        imageFiles.add(imageFile);
+        return imageFiles.get(imageFiles.size()-1);
+    }
+
+    public String removeImageFile(int i) {
+        updateDateModified();
+        return imageFiles.remove(i);
+    }
 
     public int getItemID() { return itemID; }
 
@@ -215,16 +228,13 @@ public class Kaizen implements Comparable<Kaizen> {
         updateDateModified();
         this.itemID = itemID; }
 
-    /*public Image addImage(Image image) {
-        updateDateModified();
-        images.add(image);
-        return images.get(images.size());
+    public boolean isDeleteMe() {
+        return deleteMe;
     }
 
-    public void removeImage(int i) {
-        updateDateModified();
-        images.remove(i);
-    }*/
+    public void setDeleteMe(boolean deleteMe) {
+        this.deleteMe = deleteMe;
+    }
 
     public String getDateCreatedAsString() {
         SimpleDateFormat formatter=new SimpleDateFormat("MM/DD/yyyy");
@@ -271,7 +281,7 @@ public class Kaizen implements Comparable<Kaizen> {
         return this.dateModified.compareTo(another.dateModified);
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -280,6 +290,7 @@ public class Kaizen implements Comparable<Kaizen> {
 
         if (itemID != kaizen.itemID) return false;
         if (totalWaste != kaizen.totalWaste) return false;
+        if (deleteMe != kaizen.deleteMe) return false;
         if (owner != null ? !owner.equals(kaizen.owner) : kaizen.owner != null) return false;
         if (dept != null ? !dept.equals(kaizen.dept) : kaizen.dept != null) return false;
         if (dateCreated != null ? !dateCreated.equals(kaizen.dateCreated) : kaizen.dateCreated != null)
@@ -304,9 +315,9 @@ public class Kaizen implements Comparable<Kaizen> {
             return false;
         if (rootCauses != null ? !rootCauses.equals(kaizen.rootCauses) : kaizen.rootCauses != null)
             return false;
-        return !(images != null ? !images.equals(kaizen.images) : kaizen.images != null);
+        return !(imageFiles != null ? !imageFiles.equals(kaizen.imageFiles) : kaizen.imageFiles != null);
 
-    }*/
+    }
 
     @Override
     public int hashCode() {
@@ -325,7 +336,8 @@ public class Kaizen implements Comparable<Kaizen> {
         result = 31 * result + (defectsWaste != null ? defectsWaste.hashCode() : 0);
         result = 31 * result + (rootCauses != null ? rootCauses.hashCode() : 0);
         result = 31 * result + totalWaste;
-        //result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (imageFiles != null ? imageFiles.hashCode() : 0);
+        result = 31 * result + (deleteMe ? 1 : 0);
         return result;
     }
 
@@ -339,19 +351,20 @@ public class Kaizen implements Comparable<Kaizen> {
         return "No problem Statement";
     }
 
-    public boolean isDeleteMe() {
-        return deleteMe;
-    }
+    public int removeDeletedFiles() {
+        int numRemoved = 0;
+        int i = 0;
+        File fd;
 
-    public void setDeleteMe(boolean deleteMe) {
-        this.deleteMe = deleteMe;
-    }
-
-    public ArrayList<String> getImageFiles() {
-        return imageFiles;
-    }
-
-    public void setImageFiles(ArrayList<String> imageFiles) {
-        this.imageFiles = imageFiles;
+        while(i < imageFiles.size()) {
+            fd = new File(imageFiles.get(i));
+            if(!fd.exists()) {
+                imageFiles.remove(i);
+                numRemoved++;
+            }
+            else
+                i++;
+        }
+        return numRemoved;
     }
 }
