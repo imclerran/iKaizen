@@ -1,6 +1,7 @@
 package mclerrani.ikaizen;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -93,8 +94,10 @@ public class ImageViewerActivity extends AppCompatActivity {
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
 
+
+
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.max(photoW/targetW, photoH/targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -110,6 +113,7 @@ public class ImageViewerActivity extends AppCompatActivity {
         catch (IOException e) {
             e.printStackTrace();
         }
+
         return true;
     }
 
