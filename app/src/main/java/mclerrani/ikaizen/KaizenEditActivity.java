@@ -1,19 +1,23 @@
 package mclerrani.ikaizen;
 
+import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class KaizenEditActivity extends AppCompatActivity {
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     public final static int EDIT_KAIZEN_REQUEST = 1;
+    public final static int CREATE_KAIZEN_REQUEST = 2;
 
     private DataManager dm = DataManager.getInstance();
     private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
@@ -35,7 +39,15 @@ public class KaizenEditActivity extends AppCompatActivity {
         else {
             kaizen = new Kaizen();
             dm.getKaizenList().add(kaizen);
+            String owner = getUserName();
+            if(null != owner)
+                kaizen.setOwner(owner);
         }
+
+        // test code
+        getUserName();
+        // end test code
+
         populate(kaizen);
     }
 
@@ -62,7 +74,7 @@ public class KaizenEditActivity extends AppCompatActivity {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
 
 
-        if(pm.getShowOwnerData()) {
+        if(pm.isShowOwnerData()) {
 
             llOwnerLayout.setLayoutParams(paramsShow);
             llDeptLayout.setLayoutParams(paramsShow);
@@ -123,35 +135,6 @@ public class KaizenEditActivity extends AppCompatActivity {
         txtTotalWaste.setText(String.valueOf(kaizen.getTotalWaste()));
     }
 
-    /*private void setHints(Kaizen kaizen) {
-        EditText txtOwner = (EditText)findViewById(R.id.txtOwner);
-        txtOwner.setHint(kaizen.getOwner());
-        EditText txtDept = (EditText)findViewById(R.id.txtDept);
-        txtDept.setHint(kaizen.getDept());
-        EditText txtDate = (EditText)findViewById(R.id.txtDate);
-        txtDate.setHint(kaizen.getDateCreatedAsString());
-        EditText txtProblemStatement = (EditText)findViewById(R.id.txtProblemStatement);
-        txtProblemStatement.setHint(kaizen.getProblemStatement());
-        EditText txtOverProduction = (EditText)findViewById(R.id.txtOverProduction);
-        txtOverProduction.setHint(kaizen.getOverProductionWaste());
-        EditText txtTransportation = (EditText)findViewById(R.id.txtTransportation);
-        txtTransportation.setHint(kaizen.getTransportationWaste());
-        EditText txtMotion = (EditText)findViewById(R.id.txtMotion);
-        txtMotion.setHint(kaizen.getMotionWaste());
-        EditText txtWaiting = (EditText)findViewById(R.id.txtWaiting);
-        txtWaiting.setHint(kaizen.getWaitingWaste());
-        EditText txtProcessing = (EditText)findViewById(R.id.txtProcessing);
-        txtProcessing.setHint(kaizen.getProcessingWaste());
-        EditText txtInventory = (EditText)findViewById(R.id.txtInventory);
-        txtInventory.setHint(kaizen.getInventoryWaste());
-        EditText txtDefects = (EditText)findViewById(R.id.txtDefects);
-        txtDefects.setHint(kaizen.getDefectsWaste());
-        EditText txtRootCauses = (EditText)findViewById(R.id.txtRootCauses);
-        txtRootCauses.setHint(kaizen.getRootCauses());
-        EditText txtTotalWaste = (EditText)findViewById(R.id.txtTotalWaste);
-        txtTotalWaste.setHint(String.valueOf(kaizen.getTotalWaste()));
-    }*/
-
     public void btnSaveKaizenOnClick(View view) {
         saveKaizen();
     }
@@ -197,5 +180,47 @@ public class KaizenEditActivity extends AppCompatActivity {
         saveKaizen();
         onBackPressed();
         return true;
+    }
+
+    public String getUserName() {
+
+        if(PermissionsManager.canMakeSmores()) {
+            PermissionsManager.checkPermissions(Manifest.permission.READ_CONTACTS, this);
+        }
+
+        String fullName = null;
+
+        Cursor c = this.getContentResolver().query(ContactsContract.Profile.CONTENT_URI, null, null, null, null);
+        int count = c.getCount();
+        String[] columnNames = c.getColumnNames();
+        boolean b = c.moveToFirst();
+        int position = c.getPosition();
+        if (count == 1 && position == 0) {
+            for (int j = 0; j < columnNames.length; j++) {
+                String columnName = columnNames[j];
+                String columnValue = c.getString(c.getColumnIndex(columnName));
+
+                Log.i("LOG", "columnNames[" + String.valueOf(j) + "] = " + columnName);
+                //Use the values
+                if(ContactsContract.Profile.DISPLAY_NAME == columnName);
+                fullName = columnValue;
+                break;
+            }
+        }
+        c.close();
+
+        String firstNLastI = null;
+        if(null != fullName) {
+            String nameTokens[] = fullName.split("\\s+");
+
+            String firstName = nameTokens[0];
+            int nTokens = nameTokens.length;
+            String lastName = nameTokens[nTokens - 1];
+            String lastInitial = lastName.substring(0, 1);
+            firstNLastI = firstName + " " + lastInitial;
+        }
+
+
+        return firstNLastI;
     }
 }

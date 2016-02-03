@@ -13,13 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
-@Deprecated
-public class KaizenListActivity extends AppCompatActivity {
+public class KaizenRecyclerActivity extends AppCompatActivity {
+
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
     // this code belongs in launch activity
@@ -29,16 +29,16 @@ public class KaizenListActivity extends AppCompatActivity {
     private DataManager dm = DataManager.getInstance();
     private PreferencesManager pm;
     private Kaizen kaizen;
-    private ArrayList<Kaizen> list;
-    private Spinner spnKaizenList;
-    private static ArrayAdapter<Kaizen> spnAdapter;
+    private ArrayList<Kaizen> kaizenList;
+    KaizenRecyclerAdapter recAdapter;
     private CoordinatorLayout coordinatorLayout;
+    RecyclerView recKaizenList;
     private Kaizen toDelete = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kaizen_list);
+        setContentView(R.layout.activity_kaizen_recycler);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,23 +55,38 @@ public class KaizenListActivity extends AppCompatActivity {
         pm = PreferencesManager.getInstance(appContext);
         // end launch activity code
 
+        final Context activityContext = this;
+        //activityContext = this;
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        kaizenList = dm.getKaizenList();
 
-        spnKaizenList = (Spinner) findViewById(R.id.spnKaizenList);
-        list = dm.getKaizenList();
-        spnAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, list);
-        spnKaizenList.setAdapter(spnAdapter);
-        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        recKaizenList = (RecyclerView) findViewById(R.id.recKaizenList);
+        recKaizenList.setHasFixedSize(false);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recKaizenList.setLayoutManager(llm);
+        recAdapter = new KaizenRecyclerAdapter(kaizenList);
+        recKaizenList.setAdapter(recAdapter);
 
-        if (spnAdapter.getCount() == 0)
-            spnAdapter.add(Kaizen.getTestKaizen());
+        if (kaizenList.size() == 0)
+            recAdapter.add(Kaizen.getTestKaizen());
 
+        // Kaizen CardView touch event handler
+        recKaizenList.addOnItemTouchListener(
+                new RecyclerItemClickListener(activityContext, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                        kaizen = recAdapter.getKaizenList().get(position);
+                        if (null != kaizen) {
+                            Intent intent = new Intent(activityContext, KaizenDetailsActivity.class);
+                            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+                            startActivity(intent);
+                        }
+                    }
+                })
+        );
     }
-
-    // this code belongs in launch activity
-    public static Context getContext() { return appContext; }
-    // end launch activity code
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,25 +116,38 @@ public class KaizenListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * add a kaizen to the DataManager and launch the KaizenEditActivity
+     */
+    public void newKaizen() {
+        /*kaizen = new Kaizen();
+        dm.getKaizenList().add(kaizen);
+        recAdapter.notifyDataSetChanged();*/
+
+        Intent intent = new Intent(this, KaizenEditActivity.class);
+        //intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+        startActivityForResult(intent, KaizenEditActivity.CREATE_KAIZEN_REQUEST);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
+        updateWelcomeMessageVisibility(pm.isShowWelcomeMessage());
         deleteKaizen();
-        spnAdapter.notifyDataSetChanged();
+        recAdapter.notifyDataSetChanged();
     }
 
-    public void deleteKaizen(Kaizen k) {
-        k.setDeleteMe(true);
-        deleteKaizen();
-    }
-
+    /**
+     * remove a Kaizen from kaizenList
+     * give the user a chance to undo the delete with a snackbar action
+     */
     public boolean deleteKaizen() {
 
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isDeleteMe()) {
-                toDelete = list.remove(i);
-                spnAdapter.notifyDataSetChanged();
+        for (int i = 0; i < kaizenList.size(); i++) {
+            if (kaizenList.get(i).isDeleteMe()) {
+                toDelete = kaizenList.remove(i);
+                recAdapter.notifyDataSetChanged();
                 break;
             }
         }
@@ -141,7 +169,8 @@ public class KaizenListActivity extends AppCompatActivity {
                 public void onDismissed(Snackbar snackbar, int event) {
                     if (null != toDelete) {
                         if (!toDelete.isDeleteMe()) {
-                            spnAdapter.add(toDelete);
+                            recAdapter.add(toDelete);
+                            recAdapter.notifyDataSetChanged();
                         }
                     }
                     toDelete = null;
@@ -153,45 +182,13 @@ public class KaizenListActivity extends AppCompatActivity {
         return true;
     }
 
-    public void btnEditKaizenOnClick(View view) {
-        kaizen = (Kaizen) spnKaizenList.getSelectedItem();
-        if (null != kaizen) {
-            Intent intent = new Intent(this, KaizenEditActivity.class);
-            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
-            startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
-        }
-    }
-
-    public void btnDeleteKaizenOnClick(View view) {
-        kaizen = (Kaizen) spnKaizenList.getSelectedItem();
-        if (null != kaizen)
-            deleteKaizen(kaizen);
-    }
-
-    public void btnViewKaizenDetailsOnClick(View view) {
-        kaizen = (Kaizen) spnKaizenList.getSelectedItem();
-        if (null != kaizen) {
-            Intent intent = new Intent(this, KaizenDetailsActivity.class);
-            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
-            //startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
-            startActivity(intent);
-        }
-    }
-
-    public void newKaizen() {
-        kaizen = new Kaizen();
-        dm.getKaizenList().add(kaizen);
-        spnAdapter.notifyDataSetChanged();
-
-        Intent intent = new Intent(this, KaizenEditActivity.class);
-        intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
-        startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
+
+        // Don't launch details when create completes
+
+        /*if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 if (data.hasExtra(EXTRA_KAIZEN_ID)) {
@@ -201,8 +198,28 @@ public class KaizenListActivity extends AppCompatActivity {
                 intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
                 startActivity(intent);
             }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
+        }*/
     }
+
+    public void updateWelcomeMessageVisibility(boolean enabled) {
+        LinearLayout llWelcomeMessage = (LinearLayout) findViewById(R.id.llWelcomeMessage);
+
+        RelativeLayout.LayoutParams paramsShow =
+                new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams paramsHide =
+                new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+
+
+        if(dm.getKaizenList().size() <= 3 && enabled) {
+            llWelcomeMessage.setLayoutParams(paramsShow);
+        }
+        else {
+            llWelcomeMessage.setLayoutParams(paramsHide);
+        }
+    }
+
+    // this code belongs in launch activity
+    public static Context getContext() { return appContext; }
+    // end launch activity code
+
 }

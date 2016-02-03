@@ -10,4 +10,7 @@
     <color name="primaryColorLight">#e0f2f1</color>
     <color name="colorAccent">#ff6d00</color>
 
+    <color name="shadowGrey">#e0e0e0</color>
+    <color name="cardViewBackground">#f9f9f9</color>
+
 </resources>

@@ -1,17 +1,11 @@
 package mclerrani.ikaizen;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,10 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class KaizenDetailsActivity extends AppCompatActivity {
-    static final int REQUEST_IMAGE_CAPTURE = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 3;
     static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
-    private final static String EXTRA_FILE_PATH = "mclerrani.ikaizen.FILE_PATH";
+    //private final static String EXTRA_FILE_PATH = "mclerrani.ikaizen.FILE_PATH";
 
     private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
     private DataManager dm = DataManager.getInstance();
@@ -80,7 +74,7 @@ public class KaizenDetailsActivity extends AppCompatActivity {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
 
 
-        if(pm.getShowOwnerData()) {
+        if(pm.isShowOwnerData()) {
 
             llOwnerLayout.setLayoutParams(paramsShow);
             llDeptLayout.setLayoutParams(paramsShow);
@@ -206,8 +200,8 @@ public class KaizenDetailsActivity extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         // if android ver. >= marshmallow, check camera permissions
-        if(canMakeSmores())
-            checkPermissions(Manifest.permission.CAMERA);
+        if(PermissionsManager.canMakeSmores())
+            PermissionsManager.checkPermissions(Manifest.permission.CAMERA, this);
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -239,8 +233,8 @@ public class KaizenDetailsActivity extends AppCompatActivity {
 
         // if on marshmallow or higher,
         // request WRITE_EXTERNAL_STORAGE permissions
-        if(canMakeSmores())
-            checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(PermissionsManager.canMakeSmores())
+            PermissionsManager.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, this);
 
         File image = null;
         //-----------------------------------------
@@ -263,42 +257,6 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         currentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
-
-    // TODO: move methods to PermissionsManager class
-    private void checkPermissions(String permission) {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                permission)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    permission)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{permission},
-                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-    }
-
-    // check if android version is >= marshmallow
-    private boolean canMakeSmores() {
-        return(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
 
     public boolean onSupportNavigateUp() {
         onBackPressed();

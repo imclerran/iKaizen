@@ -14,7 +14,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
@@ -85,7 +85,14 @@
                     android:onClick="btnDeleteKaizenOnClick"
                     android:text="@string/btnDeleteKaizenStr" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/recKaizenList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>-->
+
 </RelativeLayout>

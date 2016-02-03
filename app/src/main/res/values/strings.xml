@@ -4,10 +4,10 @@
 
     <!-- strings for KaizenDetailsActivity -->
     <string name="title_activity_kaizen_details">Kaizen Details</string>
-    <string name="lblOwnerStr">Owner:</string>
-    <string name="lblDeptStr">Dept:</string>
-    <string name="lblDateStr">Created:</string>
-    <string name="lblProblemStatementStr">Problem Statement:</string>
+    <string name="lblOwnerStr">Owner: </string>
+    <string name="lblDeptStr">Dept: </string>
+    <string name="lblDateStr">Created: </string>
+    <string name="lblProblemStatementStr">Problem Statement: </string>
     <string name="lblSevenWastesStr">Seven Wastes</string>
     <string name="lblOverProductionStr">Over Production:</string>
     <string name="lblTransportationStr">Transportation:</string>
@@ -35,7 +35,7 @@
     <string name="btnEditKaizenStr">Edit</string>
     <string name="btnViewKaizenDetailsStr">Details</string>
     <string name="lblWelcomeStr">Hi there!</string>
-    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>
+    <!--<string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>-->
     <string name="btnDeleteKaizenStr">Delete</string>
 
     <!-- strings for SettingsActivity -->
@@ -45,5 +45,10 @@
 
     <!-- strings for ImageViewerActivity -->
     <string name="title_activity_image_viewer">View Image</string>
+
+    <!-- strings for KaizenRecyclerActivity -->
+    <string name="title_activity_recycler">Kaizen List</string>
+    <string name="lblInstructionsStr">Let\'s get started! Press the create button below to create a new Kaizen.</string>
+    <string name="swcShowWelcomeMessageStr">Show welcome message</string>
 
 </resources>

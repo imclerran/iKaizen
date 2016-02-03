@@ -237,13 +237,13 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public String getDateCreatedAsString() {
-        SimpleDateFormat formatter=new SimpleDateFormat("MM/DD/yyyy");
+        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/yyyy");
         String date = formatter.format(dateCreated.getTime());
         return date;
     }
 
     public String getDateModifiedAsString() {
-        SimpleDateFormat formatter=new SimpleDateFormat("MMM/DD/yyyy");
+        SimpleDateFormat formatter=new SimpleDateFormat("MMM/dd/yyyy");
         String date = formatter.format(dateModified.getTime());
         return date;
     }

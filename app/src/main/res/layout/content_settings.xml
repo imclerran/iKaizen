@@ -48,8 +48,26 @@
                 android:layout_marginRight="@dimen/settings_item_margin_right"
                 android:layout_marginTop="@dimen/settings_item_margin_top"
                 android:checked="true"
-                android:onClick="tglShowOwnerDataOnClick"
+                android:onClick="swcShowOwnerDataOnClick"
                 android:text="@string/swcShowOwnerDataStr"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#c0c0c0" />
+
+            <Switch
+                android:id="@+id/swcShowWelcomeMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_item_margin_bottom"
+                android:layout_marginLeft="@dimen/settings_item_margin_left"
+                android:layout_marginRight="@dimen/settings_item_margin_right"
+                android:layout_marginTop="@dimen/settings_item_margin_top"
+                android:checked="true"
+                android:onClick="swcShowWelcomeMessageOnClick"
+                android:text="@string/swcShowWelcomeMessageStr"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <View
