@@ -223,6 +223,7 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // TODO: delete the temp file from FS if no picture is taken
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

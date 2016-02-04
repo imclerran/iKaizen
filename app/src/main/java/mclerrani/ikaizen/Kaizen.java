@@ -1,16 +1,11 @@
 package mclerrani.ikaizen;
-import android.media.Image;
+
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-import com.google.gson.*;
 
 /**
  * Created by Ian on 1/13/2016.

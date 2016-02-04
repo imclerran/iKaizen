@@ -1,7 +1,5 @@
 package mclerrani.ikaizen;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -47,6 +45,10 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         setContentView(R.layout.activity_kaizen_recycler);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if(null != savedInstanceState) {
+            sortBy = savedInstanceState.getInt("sortBy");
+        }
 
         FloatingActionButton fabNewKaizen = (FloatingActionButton) findViewById(R.id.fabNewKaizen);
         fabNewKaizen.setOnClickListener(new View.OnClickListener() {
@@ -306,6 +308,13 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         else {
             llWelcomeMessage.setLayoutParams(paramsHide);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("sortBy", sortBy);
     }
 
     // this code belongs in launch activity
