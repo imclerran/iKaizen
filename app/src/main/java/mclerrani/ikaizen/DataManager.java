@@ -25,9 +25,11 @@ public class DataManager { /* SINGLETON */
         return dm;
     }
 
+    public void sortKaizenList() { Collections.sort(kaizenList); }
+
 
     public ArrayList<Kaizen> getKaizenList() {
-        Collections.sort(kaizenList);
+        //Collections.sort(kaizenList);
         return kaizenList;
     }
 

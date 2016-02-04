@@ -58,7 +58,7 @@
                 android:background="#c0c0c0" />
 
             <Switch
-                android:id="@+id/swcShowWelcomeMessage"
+                android:id="@+id/swcEnableWelcomeMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/settings_item_margin_bottom"
@@ -67,7 +67,7 @@
                 android:layout_marginTop="@dimen/settings_item_margin_top"
                 android:checked="true"
                 android:onClick="swcShowWelcomeMessageOnClick"
-                android:text="@string/swcShowWelcomeMessageStr"
+                android:text="@string/swcEnableWelcomeMessageStr"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <View

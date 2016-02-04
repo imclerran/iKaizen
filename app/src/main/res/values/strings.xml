@@ -35,20 +35,30 @@
     <string name="btnEditKaizenStr">Edit</string>
     <string name="btnViewKaizenDetailsStr">Details</string>
     <string name="lblWelcomeStr">Hi there!</string>
-    <!--<string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>-->
+    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>
     <string name="btnDeleteKaizenStr">Delete</string>
 
     <!-- strings for SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
     <string name="lblUISettingsHeadingStr">UI Settings</string>
     <string name="swcShowOwnerDataStr">Show owner info</string>
+    <string name="swcEnableWelcomeMessageStr">Enable welcome message</string>
 
     <!-- strings for ImageViewerActivity -->
     <string name="title_activity_image_viewer">View Image</string>
 
     <!-- strings for KaizenRecyclerActivity -->
     <string name="title_activity_recycler">Kaizen List</string>
-    <string name="lblInstructionsStr">Let\'s get started! Press the create button below to create a new Kaizen.</string>
-    <string name="swcShowWelcomeMessageStr">Show welcome message</string>
+    <string name="action_sort_by">Sort by...</string>
+    <!--<string name="lblInstructionsStr">Let\'s get started! Press the create button below to create a new Kaizen.</string>-->
+
+    <!-- strings for SortByDialogFragment -->
+    <string name="sort_by_dialog_title">Sort Kaizen by...</string>
+    <string name="sort_by_date_modified">Date modified</string>
+    <string name="sort_by_total_waste">Total waste</string>
+    <string-array name="arrSortByOptions">
+        <item>@string/sort_by_date_modified</item>
+        <item>@string/sort_by_total_waste</item>
+    </string-array>
 
 </resources>

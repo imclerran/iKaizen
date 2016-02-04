@@ -1,5 +1,9 @@
 package mclerrani.ikaizen;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +22,8 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
-public class KaizenRecyclerActivity extends AppCompatActivity {
+public class KaizenRecyclerActivity extends AppCompatActivity
+        implements SortByDialogFragment.SortByDialogListener {
 
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
@@ -32,8 +37,9 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
     private ArrayList<Kaizen> kaizenList;
     KaizenRecyclerAdapter recAdapter;
     private CoordinatorLayout coordinatorLayout;
-    RecyclerView recKaizenList;
+    ContextMenuRecyclerView recKaizenList;
     private Kaizen toDelete = null;
+    private int sortBy = KaizenComparator.COMPARE_DATE_MODIFIED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         kaizenList = dm.getKaizenList();
 
-        recKaizenList = (RecyclerView) findViewById(R.id.recKaizenList);
+        recKaizenList = (ContextMenuRecyclerView) findViewById(R.id.recKaizenList);
         recKaizenList.setHasFixedSize(false);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -75,8 +81,8 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
         // Kaizen CardView touch event handler
         recKaizenList.addOnItemTouchListener(
                 new RecyclerItemClickListener(activityContext, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        // do whatever
+                    @Override
+                    public void onItemClick(View view, int position) {
                         kaizen = recAdapter.getKaizenList().get(position);
                         if (null != kaizen) {
                             Intent intent = new Intent(activityContext, KaizenDetailsActivity.class);
@@ -86,12 +92,31 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
                     }
                 })
         );
+
+        /*recKaizenList.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RecyclerView.ViewHolder holder =(RecyclerView.ViewHolder)v.getTag();
+                        int position = holder.getLayoutPosition();
+
+                        kaizen = recAdapter.getKaizenList().get(position);
+                        if (null != kaizen) {
+                            Intent intent = new Intent(activityContext, KaizenDetailsActivity.class);
+                            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+                            startActivity(intent);
+                        }
+                    }
+                }
+        );*/
+
+        registerForContextMenu(recKaizenList);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_kaizen_recycler, menu);
         return true;
     }
 
@@ -106,8 +131,40 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
             case R.id.action_settings:
                 launchSettings();
                 return true;
+            case R.id.action_sort_by:
+                promptForSortBy();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu_kaizen_recycler, menu);
+
+        /*MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.context_menu_documents_fragment, menu);*/
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        ContextMenuRecyclerView.RecyclerContextMenuInfo info
+                = (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        kaizen = recAdapter.getKaizenList().get(position);
+
+        switch (item.getItemId()) {
+            case R.id.action_edit_kaizen:
+                editKaizen(kaizen);
+                return true;
+            case R.id.action_delete_kaizen:
+                deleteKaizen(kaizen);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
@@ -116,16 +173,48 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void editKaizen(Kaizen k) {
+        if (null != kaizen) {
+            Intent intent = new Intent(this, KaizenEditActivity.class);
+            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+            startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
+        }
+    }
+
+    public void deleteKaizen(Kaizen k) {
+        k.setDeleteMe(true);
+        deleteKaizen();
+    }
+
+    public void promptForSortBy() {
+        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        FragmentManager fm = getFragmentManager();
+        SortByDialogFragment sortByDialog = (SortByDialogFragment) SortByDialogFragment.newInstance("SortByDialogFragment");
+        sortByDialog.show(fm, "sort_by_dialog_fragment");
+    }
+
+    @Override
+    public void onDialogItemClick(DialogFragment dialog, int which) {
+        switch (which) {
+            case 0:
+                sortBy = KaizenComparator.COMPARE_DATE_MODIFIED;
+                break;
+            case 1:
+                sortBy = KaizenComparator.COMPARE_TOTAL_WASTE;
+                break;
+            default:
+                sortBy = KaizenComparator.COMPARE_DATE_MODIFIED;
+        }
+        recAdapter.sortKaizenList(sortBy);
+        recAdapter.notifyDataSetChanged();
+    }
+
+
     /**
-     * add a kaizen to the DataManager and launch the KaizenEditActivity
+     * launch the KaizenEditActivity with request code CREATE_KAIZEN_REQUEST
      */
     public void newKaizen() {
-        /*kaizen = new Kaizen();
-        dm.getKaizenList().add(kaizen);
-        recAdapter.notifyDataSetChanged();*/
-
         Intent intent = new Intent(this, KaizenEditActivity.class);
-        //intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivityForResult(intent, KaizenEditActivity.CREATE_KAIZEN_REQUEST);
     }
 
@@ -133,8 +222,9 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        updateWelcomeMessageVisibility(pm.isShowWelcomeMessage());
+        updateWelcomeMessageVisibility(pm.isEnableWelcomeMessage());
         deleteKaizen();
+        recAdapter.sortKaizenList(sortBy);
         recAdapter.notifyDataSetChanged();
     }
 
@@ -188,7 +278,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
 
         // Don't launch details when create completes
 
-        /*if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
+        if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 if (data.hasExtra(EXTRA_KAIZEN_ID)) {
@@ -198,7 +288,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity {
                 intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
                 startActivity(intent);
             }
-        }*/
+        }
     }
 
     public void updateWelcomeMessageVisibility(boolean enabled) {

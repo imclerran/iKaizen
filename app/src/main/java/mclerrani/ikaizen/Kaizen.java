@@ -5,7 +5,11 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
 import com.google.gson.*;
 
 /**
@@ -23,8 +27,10 @@ public class Kaizen implements Comparable<Kaizen> {
 
     private String owner;
     private String dept;
+    // TODO: transition to java.util.Date objects
     private Calendar dateCreated;
     private Calendar dateModified;
+    private long timeModified;
     private String problemStatement;
     private String overProductionWaste;
     private String transportationWaste;
@@ -42,6 +48,7 @@ public class Kaizen implements Comparable<Kaizen> {
         dateCreated.set(Calendar.HOUR_OF_DAY,0);
         dateModified = Calendar.getInstance();
         dateModified.set(Calendar.HOUR_OF_DAY,0);
+        timeModified = System.currentTimeMillis();
         totalWaste = 0;
 
         imageFiles = new ArrayList<>();
@@ -75,6 +82,8 @@ public class Kaizen implements Comparable<Kaizen> {
             this.imageFiles = new ArrayList<>();
 
         itemID = count++;
+
+        timeModified = System.currentTimeMillis();
     }
 
     public String getOwner() {
@@ -110,7 +119,10 @@ public class Kaizen implements Comparable<Kaizen> {
 
     public void setDateModified(Calendar dateModified) {
         this.dateModified = dateModified;
+        timeModified = dateModified.getTime().getTime();
     }
+
+    public long getTimeModified() { return timeModified; }
 
     public String getProblemStatement() {
         return problemStatement;
@@ -250,6 +262,7 @@ public class Kaizen implements Comparable<Kaizen> {
 
     public void updateDateModified() {
         dateModified.set(Calendar.HOUR_OF_DAY, 0);
+        timeModified = System.currentTimeMillis();
     }
 
     public static Kaizen getTestKaizen() {
@@ -278,7 +291,8 @@ public class Kaizen implements Comparable<Kaizen> {
 
     @Override
     public int compareTo(Kaizen another) {
-        return this.dateModified.compareTo(another.dateModified);
+        //return this.dateModified.compareTo(another.dateModified);
+        return another.dateModified.compareTo(this.dateModified);
     }
 
     @Override
@@ -351,7 +365,11 @@ public class Kaizen implements Comparable<Kaizen> {
         return "No problem Statement";
     }
 
-    public int removeDeletedFiles() {
+    /**
+     *
+     * @return the number of files removed
+     */
+    public int removeDeletedImageFiles() {
         int numRemoved = 0;
         int i = 0;
         File fd;

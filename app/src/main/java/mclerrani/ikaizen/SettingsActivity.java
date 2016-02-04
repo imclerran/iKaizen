@@ -10,7 +10,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     PreferencesManager pm = PreferencesManager.getInstance(this);
     Switch swcShowOwnerData;
-    Switch swcShowWelcomeMessage;
+    Switch swcEnableWelcomeMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +22,17 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         swcShowOwnerData        = (Switch) findViewById(R.id.swcShowOwnerData);
-        swcShowWelcomeMessage   = (Switch) findViewById(R.id.swcShowWelcomeMessage);
+        swcEnableWelcomeMessage = (Switch) findViewById(R.id.swcEnableWelcomeMessage);
 
         if(pm.isShowOwnerData())
             swcShowOwnerData.setChecked(true);
         else
             swcShowOwnerData.setChecked(false);
 
-        if(pm.isShowWelcomeMessage())
-            swcShowWelcomeMessage.setChecked(true);
+        if(pm.isEnableWelcomeMessage())
+            swcEnableWelcomeMessage.setChecked(true);
         else
-            swcShowWelcomeMessage.setChecked(false);
+            swcEnableWelcomeMessage.setChecked(false);
     }
 
     public void swcShowOwnerDataOnClick(View view) {
@@ -43,10 +43,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void swcShowWelcomeMessageOnClick(View view) {
-        if(swcShowWelcomeMessage.isChecked())
-            pm.setShowWelcomeMessage(true);
+        if(swcEnableWelcomeMessage.isChecked())
+            pm.setEnableWelcomeMessage(true);
         else
-            pm.setShowWelcomeMessage(false);
+            pm.setEnableWelcomeMessage(false);
     }
 
     public boolean onSupportNavigateUp() {

@@ -10,7 +10,7 @@ public class PreferencesManager {
     private static PreferencesManager pm;
     private final SharedPreferences PREFS;
     private boolean showOwnerData;
-    private boolean showWelcomeMessage;
+    private boolean enableWelcomeMessage;
 
     public static PreferencesManager getInstance(Context context) {
         if(null == pm)
@@ -24,7 +24,7 @@ public class PreferencesManager {
                 Context.MODE_PRIVATE);
 
         showOwnerData = PREFS.getBoolean("showOwnerData", true);
-        showWelcomeMessage = PREFS.getBoolean("showWelcomeMessage", true);
+        enableWelcomeMessage = PREFS.getBoolean("enableWelcomeMessage", true);
     }
 
     public boolean isShowOwnerData() {
@@ -36,12 +36,12 @@ public class PreferencesManager {
         PREFS.edit().putBoolean("showOwnerData", showOwnerData).apply();
     }
 
-    public boolean isShowWelcomeMessage() {
-        return showWelcomeMessage;
+    public boolean isEnableWelcomeMessage() {
+        return enableWelcomeMessage;
     }
 
-    public void setShowWelcomeMessage(boolean showWelcomeMessage) {
-        this.showWelcomeMessage = showWelcomeMessage;
-        PREFS.edit().putBoolean("showWelcomeMessage", showWelcomeMessage).apply();
+    public void setEnableWelcomeMessage(boolean enableWelcomeMessage) {
+        this.enableWelcomeMessage = enableWelcomeMessage;
+        PREFS.edit().putBoolean("enableWelcomeMessage", enableWelcomeMessage).apply();
     }
 }

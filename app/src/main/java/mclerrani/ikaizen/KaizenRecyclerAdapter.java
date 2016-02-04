@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Ian on 2/2/2016.
@@ -18,11 +20,16 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
 
     private ArrayList<Kaizen> kaizenList;
 
-    // TODO: fix onclick
-    // OnItemClickListener itemClickListener;
-
     public KaizenRecyclerAdapter(ArrayList<Kaizen> kaizenList) {
         this.kaizenList = kaizenList;
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClicked(int position);
+    }
+
+    public interface OnItemLongClickListener {
+        public boolean onItemLongClicked(int position);
     }
 
     @Override
@@ -40,6 +47,9 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
         //holder.lblDeptData.setText(" " + k.getDept());
         holder.lblDateData.setText(" " + k.getDateCreatedAsString());
         holder.lblProblemStatementData.setText(k.toString());
+
+        holder.itemView.setLongClickable(true);
+        holder.itemView.setClickable(true);
 
         /*holder.btnEditKaizen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,17 +72,19 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
         return kaizenList.size();
     }
 
+    public void sortKaizenList(int sortBy) {
+        Collections.sort(kaizenList, new KaizenComparator(sortBy));
+    }
+
     // ViewHolder class definition
-    public static class KaizenViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ { // TODO: fix onclick
+    public static class KaizenViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         protected TextView lblOwnerData;
         protected TextView lblDeptData;
         protected TextView lblDateData;
         protected TextView lblProblemStatementData;
         //protected Button btnViewKaizenDetails;
         //protected Button btnEditKaizen;
-
-        // TODO: fix onclick
-        //OnItemClickListener itemClickListener;
 
         public KaizenViewHolder(View view) {
             super(view);
@@ -83,30 +95,23 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
             //btnViewKaizenDetails    = (Button) view.findViewById(R.id.btnViewKaizenDetails);
             //btnEditKaizen           = (Button) view.findViewById(R.id.btnEditKaizen);
 
-            // TODO: fix onclick
-            //view.setOnClickListener(this);
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
+
         }
 
-        // TODO: fix onclick
-        /*@Override
-        public void onClick(View view) {
-            if(itemClickListener != null) {
-                itemClickListener.onItemClick(view, getPosition());
-            }
-        }*/
+        @Override
+        public void onClick(View v) {
+            //Context context = v.getContext();
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            return false;
+        }
     }
 
-
-
-    // TODO: fix onclick
-    /*public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
-    }*/
-
-    // TODO: fix onclick
-    /*public void SetOnItemClickListener(final OnItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }*/
 
     public Kaizen add(Kaizen k) {
         kaizenList.add(k);
