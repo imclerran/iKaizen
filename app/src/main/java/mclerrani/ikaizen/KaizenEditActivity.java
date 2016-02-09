@@ -44,10 +44,6 @@ public class KaizenEditActivity extends AppCompatActivity {
                 kaizen.setOwner(owner);
         }
 
-        // test code
-        getUserName();
-        // end test code
-
         populate(kaizen);
     }
 
@@ -177,6 +173,7 @@ public class KaizenEditActivity extends AppCompatActivity {
     }
 
     public boolean onSupportNavigateUp() {
+        // TODO: replace with discard changes dialog?
         saveKaizen();
         onBackPressed();
         return true;

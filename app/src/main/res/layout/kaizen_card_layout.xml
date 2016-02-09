@@ -6,26 +6,23 @@
     android:layout_height="wrap_content"
     android:id="@+id/crdKaizen"
     card_view:cardCornerRadius="2dp"
-    android:layout_margin="4dp">
+    android:layout_margin="5dp"
+    style="@style/BackgroundShadowBottom">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
 
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="1dp"
-            style="@style/LinearLayoutElevated"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="8dp"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:padding="8dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -97,10 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="3"
-            android:elevation="0dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:paddingRight="8dp">
+            android:padding="8dp"
+            style="@style/BackgroundShadowTopBottom">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,6 +111,36 @@
                 android:id="@+id/lblProblemStatementData"
                 android:layout_marginTop="8dp"
                 android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/lblWasteCaptionStr"
+                android:id="@+id/lblWasteCaption"
+                android:layout_marginRight="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/lblTotalWaste"
+                android:textColor="@android:color/black"
+                android:layout_marginRight="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/lblWasteUnitsStr"
+                android:id="@+id/lblWasteUnits" />
         </LinearLayout>
 
         <!--<LinearLayout

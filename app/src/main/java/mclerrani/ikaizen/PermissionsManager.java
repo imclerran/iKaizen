@@ -1,7 +1,6 @@
 package mclerrani.ikaizen;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -12,7 +11,7 @@ import android.support.v4.content.ContextCompat;
  */
 public class PermissionsManager {
 
-    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    private static final int MY_PERMISSIONS_REQUEST = 1;
 
     public static void checkPermissions(String permission, Activity activity) {
         // Here, thisActivity is the current activity
@@ -34,7 +33,7 @@ public class PermissionsManager {
 
                 ActivityCompat.requestPermissions(activity,
                         new String[]{permission},
-                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                        MY_PERMISSIONS_REQUEST);
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the

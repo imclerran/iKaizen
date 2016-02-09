@@ -17,10 +17,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/scrKaizenDetails"
+        android:layout_above="@+id/llButtonBarWrapper"
+        android:clipToPadding="false"
+        android:background="#e0e0e0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,86 +33,95 @@
 
             <LinearLayout
                 android:id="@+id/llMetaData"
-                style="@style/LinearLayoutElevated"
+                style="@style/TealFiftyShadowBottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primaryColorLight"
                 android:elevation="2dp"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:backgroundTintMode="multiply">
 
                 <LinearLayout
                     android:id="@+id/llOwnerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/lblOwner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
                         android:text="@string/lblOwnerStr"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <EditText
-                        android:id="@+id/txtOwner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:hint="Name"
-                        android:inputType="textPersonName"
-                        android:longClickable="false" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llDeptLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
                     <TextView
-                        android:id="@+id/lblDept"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/lblDeptStr"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/lblOwnerData"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1" />
 
-                    <EditText
-                        android:id="@+id/txtDept"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="Department"
-                        android:inputType="none"
-                        android:longClickable="false" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:id="@+id/llDateLayout">
+                    android:id="@+id/llDeptLayout"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/lblDept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/lblDeptStr"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/lblDepartmentData"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/llDateLayout"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/lblDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
                         android:text="@string/lblDateStr"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <EditText
-                        android:id="@+id/txtDate"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="date|none"
-                        android:longClickable="false" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/lblDateData"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -118,282 +131,377 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="8dp"
-                style="@style/LinearLayoutElevated"
-                android:elevation="1dp">
+                style="@style/BackgroundShadowBottom"
+                android:elevation="0dp"
+                android:background="#f5f5f5">
 
-                <TextView
-                    android:id="@+id/lblProblemStatement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/lblProblemStatementStr"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/llProblemStatement"
+                    android:layout_margin="8dp">
 
-                <EditText
-                    android:id="@+id/txtProblemStatement"
+                    <TextView
+                        android:id="@+id/lblProblemStatement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/lblProblemStatementStr"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/lblProblemStatementData"
+                        android:textColor="@android:color/black"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <View
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:longClickable="false" />
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:id="@+id/llSevenWastes">
 
-                    <TextView
-                        android:id="@+id/lblSevenWastes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:inputType="none"
-                        android:text="@string/lblSevenWastesStr"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp">
+
+                        <TextView
+                            android:id="@+id/lblSevenWastes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:inputType="none"
+                            android:text="@string/lblSevenWastesStr"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblOverProduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblOverProductionStr"
+                            android:layout_marginRight="4dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtOverProduction"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblOverProductionData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblTransportation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
                             android:text="@string/lblTransportationStr"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtTransportation"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblTransportationData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblMotion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
                             android:text="@string/lblMotionStr"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtMotion"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblMotionData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
+
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblWaiting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
                             android:text="@string/lblWaitingStr"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtWaiting"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblWaitingData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
+
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblProcessing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
                             android:text="@string/lblProcessingStr"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtProcessing"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblProcessingData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
+
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblInventory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
                             android:text="@string/lblInventoryStr"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtInventory"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblInventoryData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
+
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp">
 
                         <TextView
                             android:id="@+id/lblDefects"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
                             android:text="@string/lblDefectsStr"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <EditText
-                            android:id="@+id/txtDefects"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:longClickable="false" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/lblDefectsData"
+                            android:textColor="@android:color/black"
+                            android:layout_weight="1" />
+
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#c0c0c0" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/lblRootCauses"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/lblRootCausesStr"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/txtRootCauses"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:longClickable="false"
-                    android:singleLine="false" />
+                    android:layout_height="match_parent"
+                    android:id="@+id/llRootCauses"
+                    android:layout_margin="8dp">
+
+                    <TextView
+                        android:id="@+id/lblRootCauses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/lblRootCausesStr"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/lblRootCausesData"
+                        android:textColor="@android:color/black"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:weightSum="1.0">
+                    android:weightSum="1.0"
+                    android:gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:id="@+id/llTotalWaste"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <TextView
-                        android:id="@+id/lblTotalCost"
+                        android:id="@+id/lblWasteCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/lblTotalWasteStr"
+                        android:layout_marginRight="4dp"
+                        android:text="@string/lblWasteCaptionStr"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <EditText
-                        android:id="@+id/txtTotalWaste"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:focusable="false"
-                        android:gravity="center_horizontal"
-                        android:inputType="number"
-                        android:longClickable="false" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/lblTotalWasteData"
+                        android:textColor="@android:color/black"
+                        android:layout_marginRight="4dp" />
 
                     <TextView
-                        android:id="@+id/lblMinPerYear"
+                        android:id="@+id/lblWasteUnits"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:text="@string/lblMinPerYearStr"
+                        android:text="@string/lblWasteUnitsStr"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                style="?android:buttonBarStyle"
-                android:showDividers="middle"
-                android:id="@+id/llButtonBar">
-
-                <Button
-                    android:id="@+id/btnImages"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="btnImagesOnClick"
-                    android:text="@string/btnImagesStr"
-                    android:textColor="@android:color/black"/>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/dividerVertical"/>
-
-                <Button
-                    android:id="@+id/btnSolutions"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:text="@string/btnSolutionsStr"
-                    android:textColor="@android:color/black"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="16dp"
+        style="@style/BackgroundShadowTop"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/llButtonBarWrapper">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            style="?android:buttonBarStyle"
+            android:showDividers="middle"
+            android:id="@+id/llButtonBar">
+
+            <Button
+                android:id="@+id/btnImages"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="btnImagesOnClick"
+                android:text="@string/btnImagesStr"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/dividerVertical"/>
+
+            <Button
+                android:id="@+id/btnSolutions"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:text="@string/btnSolutionsStr"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

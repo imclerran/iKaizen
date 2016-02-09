@@ -19,8 +19,8 @@
     <string name="lblRootCausesStr">Possible Root Causes:</string>
     <string name="btnImagesStr">Images</string>
     <string name="btnSolutionsStr">Solutions</string>
-    <string name="lblTotalWasteStr">Total Waste:</string>
-    <string name="lblMinPerYearStr">min/year</string>
+    <string name="lblWasteCaptionStr">Total Waste:</string>
+    <string name="lblWasteUnitsStr">min/year</string>
     <!-- strings for menu_kaizen_details -->
     <string name="action_edit_kaizen">Edit</string>
     <string name="action_delete_kaizen">Delete</string>
@@ -35,7 +35,7 @@
     <string name="btnEditKaizenStr">Edit</string>
     <string name="btnViewKaizenDetailsStr">Details</string>
     <string name="lblWelcomeStr">Hi there!</string>
-    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list to get started!</string>
+    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list below to get started!</string>
     <string name="btnDeleteKaizenStr">Delete</string>
 
     <!-- strings for SettingsActivity -->
@@ -51,6 +51,8 @@
     <string name="title_activity_recycler">Kaizen List</string>
     <string name="action_sort_by">Sort by...</string>
     <!--<string name="lblInstructionsStr">Let\'s get started! Press the create button below to create a new Kaizen.</string>-->
+    <string name="lblTipCaptionStr">TIP:</string>
+    <string name="lblTipDetailsStr">You can long-press a card to edit or delete it.</string>
 
     <!-- strings for SortByDialogFragment -->
     <string name="sort_by_dialog_title">Sort Kaizen by...</string>

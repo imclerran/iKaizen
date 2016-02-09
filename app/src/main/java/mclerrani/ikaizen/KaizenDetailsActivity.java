@@ -12,8 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,32 +90,32 @@ public class KaizenDetailsActivity extends AppCompatActivity {
 
     // populate layout with kaizen data
     private void populate(Kaizen kaizen) {
-        EditText txtOwner = (EditText)findViewById(R.id.txtOwner);
-        txtOwner.setText(kaizen.getOwner());
-        EditText txtDept = (EditText)findViewById(R.id.txtDept);
-        txtDept.setText(kaizen.getDept());
-        EditText txtDate = (EditText)findViewById(R.id.txtDate);
-        txtDate.setText(kaizen.getDateCreatedAsString());
-        EditText txtProblemStatement = (EditText)findViewById(R.id.txtProblemStatement);
-        txtProblemStatement.setText(kaizen.getProblemStatement());
-        EditText txtOverProduction = (EditText)findViewById(R.id.txtOverProduction);
-        txtOverProduction.setText(kaizen.getOverProductionWaste());
-        EditText txtTransportation = (EditText)findViewById(R.id.txtTransportation);
-        txtTransportation.setText(kaizen.getTransportationWaste());
-        EditText txtMotion = (EditText)findViewById(R.id.txtMotion);
-        txtMotion.setText(kaizen.getMotionWaste());
-        EditText txtWaiting = (EditText)findViewById(R.id.txtWaiting);
-        txtWaiting.setText(kaizen.getWaitingWaste());
-        EditText txtProcessing = (EditText)findViewById(R.id.txtProcessing);
-        txtProcessing.setText(kaizen.getProcessingWaste());
-        EditText txtInventory = (EditText)findViewById(R.id.txtInventory);
-        txtInventory.setText(kaizen.getInventoryWaste());
-        EditText txtDefects = (EditText)findViewById(R.id.txtDefects);
-        txtDefects.setText(kaizen.getDefectsWaste());
-        EditText txtRootCauses = (EditText)findViewById(R.id.txtRootCauses);
-        txtRootCauses.setText(kaizen.getRootCauses());
-        EditText txtTotalWaste = (EditText)findViewById(R.id.txtTotalWaste);
-        txtTotalWaste.setText(String.valueOf(kaizen.getTotalWaste()));
+        TextView lblOwner = (TextView)findViewById(R.id.lblOwnerData);
+        lblOwner.setText(kaizen.getOwner());
+        TextView lblDept = (TextView)findViewById(R.id.lblDepartmentData);
+        lblDept.setText(kaizen.getDept());
+        TextView lblDate = (TextView)findViewById(R.id.lblDateData);
+        lblDate.setText(kaizen.getDateCreatedAsString());
+        TextView lblProblemStatement = (TextView)findViewById(R.id.lblProblemStatementData);
+        lblProblemStatement.setText(kaizen.getProblemStatement());
+        TextView lblOverProduction = (TextView)findViewById(R.id.lblOverProductionData);
+        lblOverProduction.setText(kaizen.getOverProductionWaste());
+        TextView lblTransportation = (TextView)findViewById(R.id.lblTransportationData);
+        lblTransportation.setText(kaizen.getTransportationWaste());
+        TextView lblMotion = (TextView)findViewById(R.id.lblMotionData);
+        lblMotion.setText(kaizen.getMotionWaste());
+        TextView lblWaiting = (TextView)findViewById(R.id.lblWaitingData);
+        lblWaiting.setText(kaizen.getWaitingWaste());
+        TextView lblProcessing = (TextView)findViewById(R.id.lblProcessingData);
+        lblProcessing.setText(kaizen.getProcessingWaste());
+        TextView lblInventory = (TextView)findViewById(R.id.lblInventoryData);
+        lblInventory.setText(kaizen.getInventoryWaste());
+        TextView lblDefects = (TextView)findViewById(R.id.lblDefectsData);
+        lblDefects.setText(kaizen.getDefectsWaste());
+        TextView lblRootCauses = (TextView)findViewById(R.id.lblRootCausesData);
+        lblRootCauses.setText(kaizen.getRootCauses());
+        TextView lblTotalWaste = (TextView)findViewById(R.id.lblTotalWasteData);
+        lblTotalWaste.setText(String.valueOf(kaizen.getTotalWaste()));
     }
 
     @Override

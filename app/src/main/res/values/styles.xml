@@ -17,8 +17,24 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="LinearLayoutElevated">
-        <item name="android:background">@drawable/background_with_shadow</item>
+    <style name="BackgroundShadowBottom">
+        <item name="android:background">@drawable/background_shadow_bottom</item>
+    </style>
+
+    <style name="BackgroundShadowTop">
+        <item name="android:background">@drawable/background_shadow_top</item>
+    </style>
+
+    <style name="BackgroundShadowTopBottom">
+        <item name="android:background">@drawable/background_shadow_top_bottom</item>
+    </style>
+
+    <style name="TealFiftyShadowBottom">
+        <item name="android:background">@drawable/teal_fifty_shadow_bottom</item>
+    </style>
+
+    <style name="ButtonBarColoredShadowTop">
+        <item name="android:background">@drawable/buttonbar_colored_shadow_top</item>
     </style>
 
 </resources>

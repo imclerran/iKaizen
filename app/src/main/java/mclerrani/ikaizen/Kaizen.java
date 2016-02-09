@@ -22,7 +22,7 @@ public class Kaizen implements Comparable<Kaizen> {
 
     private String owner;
     private String dept;
-    // TODO: transition to java.util.Date objects
+    // TODO: phase out Calendar objects - switch to Joda-Time?
     private Calendar dateCreated;
     private Calendar dateModified;
     private long timeModified;

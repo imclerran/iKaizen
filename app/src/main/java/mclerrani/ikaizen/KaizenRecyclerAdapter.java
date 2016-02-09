@@ -44,6 +44,7 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
         //holder.lblDeptData.setText(" " + k.getDept());
         holder.lblDateData.setText(" " + k.getDateCreatedAsString());
         holder.lblProblemStatementData.setText(k.toString());
+        holder.lblTotalWaste.setText(String.valueOf(k.getTotalWaste()));
 
         holder.itemView.setLongClickable(true);
         holder.itemView.setClickable(true);
@@ -80,6 +81,7 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
         protected TextView lblDeptData;
         protected TextView lblDateData;
         protected TextView lblProblemStatementData;
+        protected TextView lblTotalWaste;
         //protected Button btnViewKaizenDetails;
         //protected Button btnEditKaizen;
 
@@ -89,6 +91,7 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
             //lblDeptData                 = (TextView) view.findViewById(R.id.lblDeptData);
             lblDateData                 = (TextView) view.findViewById(R.id.lblDateData);
             lblProblemStatementData     = (TextView) view.findViewById(R.id.lblProblemStatementData);
+            lblTotalWaste               = (TextView) view.findViewById(R.id.lblTotalWaste);
             //btnViewKaizenDetails    = (Button) view.findViewById(R.id.btnViewKaizenDetails);
             //btnEditKaizen           = (Button) view.findViewById(R.id.btnEditKaizen);
 

@@ -18,9 +18,12 @@
     <ScrollView
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/llButtonBarWrapper"
+        android:background="#e0e0e0">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -30,10 +33,9 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primaryColorLight"
                 android:padding="8dp"
                 android:elevation="2dp"
-                style="@style/LinearLayoutElevated"
+                style="@style/TealFiftyShadowBottom"
                 android:id="@+id/llMetaData">
 
                 <LinearLayout
@@ -55,10 +57,7 @@
                         android:inputType="textPersonName"
                         android:ems="10"
                         android:id="@+id/txtOwner"
-                        android:hint="Name"
-                        android:editable="false"
-                        android:focusable="true"
-                        android:longClickable="true" />
+                        android:hint="Name"/>
 
                 </LinearLayout>
 
@@ -80,10 +79,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/txtDept"
                         android:hint="Department"
-                        android:inputType="none|text"
-                        android:editable="false"
-                        android:focusable="true"
-                        android:longClickable="true" />
+                        android:inputType="none|text"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,9 +113,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/llPrimaryData"
-                style="@style/LinearLayoutElevated"
-                android:elevation="1dp"
-                android:padding="8dp">
+                style="@style/BackgroundShadowBottom"
+                android:padding="8dp"
+                android:background="#f5f5f5">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -133,8 +129,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtProblemStatement"
-                    android:focusable="true"
-                    android:longClickable="true"
                     android:inputType="textCapSentences|textImeMultiLine|text|textMultiLine" />
 
                 <LinearLayout
@@ -168,8 +162,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtOverProduction"
                             android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true" />
                     </LinearLayout>
 
@@ -190,8 +182,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtTransportation"
                             android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true" />
                     </LinearLayout>
 
@@ -212,8 +202,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtMotion"
                             android:inputType="textCapSentences|textImeMultiLine|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true"
                             android:singleLine="false" />
                     </LinearLayout>
@@ -235,8 +223,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtWaiting"
                             android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true" />
                     </LinearLayout>
 
@@ -257,8 +243,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtProcessing"
                             android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true" />
                     </LinearLayout>
 
@@ -279,8 +263,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtInventory"
                             android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true" />
                     </LinearLayout>
 
@@ -303,8 +285,6 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtDefects"
                             android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                            android:editable="false"
-                            android:focusable="true"
                             android:longClickable="true" />
                     </LinearLayout>
                 </LinearLayout>
@@ -323,8 +303,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtRootCauses"
                     android:inputType="textCapSentences|textImeMultiLine|none|text|textMultiLine"
-                    android:singleLine="false"
-                    android:focusable="true"
                     android:longClickable="true" />
 
                 <LinearLayout
@@ -337,8 +315,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/lblTotalWasteStr"
-                        android:id="@+id/lblTotalCost" />
+                        android:text="@string/lblWasteCaptionStr"
+                        android:id="@+id/lblWasteCaption" />
 
                     <EditText
                         android:layout_width="0dp"
@@ -347,38 +325,48 @@
                         android:ems="10"
                         android:id="@+id/txtTotalWaste"
                         android:gravity="center_horizontal"
-                        android:longClickable="true"
-                        android:focusable="true"
                         android:layout_weight="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/lblMinPerYearStr"
-                        android:id="@+id/lblMinPerYear" />
+                        android:text="@string/lblWasteUnitsStr"
+                        android:id="@+id/lblWasteUnits" />
                 </LinearLayout>
+
             </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?android:buttonBarStyle"
-                android:id="@+id/llButtonBar">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:text="@string/btnSaveKaizenStr"
-                    android:id="@+id/btnSaveKaizen"
-                    android:layout_weight="1"
-                    android:onClick="btnSaveKaizenOnClick"
-                    android:clickable="false" />
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="16dp"
+        style="@style/BackgroundShadowTop"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/llButtonBarWrapper">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            style="?android:buttonBarStyle"
+            android:showDividers="middle"
+            android:id="@+id/llButtonBar">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/btnSaveKaizenStr"
+                android:id="@+id/btnSaveKaizen"
+                android:layout_weight="1"
+                android:onClick="btnSaveKaizenOnClick"
+                android:clickable="false" />
+
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

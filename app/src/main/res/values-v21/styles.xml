@@ -7,7 +7,24 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="LinearLayoutElevated">
+    <style name="BackgroundShadowBottom">
         <item name="android:background">@color/cardview_light_background</item>
     </style>
+
+    <style name="BackgroundShadowTop">
+        <item name="android:background">@color/cardview_light_background</item>
+    </style>
+
+    <!--<style name="CardViewBackgroundShadowTopBottom">
+        <item name="android:background">@color/cardview_light_background</item>
+    </style>-->
+
+    <style name="TealFiftyShadowBottom">
+        <item name="android:background">@color/colorPrimaryLight</item>
+    </style>
+
+    <style name="ButtonBarColoredShadowTop">
+        <item name="android:background">@color/colorButtonBar</item>
+    </style>
+
 </resources>
