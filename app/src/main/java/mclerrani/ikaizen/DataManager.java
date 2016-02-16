@@ -10,10 +10,12 @@ public class DataManager { /* SINGLETON */
 
     private static DataManager dm;
     private ArrayList<Kaizen> kaizenList;
+    private ArrayList<Countermeasure> countermeasureList;
     //private int nextListId;
 
     private DataManager() {
-        kaizenList = new ArrayList<>();
+        kaizenList          = new ArrayList<>();
+        countermeasureList  = new ArrayList<>();
     }
 
     // get the data manager
@@ -31,6 +33,10 @@ public class DataManager { /* SINGLETON */
     public ArrayList<Kaizen> getKaizenList() {
         //Collections.sort(kaizenList);
         return kaizenList;
+    }
+
+    public ArrayList<Countermeasure> getCountermeasureList() {
+        return countermeasureList;
     }
 
     public Kaizen getKaizen(int id) {

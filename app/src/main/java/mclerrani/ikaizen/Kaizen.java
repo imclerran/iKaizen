@@ -35,8 +35,10 @@ public class Kaizen implements Comparable<Kaizen> {
     private String inventoryWaste;
     private String defectsWaste;
     private String rootCauses;
+    // TODO: add material waste and labor waste
     private int totalWaste;
     private ArrayList<String> imageFiles;
+    private Solution solution;
 
     public Kaizen() {
         dateCreated = Calendar.getInstance();
@@ -47,6 +49,7 @@ public class Kaizen implements Comparable<Kaizen> {
         totalWaste = 0;
 
         imageFiles = new ArrayList<>();
+        solution = new Solution();
 
         itemID = count++;
     }
@@ -76,8 +79,9 @@ public class Kaizen implements Comparable<Kaizen> {
         else
             this.imageFiles = new ArrayList<>();
 
-        itemID = count++;
+        solution = new Solution();
 
+        itemID = count++;
         timeModified = System.currentTimeMillis();
     }
 
@@ -258,6 +262,14 @@ public class Kaizen implements Comparable<Kaizen> {
     public void updateDateModified() {
         dateModified.set(Calendar.HOUR_OF_DAY, 0);
         timeModified = System.currentTimeMillis();
+    }
+
+    public Solution getSolution() {
+        return solution;
+    }
+
+    public void setSolution(Solution solution) {
+        this.solution = solution;
     }
 
     public static Kaizen getTestKaizen() {

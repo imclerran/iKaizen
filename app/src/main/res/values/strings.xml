@@ -54,13 +54,62 @@
     <string name="lblTipCaptionStr">TIP:</string>
     <string name="lblTipDetailsStr">You can long-press a card to edit or delete it.</string>
 
-    <!-- strings for SortByDialogFragment -->
-    <string name="sort_by_dialog_title">Sort Kaizen by...</string>
+    <!-- strings for SortKaizenByDialogFragment -->
+    <string name="sort_kaizen_by_dialog_title">Sort Kaizen by...</string>
     <string name="sort_by_date_modified">Date modified</string>
     <string name="sort_by_total_waste">Total waste</string>
-    <string-array name="arrSortByOptions">
+    <string-array name="arrSortKaizenByOptions">
         <item>@string/sort_by_date_modified</item>
         <item>@string/sort_by_total_waste</item>
     </string-array>
+
+    <!-- strings for AboutActivity -->
+    <string name="title_activity_about">About</string>
+
+    <!-- CountermeasureEditActivity -->
+    <string name="title_activity_countermeasure_edit">Edit Countermeasure</string>
+    <string name="lblPreventativeActionCaptionStr">Preventative Action:</string>
+    <string name="chkCutMuriStr">Cut muri</string>
+    <string name="chkThreeXBetterStr">3X better</string>
+    <string name="chkTruePullStr">True pull</string>
+    <string name="lblCostToImplementCaptionStr">Cost to implement:</string>
+    <string name="lblDateWalkedOnCaptionStr">Date walked on:</string>
+
+    <!-- TODO: sort strings by activities and fragments -->
+    <!-- SolutionOverviewTabbedActivity -->
+    <string name="title_activity_solution_overview_tabbed">Solution Overview</string>
+    <string name="lblTodaysFixCaptionStr">Today\'s fix:</string>
+    <string name="lblEstimatedSavingsStr">Estimated savings:</string>
+    <string name="btnFeelsEmojiStr">Feels…</string>
+    <string name="lblSignedOffByCaptionStr">Signed off by:</string>
+    <string name="lblDateSolvedCaptionStr">Date Solved:</string>
+    <string name="lblImprovementsCaptionStr">Improvements:</string>
+    <string name="lblCostToImplementDataDefaultStr">$0.00</string>
+    <string name="lblDateWalkedOnDataDefaultStr">N/A</string>
+    <string name="lblCostToImplementCaptionShortStr">Cost:</string>
+
+    <string name="txtSignedOffByHintStr">lead name</string>
+    <string name="btnCountermeasureListTabStr">Countermeasures</string>
+    <string name="btnSolutionDetailsTabStr">Solution Details</string>
+    <string name="lblCostToImplementEditCaptionStr">Cost to implement: $</string>
+    <string name="lblDateWalkedOnCaptionShortStr">Walked On:</string>
+    <string name="lblEstimatedSavingsEditCaptionStr">Estimated savings: $</string>
+
+    <!-- SolutionEditActivity -->
+    <string name="title_activity_solution_edit">Edit Solution</string>
+
+    <!-- EmojiPickerActivity -->
+    <string name="title_activity_emoji_picker">Emoji Picker</string>
+
+    <!-- SortCountermeasureByDialogFragment -->
+    <string name="sort_countermeasure_by_dialog_title">Sort Kaizen by...</string>
+    <string name="sort_by_cost_ascending">Cost (ascending)</string>
+    <string name="sort_by_cost_descending">Cost (descending)</string>
+    <string-array name="arrSortCountermeasureByOptions">
+        <item>@string/sort_by_date_modified</item>
+        <item>@string/sort_by_cost_ascending</item>
+        <item>@string/sort_by_cost_descending</item>
+    </string-array>
+
 
 </resources>

@@ -9,8 +9,10 @@
     <color name="colorPrimaryDark">#009688</color>
     <color name="colorPrimaryLight">#e0f2f1</color>
     <color name="colorAccent">#ff6d00</color>
+    <color name="colorTabActiveHighlight">#ffffff</color>
 
     <color name="colorButtonBar">#1de9b6</color>
+    <color name="colorCardDissabled">#e0e0e0</color>
 
     <color name="colorShadowGrey">#dedede</color>
     <color name="colorCardViewBackground">#f9f9f9</color>

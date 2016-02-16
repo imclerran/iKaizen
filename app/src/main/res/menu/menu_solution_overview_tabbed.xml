@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="mclerrani.ikaizen.SolutionOverviewTabbedActivity">
+
+    <group
+        android:id="@+id/solution_details_group">
+        <item
+            android:id="@+id/action_edit_solution"
+            android:orderInCategory="1"
+            android:icon="@drawable/ic_pencil_white_24dp"
+            android:title="@string/action_edit_kaizen"
+            app:showAsAction="always" />
+    </group>
+
+    <group
+        android:id="@+id/countermeasure_list_group">
+        <item
+            android:id="@+id/action_sort_by"
+            android:orderInCategory="1"
+            android:icon="@drawable/ic_sort_variant_white_24dp"
+            android:title="@string/action_sort_by"
+            app:showAsAction="ifRoom"/>
+    </group>
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+</menu>

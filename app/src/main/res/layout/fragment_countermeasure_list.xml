@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mclerrani.ikaizen.CountermeasureListFragment">
+
+    <mclerrani.ikaizen.ContextMenuRecyclerView
+        android:id="@+id/recCountermeasureList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorRecyclerViewBackground"
+        android:clipToPadding="false"
+        android:elevation="0dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="4dp" />
+
+</FrameLayout>

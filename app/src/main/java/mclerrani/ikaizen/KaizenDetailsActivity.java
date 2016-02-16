@@ -186,17 +186,17 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void launchImageViewerActivity() {
-        Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
-        viewImageIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
-        startActivity(viewImageIntent);
-    }
-
     public void btnImagesOnClick(View view) {
         if(0 >= kaizen.getImageFiles().size())
             dispatchTakePictureIntent();
         else
             launchImageViewerActivity();
+    }
+
+    public void launchImageViewerActivity() {
+        Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
+        viewImageIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+        startActivity(viewImageIntent);
     }
 
     private void dispatchTakePictureIntent() {
@@ -239,16 +239,13 @@ public class KaizenDetailsActivity extends AppCompatActivity {
             PermissionsManager.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, this);
 
         File image = null;
-        //-----------------------------------------
-        // Code breaks at this line
-        //-----------------------------------------
+
         try {
             image = File.createTempFile(
                     imageFileName,  /* prefix */
                     ".jpg",         /* suffix */
                     storageDir      /* directory */
             );
-            //-----------------------------------------
         }
         catch (IOException ex) {
             Log.i("LOG", ex.getMessage());
@@ -258,6 +255,12 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
+    }
+
+    public void btnSolutionsOnClick(View view) {
+        Intent intent = new Intent(this, SolutionOverviewTabbedActivity.class);
+        intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+        startActivity(intent);
     }
 
     public boolean onSupportNavigateUp() {

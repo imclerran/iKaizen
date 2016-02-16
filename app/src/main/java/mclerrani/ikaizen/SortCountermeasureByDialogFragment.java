@@ -8,22 +8,22 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 /**
- * Created by Ian on 2/4/2016.
+ * Created by Ian on 2/14/2016.
  */
-public class SortByDialogFragment extends DialogFragment {
+public class SortCountermeasureByDialogFragment extends DialogFragment {
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface SortByDialogListener {
+    public interface SortCountermeasureByDialogListener {
         public void onDialogItemClick(DialogFragment dialog, int which);
     }
 
     // Use this instance of the interface to deliver action events
-    SortByDialogListener mListener;
+    SortCountermeasureByDialogListener mListener;
 
-    public static SortByDialogFragment newInstance(String title) {
-        SortByDialogFragment frag = new SortByDialogFragment();
+    public static SortCountermeasureByDialogFragment newInstance(String title) {
+        SortCountermeasureByDialogFragment frag = new SortCountermeasureByDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -34,12 +34,12 @@ public class SortByDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.sort_by_dialog_title)
-                .setItems(R.array.arrSortByOptions, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.sort_countermeasure_by_dialog_title)
+                .setItems(R.array.arrSortCountermeasureByOptions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        mListener.onDialogItemClick(SortByDialogFragment.this, which);
+                        mListener.onDialogItemClick(SortCountermeasureByDialogFragment.this, which);
                     }
                 });
         return builder.create();
@@ -52,7 +52,7 @@ public class SortByDialogFragment extends DialogFragment {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (SortByDialogListener) activity;
+            mListener = (SortCountermeasureByDialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()

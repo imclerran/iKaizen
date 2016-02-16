@@ -5,6 +5,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -15,45 +16,31 @@ public class Solution {
     // Meta data:
     private static int count;
     private int itemID;
-    private DateTime dateModified;
-    private boolean deleteMe;
 
     // Primary data:
     private String todaysFix;
-    private String preventativeAction;
-    private String chosenCounterMeasures;
+    private ArrayList<Countermeasure> possibleCountermeasures;
+    private ArrayList<Countermeasure> chosenCountermeasures;
     private boolean cutMuri;
     private boolean threeXBetter;
     private boolean truePull;
-    private int estimatedSavings;
-    private DateTime walkedOnDate;
+    private float estimatedSavings;
+    private DateTime dateSolved;
+    private DateTime dateSolutionUpdated;
 
     // TODO: implement signedOffBy and solvedEmote at a later date
-    // private string signedOffBy;
-    // private string solvedEmote;
+    private String signedOffBy;
+    private int solvedEmote;
 
     public Solution() {
-        deleteMe = false;
         itemID = count++;
-        dateModified = DateTime.now();
-    }
 
-    public Solution(String todaysFix, String preventativeAction,
-                    String chosenCounterMeasures, boolean cutMuri,
-                    boolean threeXBetter, boolean truePull,
-                    int estimatedSavings, DateTime walkedOnDate)
-    {
-        this.todaysFix = todaysFix;
-        this.preventativeAction = preventativeAction;
-        this.chosenCounterMeasures = chosenCounterMeasures;
-        this.cutMuri = cutMuri;
-        this.threeXBetter = threeXBetter;
-        this.truePull = truePull;
-        this.estimatedSavings = estimatedSavings;
-        this.walkedOnDate = walkedOnDate;
-
-        deleteMe = false;
-        itemID = count++;
+        cutMuri = false;
+        threeXBetter = false;
+        truePull = false;
+        possibleCountermeasures = new ArrayList<>();
+        chosenCountermeasures = new ArrayList<>();
+        solvedEmote = R.drawable.ic_feels;
     }
 
     public int getItemID() {
@@ -61,17 +48,7 @@ public class Solution {
     }
 
     public void setItemID(int itemID) {
-        dateModified = DateTime.now();
         this.itemID = itemID;
-    }
-
-    public boolean isDeleteMe() {
-        return deleteMe;
-    }
-
-    public void setDeleteMe(boolean deleteMe) {
-        dateModified = DateTime.now();
-        this.deleteMe = deleteMe;
     }
 
     public String getTodaysFix() {
@@ -79,44 +56,53 @@ public class Solution {
     }
 
     public void setTodaysFix(String todaysFix) {
-        dateModified = DateTime.now();
         this.todaysFix = todaysFix;
     }
 
-    public String getPreventativeAction() {
-        return preventativeAction;
+    public ArrayList<Countermeasure> getPossibleCounterMeasures() {
+        return possibleCountermeasures;
     }
 
-    public void setPreventativeAction(String preventativeAction) {
-        dateModified = DateTime.now();
-        this.preventativeAction = preventativeAction;
+    public void setPossibleCounterMeasures(ArrayList<Countermeasure> cmList) {
+        this.possibleCountermeasures = cmList;
     }
 
-    public String getChosenCounterMeasures() {
-        return chosenCounterMeasures;
+    public ArrayList<Countermeasure> getChosenCounterMeasures() {
+        return chosenCountermeasures;
     }
 
-    public void setChosenCounterMeasures(String chosenCounterMeasures) {
-        dateModified = DateTime.now();
-        this.chosenCounterMeasures = chosenCounterMeasures;
+    public void setChosenCounterMeasures(ArrayList<Countermeasure> cmList) {
+        this.chosenCountermeasures = cmList;
     }
 
-    public boolean isCutMuri() {
-        return cutMuri;
+    public float getEstimatedSavings() {
+        return estimatedSavings;
     }
 
-    public void setCutMuri(boolean cutMuri) {
-        dateModified = DateTime.now();
-        this.cutMuri = cutMuri;
+    public void setEstimatedSavings(float estimatedSavings) {
+        this.estimatedSavings = estimatedSavings;
     }
 
-    public boolean isThreeXBetter() {
-        return threeXBetter;
+    public DateTime getDateSolved() {
+        return dateSolved;
     }
 
-    public void setThreeXBetter(boolean threeXBetter) {
-        dateModified = DateTime.now();
-        this.threeXBetter = threeXBetter;
+    public void setDateSolved(DateTime dateSolved) {
+        this.dateSolved = dateSolved;
+    }
+
+    public String getDateSolvedAsString() {
+        if(null != dateSolved)
+            return dateSolved.toString("MM/dd/yyyy");
+        return "N/A";
+    }
+
+    public DateTime getDateSolutionUpdated() {
+        return dateSolutionUpdated;
+    }
+
+    public void setDateSolutionUpdated(DateTime dateSolutionUpdated) {
+        this.dateSolutionUpdated = dateSolutionUpdated;
     }
 
     public boolean isTruePull() {
@@ -124,83 +110,101 @@ public class Solution {
     }
 
     public void setTruePull(boolean truePull) {
-        dateModified = DateTime.now();
         this.truePull = truePull;
     }
 
-    public int getEstimatedSavings() {
-        return estimatedSavings;
+    public boolean isThreeXBetter() {
+        return threeXBetter;
     }
 
-    public void setEstimatedSavings(int estimatedSavings) {
-        dateModified = DateTime.now();
-        this.estimatedSavings = estimatedSavings;
+    public void setThreeXBetter(boolean threeXBetter) {
+        this.threeXBetter = threeXBetter;
     }
 
-    public DateTime getWalkedOnDate() {
-        return walkedOnDate;
+    public boolean isCutMuri() {
+        return cutMuri;
     }
 
-    public void setWalkedOnDate(DateTime walkedOnDate) {
-        dateModified = DateTime.now();
-        this.walkedOnDate = walkedOnDate;
+    public void setCutMuri(boolean cutMuri) {
+        this.cutMuri = cutMuri;
     }
 
-    public String getWalkedOnDateAsString() {
-        return walkedOnDate.toString("MM/dd/yyyy");
+    public String getSignedOffBy() {
+        return signedOffBy;
     }
 
-    public DateTime getDateModified() {
-        return dateModified;
+    public void setSignedOffBy(String signedOffBy) {
+        this.signedOffBy = signedOffBy;
     }
 
-    public void setDateModified(DateTime dateModified) {
-        this.dateModified = dateModified;
+    public int getSolvedEmote() {
+        return solvedEmote;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Solution solution = (Solution) o;
-
-        if (itemID != solution.itemID) return false;
-        if (cutMuri != solution.cutMuri) return false;
-        if (threeXBetter != solution.threeXBetter) return false;
-        if (truePull != solution.truePull) return false;
-        if (estimatedSavings != solution.estimatedSavings) return false;
-        if (dateModified != null ? !dateModified.equals(solution.dateModified) : solution.dateModified != null)
-            return false;
-        if (todaysFix != null ? !todaysFix.equals(solution.todaysFix) : solution.todaysFix != null)
-            return false;
-        if (preventativeAction != null ? !preventativeAction.equals(solution.preventativeAction) : solution.preventativeAction != null)
-            return false;
-        if (chosenCounterMeasures != null ? !chosenCounterMeasures.equals(solution.chosenCounterMeasures) : solution.chosenCounterMeasures != null)
-            return false;
-        return !(walkedOnDate != null ? !walkedOnDate.equals(solution.walkedOnDate) : solution.walkedOnDate != null);
-
+    public void setSolvedEmote(int solvedEmote) {
+        this.solvedEmote = solvedEmote;
     }
 
-    @Override
-    public int hashCode() {
-        int result = itemID;
-        result = 31 * result + (dateModified != null ? dateModified.hashCode() : 0);
-        result = 31 * result + (todaysFix != null ? todaysFix.hashCode() : 0);
-        result = 31 * result + (preventativeAction != null ? preventativeAction.hashCode() : 0);
-        result = 31 * result + (chosenCounterMeasures != null ? chosenCounterMeasures.hashCode() : 0);
-        result = 31 * result + (cutMuri ? 1 : 0);
-        result = 31 * result + (threeXBetter ? 1 : 0);
-        result = 31 * result + (truePull ? 1 : 0);
-        result = 31 * result + estimatedSavings;
-        result = 31 * result + (walkedOnDate != null ? walkedOnDate.hashCode() : 0);
-        return result;
+    public String getImprovements() {
+        int size = possibleCountermeasures.size();
+        cutMuri = false;
+        threeXBetter = false;
+        truePull = false;
+        for(int i = 0; i < size; i++) {
+            Countermeasure cm = possibleCountermeasures.get(i);
+            if(cm.isCutMuri())
+                cutMuri = true;
+            if(cm.isThreeXBetter())
+                threeXBetter = true;
+            if(cm.isTruePull())
+                truePull = true;
+        }
+
+        String improvements = "";
+        if (cutMuri) {
+            improvements += "cut muri";
+        }
+        if (threeXBetter) {
+            if ("" != improvements) {
+                improvements += ", ";
+            }
+            improvements += "3X better";
+        }
+        if (truePull) {
+            if ("" != improvements) {
+                improvements += ", ";
+            }
+            improvements += "true pull";
+        }
+        if ("" == improvements)
+            improvements = "none";
+
+        return improvements;
     }
 
-    @Override
-    public String toString() {
-        return "Solution{" +
-                "preventativeAction='" + preventativeAction + '\'' +
-                '}';
+    public ArrayList<Countermeasure> updateChosenCountermeasures() {
+        int size = possibleCountermeasures.size();
+        Countermeasure cm;
+
+        for(int i = 0; i < size; i++) {
+            cm = possibleCountermeasures.get(i);
+            if(null != cm.getDateWalkedOn()) {
+                if("" != cm.getDateWalkedOn()) {
+                    if(!chosenCountermeasures.contains(cm))
+                        chosenCountermeasures.add(cm);
+                }
+            }
+        }
+
+        size = chosenCountermeasures.size();
+        for(int i = 0; i < size; i++) {
+            cm = chosenCountermeasures.get(i);
+            if(null == cm.getDateWalkedOn()) {
+                if("" == cm.getDateWalkedOn()) {
+                    chosenCountermeasures.remove(cm);
+                }
+            }
+        }
+        return chosenCountermeasures;
     }
 }

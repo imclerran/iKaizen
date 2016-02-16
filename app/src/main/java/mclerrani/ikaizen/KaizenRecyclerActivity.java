@@ -4,12 +4,13 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -21,7 +22,7 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 public class KaizenRecyclerActivity extends AppCompatActivity
-        implements SortByDialogFragment.SortByDialogListener {
+        implements SortKaizenByDialogFragment.SortKaizenByDialogListener {
 
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
@@ -35,7 +36,8 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     private ArrayList<Kaizen> kaizenList;
     KaizenRecyclerAdapter recAdapter;
     private CoordinatorLayout coordinatorLayout;
-    ContextMenuRecyclerView recKaizenList;
+    private ContextMenuRecyclerView recKaizenList;
+    private StaggeredGridLayoutManager sglm;
     private Kaizen toDelete = null;
     private int sortBy = KaizenComparator.COMPARE_DATE_MODIFIED;
 
@@ -71,9 +73,19 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
         recKaizenList = (ContextMenuRecyclerView) findViewById(R.id.recKaizenList);
         recKaizenList.setHasFixedSize(false);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recKaizenList.setLayoutManager(llm);
+        //LinearLayoutManager llm = new LinearLayoutManager(this);
+        //llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+
+        int orientation = this.getResources().getConfiguration().orientation;
+        if(Configuration.ORIENTATION_PORTRAIT == orientation) {
+            sglm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        }
+        if(Configuration.ORIENTATION_LANDSCAPE == orientation) {
+            sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        }
+        //recKaizenList.setLayoutManager(llm);
+        recKaizenList.setLayoutManager(sglm);
         recAdapter = new KaizenRecyclerAdapter(kaizenList);
         recKaizenList.setAdapter(recAdapter);
 
@@ -191,7 +203,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     public void promptForSortBy() {
         //AlertDialog.Builder builder = new AlertDialog.Builder(this);
         FragmentManager fm = getFragmentManager();
-        SortByDialogFragment sortByDialog = (SortByDialogFragment) SortByDialogFragment.newInstance("SortByDialogFragment");
+        SortKaizenByDialogFragment sortByDialog = (SortKaizenByDialogFragment) SortKaizenByDialogFragment.newInstance("SortKaizenByDialogFragment");
         sortByDialog.show(fm, "sort_by_dialog_fragment");
     }
 

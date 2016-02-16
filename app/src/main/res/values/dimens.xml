@@ -13,4 +13,7 @@
     <dimen name="settings_heading_margin_top">16dp</dimen>
     <dimen name="settings_heading_margin_bottom">0dp</dimen>
 
+    <dimen name="grid_view_entry_size">64dp</dimen>
+    <dimen name="grid_view_spacing">8dp</dimen>
+
 </resources>

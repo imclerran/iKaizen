@@ -15,8 +15,10 @@ import java.util.Collections;
  */
 public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAdapter.KaizenViewHolder> {
 
+    // member vars
     private ArrayList<Kaizen> kaizenList;
 
+    // constructor
     public KaizenRecyclerAdapter(ArrayList<Kaizen> kaizenList) {
         this.kaizenList = kaizenList;
     }
@@ -74,6 +76,15 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
         Collections.sort(kaizenList, new KaizenComparator(sortBy));
     }
 
+    public Kaizen add(Kaizen k) {
+        kaizenList.add(k);
+        return kaizenList.get(kaizenList.size() - 1);
+    }
+
+    public ArrayList<Kaizen> getKaizenList() {
+        return kaizenList;
+    }
+
     // ViewHolder class definition
     public static class KaizenViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
@@ -85,18 +96,18 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
         //protected Button btnViewKaizenDetails;
         //protected Button btnEditKaizen;
 
-        public KaizenViewHolder(View view) {
-            super(view);
-            lblOwnerData                = (TextView) view.findViewById(R.id.lblOwnerData);
+        public KaizenViewHolder(View itemView) {
+            super(itemView);
+            lblOwnerData                = (TextView) itemView.findViewById(R.id.lblOwnerData);
             //lblDeptData                 = (TextView) view.findViewById(R.id.lblDeptData);
-            lblDateData                 = (TextView) view.findViewById(R.id.lblDateData);
-            lblProblemStatementData     = (TextView) view.findViewById(R.id.lblProblemStatementData);
-            lblTotalWaste               = (TextView) view.findViewById(R.id.lblTotalWaste);
-            //btnViewKaizenDetails    = (Button) view.findViewById(R.id.btnViewKaizenDetails);
-            //btnEditKaizen           = (Button) view.findViewById(R.id.btnEditKaizen);
+            lblDateData                 = (TextView) itemView.findViewById(R.id.lblDateData);
+            lblProblemStatementData     = (TextView) itemView.findViewById(R.id.lblProblemStatementData);
+            lblTotalWaste               = (TextView) itemView.findViewById(R.id.lblTotalWaste);
+            //btnViewKaizenDetails    = (Button) itemView.findViewById(R.id.btnViewKaizenDetails);
+            //btnEditKaizen           = (Button) itemView.findViewById(R.id.btnEditKaizen);
 
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
         }
 
@@ -110,15 +121,5 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
 
             return false;
         }
-    }
-
-
-    public Kaizen add(Kaizen k) {
-        kaizenList.add(k);
-        return kaizenList.get(kaizenList.size()-1);
-    }
-
-    public ArrayList<Kaizen> getKaizenList() {
-        return kaizenList;
     }
 }

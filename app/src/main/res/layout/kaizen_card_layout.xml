@@ -41,29 +41,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:singleLine="true"
                     android:id="@+id/lblOwnerData"
                     android:textColor="@android:color/black" />
             </LinearLayout>
-
-            <!--<LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/lblDeptStr"
-                    android:id="@+id/lblDept" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/lblDeptData" />
-            </LinearLayout>-->
 
             <LinearLayout
                 android:orientation="horizontal"
