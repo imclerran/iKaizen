@@ -11,8 +11,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -130,6 +132,39 @@ public class CountermeasureListFragment extends Fragment {
         );
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        registerForContextMenu(recCountermeasureList);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.context_menu_countermeasure_list, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        ContextMenuRecyclerView.RecyclerContextMenuInfo info
+                = (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        cm = recAdapter.getCountermeasureList().get(position);
+
+        switch (id) {
+            case R.id.action_edit_countermeasure:
+                editCountermeasure(position);
+                return true;
+            case R.id.action_delete_countermeasure:
+                // TODO: implement delete method
+                //deleteCountermeasure(kaizen);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void editCountermeasure(int position) {

@@ -111,5 +111,11 @@
         <item>@string/sort_by_cost_descending</item>
     </string-array>
 
+    <string name="lblCreditsCaptionStr">Credits</string>
+    <string name="lblCredits1Str">iKaizen is developed by Ian McLerran, with instruction by Linda Zuvich.</string>
+    <string name="lblCredits2Str">Emoji provided free by http://emojione.com</string>
+    <string name="lblCredits3Str">Icon assests resized using Android Asset Studio</string>
+    <string name="lblCredits3LinkStr">http://romannurik.github.io/AndroidAssetStudio/</string>
+    <string name="action_delete_countermeasure">Delete</string>
 
 </resources>

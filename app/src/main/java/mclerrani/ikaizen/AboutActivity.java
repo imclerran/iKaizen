@@ -17,6 +17,12 @@ public class AboutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.getSupportActionBar().setElevation(0);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

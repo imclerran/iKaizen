@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,11 +80,11 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         }
 
         // Create an instance of ExampleFragment
-        SolutionDetailsFragment firstFragment = new SolutionDetailsFragment();
+        SolutionDetailsFragment firstFragment = SolutionDetailsFragment.newInstance(kaizen.getItemID());
 
         // In case this activity was started with special instructions from an Intent,
         // pass the Intent's extras to the fragment as arguments
-        firstFragment.setArguments(getIntent().getExtras());
+        //firstFragment.setArguments(getIntent().getExtras());
 
         // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
@@ -191,7 +192,7 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
                 promptForSortBy();
                 return true;
             case R.id.action_settings:
-                //launchSettings();
+                launchSettings();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -208,6 +209,11 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         Intent intent = new Intent(this, CountermeasureEditActivity.class);
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivityForResult(intent, CountermeasureEditActivity.CREATE_COUNTERMEASURE_REQUEST);
+    }
+
+    public void launchSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void promptForSortBy() {
@@ -270,4 +276,12 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         CountermeasureListFragment cmlfrag = (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
         cmlfrag.sortBy(sortBy);
     }
+
+    // TEST FIX for CountermeasureListFragment:
+    /*@Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        CountermeasureListFragment cmlfrag = (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
+        cmlfrag.onCreateContextMenu(menu, v, menuInfo);
+    }*/
 }
