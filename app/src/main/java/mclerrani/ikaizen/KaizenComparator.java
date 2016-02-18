@@ -23,9 +23,7 @@ public class KaizenComparator implements Comparator<Kaizen> {// may be it would 
     public int compare(Kaizen first, Kaizen second) {
         switch(compareBy) {
             case COMPARE_DATE_MODIFIED:
-                long firstTime = first.getTimeModified();
-                long secondTime = second.getTimeModified();
-                return firstTime > secondTime ? -1 : firstTime < secondTime ? 1 : 0;
+                return second.getDateModified().compareTo(first.getDateModified());
             case COMPARE_TOTAL_WASTE:
                 return first.getTotalWaste() > second.getTotalWaste() ? -1 : first.getTotalWaste() < second.getTotalWaste() ? 1 : 0;
             default:

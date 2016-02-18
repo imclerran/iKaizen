@@ -2,6 +2,8 @@ package mclerrani.ikaizen;
 
 import com.google.gson.Gson;
 
+import org.joda.time.DateTime;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,9 +25,8 @@ public class Kaizen implements Comparable<Kaizen> {
     private String owner;
     private String dept;
     // TODO: phase out Calendar objects - switch to Joda-Time?
-    private Calendar dateCreated;
-    private Calendar dateModified;
-    private long timeModified;
+    private DateTime dateCreated;
+    private DateTime dateModified;
     private String problemStatement;
     private String overProductionWaste;
     private String transportationWaste;
@@ -41,11 +42,8 @@ public class Kaizen implements Comparable<Kaizen> {
     private Solution solution;
 
     public Kaizen() {
-        dateCreated = Calendar.getInstance();
-        dateCreated.set(Calendar.HOUR_OF_DAY,0);
-        dateModified = Calendar.getInstance();
-        dateModified.set(Calendar.HOUR_OF_DAY,0);
-        timeModified = System.currentTimeMillis();
+        dateCreated = DateTime.now();
+        dateModified = DateTime.now();
         totalWaste = 0;
 
         imageFiles = new ArrayList<>();
@@ -54,7 +52,7 @@ public class Kaizen implements Comparable<Kaizen> {
         itemID = count++;
     }
 
-    public Kaizen(String owner, String dept, Calendar dateCreated, Calendar dateModified, String problemStatement,
+    public Kaizen(String owner, String dept, DateTime dateCreated, String problemStatement,
                   String overProductionWaste, String transportationWaste, String motionWaste, String waitingWaste,
                   String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste,
                   ArrayList<String> imageFiles)
@@ -62,7 +60,6 @@ public class Kaizen implements Comparable<Kaizen> {
         this.owner = owner;
         this.dept = dept;
         this.dateCreated = dateCreated;
-        this.dateModified = dateModified;
         this.problemStatement = problemStatement;
         this.overProductionWaste = overProductionWaste;
         this.transportationWaste = transportationWaste;
@@ -82,7 +79,8 @@ public class Kaizen implements Comparable<Kaizen> {
         solution = new Solution();
 
         itemID = count++;
-        timeModified = System.currentTimeMillis();
+
+        dateModified = DateTime.now();
     }
 
     public String getOwner() {
@@ -103,25 +101,23 @@ public class Kaizen implements Comparable<Kaizen> {
         this.dept = dept;
     }
 
-    public Calendar getDateCreated() {
+    public DateTime getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Calendar dateCreated) {
+    public void setDateCreated(DateTime dateCreated) {
         updateDateModified();
         this.dateCreated = dateCreated;
     }
 
-    public Calendar getDateModified() {
+    public DateTime getDateModified() {
         return dateModified;
     }
 
-    public void setDateModified(Calendar dateModified) {
+    public void setDateModified(DateTime dateModified) {
         this.dateModified = dateModified;
-        timeModified = dateModified.getTime().getTime();
     }
 
-    public long getTimeModified() { return timeModified; }
 
     public String getProblemStatement() {
         return problemStatement;
@@ -248,21 +244,13 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public String getDateCreatedAsString() {
-        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/yyyy");
-        String date = formatter.format(dateCreated.getTime());
-        return date;
+        return dateCreated.toString("MM/dd/yyyy");
     }
 
-    public String getDateModifiedAsString() {
-        SimpleDateFormat formatter=new SimpleDateFormat("MMM/dd/yyyy");
-        String date = formatter.format(dateModified.getTime());
-        return date;
-    }
 
     public void updateDateModified() {
         // TODO: update date modified when solution/countermeasures are updated
-        dateModified.set(Calendar.HOUR_OF_DAY, 0);
-        timeModified = System.currentTimeMillis();
+        dateModified = DateTime.now();
     }
 
     public Solution getSolution() {
@@ -274,10 +262,9 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public static Kaizen getTestKaizen() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);
+        DateTime today = DateTime.now();
 
-        Kaizen test = new Kaizen("Your Name", "N/A", today, today,
+        Kaizen test = new Kaizen("Your Name", "N/A", today,
                 "Make sure your problem statement is not a root cause!",
                 "We made too much!", "She had to carry it too far!",
                 "I had to put it away and get it out again",
@@ -299,7 +286,6 @@ public class Kaizen implements Comparable<Kaizen> {
 
     @Override
     public int compareTo(Kaizen another) {
-        //return this.dateModified.compareTo(another.dateModified);
         return another.dateModified.compareTo(this.dateModified);
     }
 
