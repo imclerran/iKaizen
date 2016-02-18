@@ -260,6 +260,7 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void updateDateModified() {
+        // TODO: update date modified when solution/countermeasures are updated
         dateModified.set(Calendar.HOUR_OF_DAY, 0);
         timeModified = System.currentTimeMillis();
     }
