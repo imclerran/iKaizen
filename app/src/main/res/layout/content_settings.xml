@@ -75,6 +75,19 @@
                 android:layout_height="1dp"
                 android:background="#c0c0c0" />
 
+            <TextView
+                android:id="@+id/lblCreditsSettingsHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_heading_margin_bottom"
+                android:layout_marginLeft="@dimen/settings_item_margin_left"
+                android:layout_marginRight="@dimen/settings_item_margin_right"
+                android:layout_marginTop="@dimen/settings_heading_margin_top"
+                android:text="@string/lblCreditsSettingsHeadingStr"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -87,8 +100,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="About this app..."
-                    android:id="@+id/textView"
+                    android:text="@string/lblAboutAppStr"
+                    android:id="@+id/lblAboutApp"
                     android:textColor="@android:color/black"
                     android:layout_marginLeft="@dimen/settings_item_margin_left"
                     android:layout_marginRight="@dimen/settings_item_margin_left"
