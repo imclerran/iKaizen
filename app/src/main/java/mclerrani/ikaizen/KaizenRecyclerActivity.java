@@ -26,15 +26,14 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
-    // this code belongs in launch activity
+    // appContext belongs in launch activity
     private static Context appContext;
-    // end launch activity code
 
-    private DataManager dm = DataManager.getInstance();
+    private DataManager dm;
     private PreferencesManager pm;
     private Kaizen kaizen;
     private ArrayList<Kaizen> kaizenList;
-    KaizenRecyclerAdapter recAdapter;
+    private static KaizenRecyclerAdapter recAdapter;
     private CoordinatorLayout coordinatorLayout;
     private ContextMenuRecyclerView recKaizenList;
     private StaggeredGridLayoutManager sglm;
@@ -48,10 +47,12 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // restore saved instance state
         if(null != savedInstanceState) {
             sortBy = savedInstanceState.getInt("sortBy");
         }
 
+        // setup FAB
         FloatingActionButton fabNewKaizen = (FloatingActionButton) findViewById(R.id.fabNewKaizen);
         fabNewKaizen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,21 +63,22 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
         // this code belongs in launch activity
         appContext = this.getApplicationContext();
-        pm = PreferencesManager.getInstance(appContext);
         // end launch activity code
-
         final Context activityContext = this;
-        //activityContext = this;
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        kaizenList = dm.getKaizenList();
+        // get manager classes
+        dm = DataManager.getInstance(appContext);
+        pm = PreferencesManager.getInstance(appContext);
 
+        // setup recycler view and adapter
         recKaizenList = (ContextMenuRecyclerView) findViewById(R.id.recKaizenList);
         recKaizenList.setHasFixedSize(false);
-        //LinearLayoutManager llm = new LinearLayoutManager(this);
-        //llm.setOrientation(LinearLayoutManager.VERTICAL);
+        kaizenList = dm.getKaizenList();
+        recAdapter = new KaizenRecyclerAdapter(kaizenList);
+        recKaizenList.setAdapter(recAdapter);
+        registerForContextMenu(recKaizenList);
 
-
+        // setup layout mananger for recycler view
         int orientation = this.getResources().getConfiguration().orientation;
         if(Configuration.ORIENTATION_PORTRAIT == orientation) {
             sglm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -84,15 +86,9 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         if(Configuration.ORIENTATION_LANDSCAPE == orientation) {
             sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         }
-        //recKaizenList.setLayoutManager(llm);
         recKaizenList.setLayoutManager(sglm);
-        recAdapter = new KaizenRecyclerAdapter(kaizenList);
-        recKaizenList.setAdapter(recAdapter);
 
-        if (kaizenList.size() == 0)
-            recAdapter.add(Kaizen.getTestKaizen());
-
-        // Kaizen CardView touch event handler
+        // setup a touch listerner for recycler items
         recKaizenList.addOnItemTouchListener(
                 new RecyclerItemClickListener(activityContext, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -106,25 +102,6 @@ public class KaizenRecyclerActivity extends AppCompatActivity
                     }
                 })
         );
-
-        /*recKaizenList.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RecyclerView.ViewHolder holder =(RecyclerView.ViewHolder)v.getTag();
-                        int position = holder.getLayoutPosition();
-
-                        kaizen = recAdapter.getKaizenList().get(position);
-                        if (null != kaizen) {
-                            Intent intent = new Intent(activityContext, KaizenDetailsActivity.class);
-                            intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
-                            startActivity(intent);
-                        }
-                    }
-                }
-        );*/
-
-        registerForContextMenu(recKaizenList);
     }
 
     @Override
@@ -138,8 +115,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        // as you specify a parent activity in AndroidManifest.xml
 
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -182,11 +158,20 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * launch the settings activity
+     * @version
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * launch the edit kaizen activity
+     * @version
+     * @param k -- the kaizen to edit
+     */
     public void editKaizen(Kaizen k) {
         if (null != kaizen) {
             Intent intent = new Intent(this, KaizenEditActivity.class);
@@ -195,11 +180,82 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * flag a kaizen for deletion, then call the method to delete it
+     * @version
+     * @param k
+     */
     public void deleteKaizen(Kaizen k) {
         k.setDeleteMe(true);
         deleteKaizen();
     }
 
+    /**
+     * if a Kaizen has been flagged for deletion, remove it from the list
+     * give the user a chance to restore it, or delete it from the DB if they do not
+     * @version
+     * @return -- success or failure
+     */
+    public boolean deleteKaizen() {
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        // if there is a Kaizen object with deleteMe flag set
+        // remove it from the kaizenList, keep it in a temp var
+        for (int i = 0; i < kaizenList.size(); i++) {
+            if (kaizenList.get(i).isDeleteMe()) {
+                toDelete = kaizenList.remove(i);
+                recAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
+
+        // if a kaizen has been flagged for deletion
+        if (null != toDelete) {
+            // notify user Kaizen has been deleted and prompt for undo
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Kaizen deleted!", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // if user chooses to undo the delete operation
+                            // unflag the Kaizen for deletion
+                            toDelete.setDeleteMe(false);
+                        }
+                    });
+
+            // when the delete/undo snackbar is dismissed
+            snackbar.setCallback(new Snackbar.Callback() {
+                @Override
+                public void onDismissed(Snackbar snackbar, int event) {
+                    // check if kaizen is STILL flagged for deletion
+                    if (null != toDelete) {
+                        if (!toDelete.isDeleteMe()) {
+                            // if not flagged for deletion, restore kaizen to list
+                            recAdapter.add(toDelete);
+                            recAdapter.sortKaizenList(sortBy);
+                            recAdapter.notifyDataSetChanged();
+
+                            // Notify user the kaizen has been restored
+                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Kaizen restored!", Snackbar.LENGTH_SHORT);
+                            snackbar1.show();
+                        }
+                        else {
+                            dm.deleteKaizen(toDelete);
+                        }
+                    }
+                    toDelete = null;
+                }
+            });
+            snackbar.show();
+        }
+
+        return true;
+    }
+
+    /**
+     * show the sort kaizen dialog
+     * @version
+     */
     public void promptForSortBy() {
         //AlertDialog.Builder builder = new AlertDialog.Builder(this);
         FragmentManager fm = getFragmentManager();
@@ -207,6 +263,13 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         sortByDialog.show(fm, "sort_by_dialog_fragment");
     }
 
+    /**
+     * when the sort dialog completes, determine which option was selected
+     * then sort the kaizen list
+     * @version
+     * @param dialog -- the resolved dialog
+     * @param which -- the index of the option chosen
+     */
     @Override
     public void onDialogItemClick(DialogFragment dialog, int which) {
         switch (which) {
@@ -226,72 +289,36 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * launch the KaizenEditActivity with request code CREATE_KAIZEN_REQUEST
+     * @version
      */
     public void newKaizen() {
         Intent intent = new Intent(this, KaizenEditActivity.class);
         startActivityForResult(intent, KaizenEditActivity.CREATE_KAIZEN_REQUEST);
     }
 
+    /**
+     * set the visibility of the welcome message, and delete any flagged kaizen
+     */
     @Override
     protected void onResume() {
         super.onResume();
 
-        updateWelcomeMessageVisibility(pm.isEnableWelcomeMessage());
+        updateWelcomeMessageVisibility();
         deleteKaizen();
         recAdapter.sortKaizenList(sortBy);
         recAdapter.notifyDataSetChanged();
     }
 
     /**
-     * remove a Kaizen from kaizenList
-     * give the user a chance to undo the delete with a snackbar action
+     * switch to details activity after editing a kaizen
+     * @version
+     * @param requestCode -- the request which completed
+     * @param resultCode -- success or failure of the request
+     * @param data -- any data returned by the requested activity
      */
-    public boolean deleteKaizen() {
-
-        for (int i = 0; i < kaizenList.size(); i++) {
-            if (kaizenList.get(i).isDeleteMe()) {
-                toDelete = kaizenList.remove(i);
-                recAdapter.notifyDataSetChanged();
-                break;
-            }
-        }
-
-        if (null != toDelete) {
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Kaizen deleted!", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Kaizen restored!", Snackbar.LENGTH_SHORT);
-                            toDelete.setDeleteMe(false);
-                            snackbar1.show();
-                        }
-                    });
-
-            snackbar.setCallback(new Snackbar.Callback() {
-                @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                    if (null != toDelete) {
-                        if (!toDelete.isDeleteMe()) {
-                            recAdapter.add(toDelete);
-                            recAdapter.notifyDataSetChanged();
-                        }
-                    }
-                    toDelete = null;
-                }
-            });
-            snackbar.show();
-        }
-
-        return true;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-
-        // Don't launch details when create completes
-
         if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
@@ -305,7 +332,12 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         }
     }
 
-    public void updateWelcomeMessageVisibility(boolean enabled) {
+    /**
+     * show or hide the welcome message according to number of kaizen and user preferences
+     * version
+     */
+    public void updateWelcomeMessageVisibility() {
+        pm.isEnableWelcomeMessage();
         LinearLayout llWelcomeMessage = (LinearLayout) findViewById(R.id.llWelcomeMessage);
 
         RelativeLayout.LayoutParams paramsShow =
@@ -314,7 +346,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity
                 new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
 
 
-        if(dm.getKaizenList().size() <= 3 && enabled) {
+        if(dm.getKaizenList().size() <= 3 && pm.isEnableWelcomeMessage()) {
             llWelcomeMessage.setLayoutParams(paramsShow);
         }
         else {
@@ -322,6 +354,10 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * save the sort option the user has selected
+     * @param outState -- the save state bundle
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -329,8 +365,17 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         outState.putInt("sortBy", sortBy);
     }
 
-    // this code belongs in launch activity
+    /**
+     * provide outside access to the recycler adapter
+     * @return -- the kaizen recycler adapter
+     */
+    public static KaizenRecyclerAdapter getRecyclerAdapter() { return recAdapter; }
+
+    /**
+     * get application context
+     * this method must be in the launch activity
+     * @return -- the application context
+     */
     public static Context getContext() { return appContext; }
-    // end launch activity code
 
 }

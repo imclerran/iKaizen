@@ -23,7 +23,7 @@ public class CountermeasureEditActivity extends AppCompatActivity {
     private Kaizen kaizen;
     private Solution solution;
     private Countermeasure cm;
-    private DataManager dm = DataManager.getInstance();
+    private DataManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,8 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        dm = DataManager.getInstance(getApplicationContext());
 
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
@@ -46,7 +48,7 @@ public class CountermeasureEditActivity extends AppCompatActivity {
             }
             else {
                 cm = new Countermeasure();
-                solution.getPossibleCounterMeasures().add(cm);
+                dm.insertCountermeasure(cm, kaizen);
             }
         }
         else {
@@ -71,7 +73,10 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_delete_countermeasure:
                 // TODO: implement delete method
-                //deleteCountermeasure(cm);
+                //dm.deleteCountermeasure(cm, kaizen);
+                //solution.getPossibleCounterMeasures().remove(cm);
+                deleteCountermeasure(cm);
+                finish();
                 return true;
             case R.id.action_settings:
                 launchSettings();
@@ -81,10 +86,14 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         }
     }
 
+    public void deleteCountermeasure(Countermeasure cm) {
+        cm.setDeleteMe(true);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        save();
+        //save();
     }
 
     @Override
@@ -130,10 +139,13 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         cm.setThreeXBetter(chkThreeXBetter.isChecked());
         CheckBox chkTruePull = (CheckBox) findViewById(R.id.chkTruePull);
         cm.setTruePull(chkTruePull.isChecked());
+
+        dm.updateCountermeasure(cm, kaizen);
     }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        save();
         return true;
     }
 }

@@ -19,8 +19,9 @@ public class KaizenEditActivity extends AppCompatActivity {
     public final static int EDIT_KAIZEN_REQUEST = 1;
     public final static int CREATE_KAIZEN_REQUEST = 2;
 
-    private DataManager dm = DataManager.getInstance();
-    private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
+    private DataManager dm;
+    private PreferencesManager pm;
+    //private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
     private Kaizen kaizen;
 
     @Override
@@ -29,8 +30,10 @@ public class KaizenEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_kaizen_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        pm = PreferencesManager.getInstance(getApplicationContext());
+        dm = DataManager.getInstance(getApplicationContext());
 
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
@@ -38,7 +41,7 @@ public class KaizenEditActivity extends AppCompatActivity {
         }
         else {
             kaizen = new Kaizen();
-            dm.getKaizenList().add(kaizen);
+            dm.insertKaizen(kaizen);
             String owner = getUserName();
             if(null != owner)
                 kaizen.setOwner(owner);
@@ -166,6 +169,7 @@ public class KaizenEditActivity extends AppCompatActivity {
         else
             kaizen.setTotalWaste(0);
 
+        dm.updateKaizen(kaizen);
         Intent intent = new Intent();
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         setResult(RESULT_OK, intent);

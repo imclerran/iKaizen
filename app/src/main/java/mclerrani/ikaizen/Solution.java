@@ -33,14 +33,30 @@ public class Solution {
     private int solvedEmote;
 
     public Solution() {
-        itemID = count++;
-
         cutMuri = false;
         threeXBetter = false;
         truePull = false;
         possibleCountermeasures = new ArrayList<>();
         chosenCountermeasures = new ArrayList<>();
+        dateSolutionUpdated = null;
         solvedEmote = R.drawable.ic_feels;
+    }
+
+    public Solution(String todaysFix, boolean cutMuri, boolean threeXBetter, boolean truePull,
+                    float estimatedSavings, DateTime dateSolved, DateTime dateSolutionUpdated,
+                    String signedOffBy, int solvedEmote)
+    {
+        this.todaysFix = todaysFix;
+        this.cutMuri = cutMuri;
+        this.threeXBetter = threeXBetter;
+        this.truePull = truePull;
+        this.estimatedSavings = estimatedSavings;
+        this.dateSolved = dateSolved;
+        this.dateSolutionUpdated = dateSolutionUpdated;
+        this.signedOffBy = signedOffBy;
+        this.solvedEmote = solvedEmote;
+
+        possibleCountermeasures = new ArrayList<>();
     }
 
     public int getItemID() {

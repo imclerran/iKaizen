@@ -38,7 +38,7 @@ public class SolutionDetailsFragment extends Fragment {
 
     private Kaizen kaizen;
     private Solution solution;
-    private DataManager dm = DataManager.getInstance();
+    private DataManager dm;
     private int mShortAnimationDuration;
 
     /**
@@ -63,11 +63,19 @@ public class SolutionDetailsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        dm = DataManager.getInstance(getContext());
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             kaizenId = getArguments().getInt(ARG_KAIZEN_ID);
             kaizen = dm.getKaizen(kaizenId);
+
             solution = kaizen.getSolution();
+            if(null == solution) {
+                solution = new Solution();
+                dm.insertSolution(solution, kaizen);
+                dm.insertCountermeasure(Countermeasure.getTestCountermeasure(), kaizen);
+                kaizen.setSolution(solution);
+            }
         }
 
         setHasOptionsMenu(true);

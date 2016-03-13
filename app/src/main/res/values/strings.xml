@@ -48,6 +48,7 @@
 
     <!-- strings for ImageViewerActivity -->
     <string name="title_activity_image_viewer">View Image</string>
+    <string name="action_delete_image">Delete</string>
 
     <!-- strings for KaizenRecyclerActivity -->
     <string name="title_activity_recycler">Kaizen List</string>
@@ -107,6 +108,8 @@
     <!-- SolutionEditActivity -->
     <string name="title_activity_solution_edit">Edit Solution</string>
 
+    <string name="lblDateSolvedHintStr">MM/DD/YYYY</string>
+
     <!-- EmojiPickerActivity -->
     <string name="title_activity_emoji_picker">Emoji Picker</string>
 
@@ -121,8 +124,11 @@
     </string-array>
 
 
+    <!-- DataManager -->
+    <string name="errGetDataStr">Cannot Access Database</string>
 
-
+    <!-- ImageGalleryActivity -->
+    <string name="title_activity_image_gallery">Image Gallery</string>
 
 
 </resources>

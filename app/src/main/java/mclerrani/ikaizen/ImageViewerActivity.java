@@ -14,6 +14,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,12 +29,14 @@ import java.net.URL;
 
 public class ImageViewerActivity extends AppCompatActivity {
 
-    private final static String EXTRA_FILE_PATH = "mclerrani.ikaizen.FILE_PATH";
+    private final static String EXTRA_IMAGE_ID = "mclerrani.ikaizen.IMAGE_ID";
     private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
-    DataManager dm = DataManager.getInstance();
+    DataManager dm;
     String currentPhotoPath;
     ImageView imgViewer;
     Kaizen kaizen;
+    ImageFile image;
+    boolean imageDeleted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class ImageViewerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        dm = DataManager.getInstance(getApplicationContext());
         imgViewer = (ImageView) findViewById(R.id.imgViewer);
 
         Intent intent = getIntent();
@@ -50,21 +55,71 @@ public class ImageViewerActivity extends AppCompatActivity {
             if(null == kaizen) {
                 finish();
             }
-            currentPhotoPath = kaizen.getImageFiles().get(kaizen.getImageFiles().size()-1);
-            Log.i("LOG", "PHOTO PATH = " + currentPhotoPath);
+            if(intent.hasExtra(EXTRA_IMAGE_ID)) {
+                image = kaizen.getImage(intent.getIntExtra(EXTRA_IMAGE_ID, -1));
+            }
+            if(null != image) {
+                currentPhotoPath = image.getPath();
+            }
+            else finish();
         }
         else
             finish();
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_image_viewer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (item.getItemId()) {
+            case R.id.action_delete_image:
+                deleteImage();
+                return true;
+            case R.id.action_settings:
+                launchSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void launchSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void deleteImage() {
+        String path = image.getPath();
+        dm.deleteImageFile(image, kaizen);
+        kaizen.getImageFiles().remove(image);
+        ImageGalleryActivity.getRecyclerAdapter().notifyDataSetChanged();
+        if(ImageFile.deleteFile(path)) {
+            imageDeleted = true;
+        }
+        finish();
+    }
+
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if(!setPic()) {
-            Toast toast = Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT);
-            toast.show();
-            finish();
+        if(!imageDeleted) {
+            if (!setPic()) {
+                Toast toast = Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT);
+                toast.show();
+                finish();
+            }
         }
     }
 

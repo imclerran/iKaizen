@@ -50,21 +50,6 @@ public class KaizenRecyclerAdapter extends RecyclerView.Adapter<KaizenRecyclerAd
 
         holder.itemView.setLongClickable(true);
         holder.itemView.setClickable(true);
-
-        /*holder.btnEditKaizen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    // button click event
-                }
-            }
-        });
-
-        holder.btnViewKaizenDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /// button click event
-            }
-        });*/
     }
 
     @Override

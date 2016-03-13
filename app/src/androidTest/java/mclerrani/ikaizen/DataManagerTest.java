@@ -14,7 +14,7 @@ public class DataManagerTest extends AndroidTestCase {
     private DataManager dm;
 
     public void setUp() throws Exception {
-        dm = DataManager.getInstance();
+        dm = DataManager.getInstance(getContext());
         assertNotNull("DataManager.getInstance() returned null", dm);
         dm.getKaizenList().add(new Kaizen());
         int size = dm.getKaizenList().size();

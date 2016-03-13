@@ -26,7 +26,7 @@ public class KaizenListActivity extends AppCompatActivity {
     private static Context appContext;
     // end launch activity code
 
-    private DataManager dm = DataManager.getInstance();
+    private DataManager dm;
     private PreferencesManager pm;
     private Kaizen kaizen;
     private ArrayList<Kaizen> list;
@@ -49,6 +49,8 @@ public class KaizenListActivity extends AppCompatActivity {
                 newKaizen();
             }
         });
+
+        dm = DataManager.getInstance(getApplicationContext());
 
         // this code belongs in launch activity
         appContext = this.getApplicationContext();

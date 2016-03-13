@@ -77,10 +77,14 @@
             android:name=".SolutionEditActivity"
             android:label="@string/title_activity_solution_edit"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".EmojiPickerActivity"
             android:label="@string/title_activity_emoji_picker"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ImageGalleryActivity"
+            android:label="@string/title_activity_image_gallery"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

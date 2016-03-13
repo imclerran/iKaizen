@@ -3,7 +3,10 @@ package mclerrani.ikaizen;
 import org.joda.time.DateTime;
 
 /**
- * Created by Ian on 2/9/2016.
+ * data class for tracking countermeasures for a given kaizen
+ *
+ * @author Ian McLerran
+ * @version 2/16/2016
  */
 public class Countermeasure {
 
@@ -23,7 +26,7 @@ public class Countermeasure {
     private String dateWalkedOn;
 
     //---------------------------------------------------------------
-    // Future iteration: allow ongoing problems.
+    // Future version: allow ongoing problems.
     // New Countermeasures can be added, and previously implemented
     // Countermeasures can be phased out.
     // may require the use of multiple Solutions to track changes
@@ -32,7 +35,7 @@ public class Countermeasure {
     // private boolean phasedOut;
 
     public Countermeasure() {
-        itemID = count++;
+        //itemID = count++;
         deleteMe = false;
 
         preventativeAction = "";
@@ -46,7 +49,7 @@ public class Countermeasure {
         dateModified = DateTime.now();
     }
 
-    public Countermeasure(String preventativeAction, boolean cutMuri, boolean threeXBetter, boolean truePull,
+    public Countermeasure(DateTime dateModified, String preventativeAction, boolean cutMuri, boolean threeXBetter, boolean truePull,
                           float costToImplement, boolean implemented, String dateWalkedOn) {
         this.deleteMe = false;
         this.preventativeAction = preventativeAction;
@@ -57,9 +60,13 @@ public class Countermeasure {
         this.implemented = implemented;
         this.dateWalkedOn = dateWalkedOn;
 
-        itemID = count++;
+        //itemID = count++;
         deleteMe = false;
-        dateModified = DateTime.now();
+
+        if(null != dateModified)
+            this.dateModified = dateModified;
+        else
+            this.dateModified = DateTime.now();
     }
 
     public int getItemID() {
@@ -67,7 +74,6 @@ public class Countermeasure {
     }
 
     public void setItemID(int itemID) {
-        updateDateModified();
         this.itemID = itemID;
     }
 
@@ -76,7 +82,6 @@ public class Countermeasure {
     }
 
     public void setDateModified(DateTime dateModified) {
-        updateDateModified();
         this.dateModified = dateModified;
     }
 
@@ -85,7 +90,6 @@ public class Countermeasure {
     }
 
     public void setDeleteMe(boolean deleteMe) {
-        updateDateModified();
         this.deleteMe = deleteMe;
     }
 
@@ -94,7 +98,6 @@ public class Countermeasure {
     }
 
     public void setPreventativeAction(String preventativeAction) {
-        updateDateModified();
         this.preventativeAction = preventativeAction;
     }
 
@@ -103,7 +106,6 @@ public class Countermeasure {
     }
 
     public void setCutMuri(boolean cutMuri) {
-        updateDateModified();
         this.cutMuri = cutMuri;
     }
 
@@ -112,7 +114,6 @@ public class Countermeasure {
     }
 
     public void setThreeXBetter(boolean threeXBetter) {
-        updateDateModified();
         this.threeXBetter = threeXBetter;
     }
 
@@ -121,7 +122,6 @@ public class Countermeasure {
     }
 
     public void setTruePull(boolean truePull) {
-        updateDateModified();
         this.truePull = truePull;
     }
 
@@ -130,7 +130,6 @@ public class Countermeasure {
     }
 
     public void setCostToImplement(float costToImplement) {
-        updateDateModified();
         this.costToImplement = costToImplement;
     }
 
@@ -139,7 +138,6 @@ public class Countermeasure {
     }
 
     public void setImplemented(boolean implemented) {
-        updateDateModified();
         this.implemented = implemented;
     }
 
@@ -148,7 +146,6 @@ public class Countermeasure {
     }
 
     public void setDateWalkedOn(String dateWalkedOn) {
-        updateDateModified();
         this.dateWalkedOn = dateWalkedOn;
     }
 
@@ -187,7 +184,7 @@ public class Countermeasure {
     }
 
     public static Countermeasure getTestCountermeasure() {
-        Countermeasure cm = new Countermeasure("Doing this will eliminate a root cause of the problem.",
+        Countermeasure cm = new Countermeasure(null, "Doing this will eliminate a root cause of the problem.",
                 false, false, false, 0.00f, false, null);
         return cm;
     }

@@ -149,15 +149,16 @@
                                 android:text="@string/lblDateSolvedCaptionStr"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                            <TextView
-                                android:id="@+id/lblDateSolvedData"
+                            <EditText
+                                android:id="@+id/txtDateSolved"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@android:color/black"
-                                android:layout_marginLeft="4dp" />
+                                android:layout_marginLeft="4dp"
+                                android:hint="@string/lblDateSolvedHintStr" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -193,7 +194,7 @@
                         android:layout_height="64dp"
                         android:contentDescription="@string/btnFeelsEmojiStr"
                         android:onClick="btnFeelsEmojiOnClick"
-                        android:src="@drawable/good_01"
+                        android:src="@drawable/ic_feels"
                         android:scaleType="centerCrop" />
                 </LinearLayout>
 

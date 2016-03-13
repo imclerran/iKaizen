@@ -28,7 +28,7 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
     private final static int COUNTERMEASURE_LIST_FRAGMENT_ID = 2;
     private int activeTab;
 
-    private DataManager dm = DataManager.getInstance();
+    private DataManager dm;
     private Kaizen kaizen;
     int sortBy = CountermeasureComparator.COMPARE_DATE_MODIFIED;
 
@@ -42,12 +42,14 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        dm = DataManager.getInstance(getApplicationContext());
+
         if(null != savedInstanceState) {
             activeTab = savedInstanceState.getInt("activeTab");
             sortBy = savedInstanceState.getInt("sortBy");
             if(COUNTERMEASURE_LIST_FRAGMENT_ID == activeTab) {
                 CountermeasureListFragment cmlfrag = (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
-                cmlfrag.sortBy(sortBy);
+                cmlfrag.setSortBy(sortBy);
             }
             setActiveTabHighlight();
         }
@@ -99,6 +101,15 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
 
         outState.putInt("activeTab", activeTab);
         outState.putInt("sortBy", sortBy);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CountermeasureListFragment cmlfrag = (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
+        if(COUNTERMEASURE_LIST_FRAGMENT_ID == activeTab && null != cmlfrag) {
+            cmlfrag.deleteCountermeasure();
+        }
     }
 
     @Override

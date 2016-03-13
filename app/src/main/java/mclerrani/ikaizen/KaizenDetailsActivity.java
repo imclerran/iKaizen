@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +26,9 @@ public class KaizenDetailsActivity extends AppCompatActivity {
     private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     //private final static String EXTRA_FILE_PATH = "mclerrani.ikaizen.FILE_PATH";
 
-    private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
-    private DataManager dm = DataManager.getInstance();
+    //private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
+    private PreferencesManager pm = PreferencesManager.getInstance(KaizenRecyclerActivity.getContext());
+    private DataManager dm = DataManager.getInstance(KaizenRecyclerActivity.getContext());
     private Kaizen kaizen = null;
     String currentPhotoPath = null;
 
@@ -57,6 +57,8 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         }
 
         populate(kaizen);
+
+
     }
 
     @Override
@@ -175,86 +177,18 @@ public class KaizenDetailsActivity extends AppCompatActivity {
                 populate(kaizen);
             }
         }
-
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            if(null != currentPhotoPath) {
-                kaizen.addImageFile(currentPhotoPath);
-                launchImageViewerActivity();
-            }
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void btnImagesOnClick(View view) {
-        if(0 >= kaizen.getImageFiles().size())
-            dispatchTakePictureIntent();
-        else
-            launchImageViewerActivity();
+        launchImageGalleryActivity();
     }
 
-    public void launchImageViewerActivity() {
-        Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
-        viewImageIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
-        startActivity(viewImageIntent);
-    }
-
-    private void dispatchTakePictureIntent() {
-        // if android ver. >= marshmallow, check camera permissions
-        if(PermissionsManager.canMakeSmores())
-            PermissionsManager.checkPermissions(Manifest.permission.CAMERA, this);
-
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Log.i("LOG", "createImageFile() failed");
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
-
-    // TODO: delete the temp file from FS if no picture is taken
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "iKaizen_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES).toString()+"/iKaizen");
-        storageDir.mkdirs();
-
-        // if on marshmallow or higher,
-        // request WRITE_EXTERNAL_STORAGE permissions
-        if(PermissionsManager.canMakeSmores())
-            PermissionsManager.checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, this);
-
-        File image = null;
-
-        try {
-            image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-        }
-        catch (IOException ex) {
-            Log.i("LOG", ex.getMessage());
-            throw ex;
-        }
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
+    public void launchImageGalleryActivity() {
+        Intent imageGalleryIntent = new Intent(this, ImageGalleryActivity.class);
+        //Intent imageGalleryIntent = new Intent(this, ImageViewerActivity.class);
+        imageGalleryIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
+        startActivity(imageGalleryIntent);
     }
 
     public void btnSolutionsOnClick(View view) {

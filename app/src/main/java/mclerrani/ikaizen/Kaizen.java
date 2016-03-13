@@ -24,7 +24,6 @@ public class Kaizen implements Comparable<Kaizen> {
 
     private String owner;
     private String dept;
-    // TODO: phase out Calendar objects - switch to Joda-Time?
     private DateTime dateCreated;
     private DateTime dateModified;
     private String problemStatement;
@@ -38,7 +37,7 @@ public class Kaizen implements Comparable<Kaizen> {
     private String rootCauses;
     // TODO: add material waste and labor waste
     private int totalWaste;
-    private ArrayList<String> imageFiles;
+    private ArrayList<ImageFile> imageFiles;
     private Solution solution;
 
     public Kaizen() {
@@ -47,19 +46,26 @@ public class Kaizen implements Comparable<Kaizen> {
         totalWaste = 0;
 
         imageFiles = new ArrayList<>();
-        solution = new Solution();
+
+        //solution = new Solution();
+        solution = null;
 
         itemID = count++;
     }
 
-    public Kaizen(String owner, String dept, DateTime dateCreated, String problemStatement,
+    public Kaizen(String owner, String dept, DateTime dateCreated, DateTime dateModified, String problemStatement,
                   String overProductionWaste, String transportationWaste, String motionWaste, String waitingWaste,
-                  String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste,
-                  ArrayList<String> imageFiles)
+                  String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste)
     {
         this.owner = owner;
         this.dept = dept;
         this.dateCreated = dateCreated;
+
+        if(null != dateModified)
+            this.dateModified = dateModified;
+        else
+            this.dateModified = DateTime.now();
+
         this.problemStatement = problemStatement;
         this.overProductionWaste = overProductionWaste;
         this.transportationWaste = transportationWaste;
@@ -76,11 +82,10 @@ public class Kaizen implements Comparable<Kaizen> {
         else
             this.imageFiles = new ArrayList<>();
 
-        solution = new Solution();
+        solution = null; //new Solution();
 
-        itemID = count++;
 
-        dateModified = DateTime.now();
+        //itemID = count++;
     }
 
     public String getOwner() {
@@ -88,7 +93,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setOwner(String owner) {
-        updateDateModified();
         this.owner = owner;
     }
 
@@ -97,7 +101,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setDept(String dept) {
-        updateDateModified();
         this.dept = dept;
     }
 
@@ -106,7 +109,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setDateCreated(DateTime dateCreated) {
-        updateDateModified();
         this.dateCreated = dateCreated;
     }
 
@@ -124,7 +126,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setProblemStatement(String problemStatement) {
-        updateDateModified();
         this.problemStatement = problemStatement;
     }
 
@@ -133,7 +134,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setOverProductionWaste(String overProductionWaste) {
-        updateDateModified();
         this.overProductionWaste = overProductionWaste;
     }
 
@@ -142,7 +142,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setTransportationWaste(String transportationWaste) {
-        updateDateModified();
         this.transportationWaste = transportationWaste;
     }
 
@@ -151,7 +150,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setWaitingWaste(String waitingWaste) {
-        updateDateModified();
         this.waitingWaste = waitingWaste;
     }
 
@@ -160,7 +158,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setProcessingWaste(String processingWaste) {
-        updateDateModified();
         this.processingWaste = processingWaste;
     }
 
@@ -169,7 +166,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setInventoryWaste(String inventoryWaste) {
-        updateDateModified();
         this.inventoryWaste = inventoryWaste;
     }
 
@@ -178,7 +174,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setDefectsWaste(String defectsWaste) {
-        updateDateModified();
         this.defectsWaste = defectsWaste;
     }
 
@@ -187,7 +182,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setRootCauses(String rootCauses) {
-        updateDateModified();
         this.rootCauses = rootCauses;
     }
 
@@ -196,7 +190,6 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setTotalWaste(int totalWaste) {
-        updateDateModified();
         this.totalWaste = totalWaste;
     }
 
@@ -205,34 +198,29 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     public void setMotionWaste(String motionWaste) {
-        updateDateModified();
         this.motionWaste = motionWaste;
     }
 
-    public ArrayList<String> getImageFiles() {
+    public ArrayList<ImageFile> getImageFiles() {
         return imageFiles;
     }
 
-    public void setImageFiles(ArrayList<String> imageFiles) {
-        updateDateModified();
+    public void setImageFiles(ArrayList<ImageFile> imageFiles) {
         this.imageFiles = imageFiles;
     }
 
-    public String addImageFile(String imageFile) {
-        updateDateModified();
+    public ImageFile addImageFile(ImageFile imageFile) {
         imageFiles.add(imageFile);
         return imageFiles.get(imageFiles.size()-1);
     }
 
-    public String removeImageFile(int i) {
-        updateDateModified();
+    public ImageFile removeImageFile(int i) {
         return imageFiles.remove(i);
     }
 
     public int getItemID() { return itemID; }
 
     public void setItemID(int itemID) {
-        updateDateModified();
         this.itemID = itemID; }
 
     public boolean isDeleteMe() {
@@ -264,13 +252,13 @@ public class Kaizen implements Comparable<Kaizen> {
     public static Kaizen getTestKaizen() {
         DateTime today = DateTime.now();
 
-        Kaizen test = new Kaizen("Your Name", "N/A", today,
+        Kaizen test = new Kaizen("Your Name", "N/A", today, null,
                 "Make sure your problem statement is not a root cause!",
                 "We made too much!", "She had to carry it too far!",
                 "I had to put it away and get it out again",
                 "We had to wait for them to finish!",
                 "They don't need us to do this!", "He ran out of parts!", "I damaged the product!",
-                "1) this definitely caused the problem\n2) this might have contributed to the issue\n3) This could be part of the problem", 365, null);
+                "1) this definitely caused the problem\n2) this might have contributed to the issue\n3) This could be part of the problem", 365);
         return test;
     }
 
@@ -369,7 +357,7 @@ public class Kaizen implements Comparable<Kaizen> {
         File fd;
 
         while(i < imageFiles.size()) {
-            fd = new File(imageFiles.get(i));
+            fd = new File(imageFiles.get(i).getPath());
             if(!fd.exists()) {
                 imageFiles.remove(i);
                 numRemoved++;
@@ -378,5 +366,19 @@ public class Kaizen implements Comparable<Kaizen> {
                 i++;
         }
         return numRemoved;
+    }
+
+    public ImageFile getImage(int id) {
+        if(id < 0)
+            return null;
+
+        int i = 0;
+        int size = imageFiles.size();
+        while(id != imageFiles.get(i).getItemID()) {
+            i++;
+            if(size <= i)
+                return null;
+        }
+        return imageFiles.get(i);
     }
 }
