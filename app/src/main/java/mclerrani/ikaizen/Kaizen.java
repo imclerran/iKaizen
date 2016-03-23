@@ -10,22 +10,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * Created by Ian on 1/13/2016.
+ * Data class for storing Kaizen information
  *
  * @author Ian McLerran
+ * @version 3/12/16
  */
 public class Kaizen implements Comparable<Kaizen> {
 
-    // meta data fields
-    private static int count;
+    // meta data:
     private int itemID;
+    private DateTime dateModified;
     private boolean deleteMe = false;
-    // end meta data
 
+    // primary data:
+    // TODO: add material waste and labor waste
     private String owner;
     private String dept;
     private DateTime dateCreated;
-    private DateTime dateModified;
     private String problemStatement;
     private String overProductionWaste;
     private String transportationWaste;
@@ -35,11 +36,13 @@ public class Kaizen implements Comparable<Kaizen> {
     private String inventoryWaste;
     private String defectsWaste;
     private String rootCauses;
-    // TODO: add material waste and labor waste
     private int totalWaste;
     private ArrayList<ImageFile> imageFiles;
     private Solution solution;
 
+    /**
+     * default constructor
+     */
     public Kaizen() {
         dateCreated = DateTime.now();
         dateModified = DateTime.now();
@@ -49,10 +52,26 @@ public class Kaizen implements Comparable<Kaizen> {
 
         //solution = new Solution();
         solution = null;
-
-        itemID = count++;
     }
 
+    /**
+     * constructor
+     *
+     * @param owner -- the owner of the Kaizen
+     * @param dept -- the department the owner works in
+     * @param dateCreated -- the date the Kaizen was created
+     * @param dateModified -- the date the Kaizen was last modified
+     * @param problemStatement -- the problem to solve
+     * @param overProductionWaste -- wastes caused by the problem
+     * @param transportationWaste -- wastes caused by the problem
+     * @param motionWaste -- wastes caused by the problem
+     * @param waitingWaste -- wastes caused by the problem
+     * @param processingWaste -- wastes caused by the problem
+     * @param inventoryWaste -- wastes caused by the problem
+     * @param defectsWaste -- wastes caused by the problem
+     * @param rootCauses -- causes of the problem
+     * @param totalWaste -- total time wasted
+     */
     public Kaizen(String owner, String dept, DateTime dateCreated, DateTime dateModified, String problemStatement,
                   String overProductionWaste, String transportationWaste, String motionWaste, String waitingWaste,
                   String processingWaste, String inventoryWaste, String defectsWaste, String rootCauses, int totalWaste)
@@ -82,173 +101,107 @@ public class Kaizen implements Comparable<Kaizen> {
         else
             this.imageFiles = new ArrayList<>();
 
-        solution = null; //new Solution();
-
-
-        //itemID = count++;
+        solution = null;
     }
 
-    public String getOwner() {
-        return owner;
-    }
+    // getters and setters:
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+    public String getOwner() { return owner; }
+    public void setOwner(String owner) { this.owner = owner; }
 
-    public String getDept() {
-        return dept;
-    }
+    public String getDept() { return dept; }
+    public void setDept(String dept) { this.dept = dept; }
 
-    public void setDept(String dept) {
-        this.dept = dept;
-    }
+    public DateTime getDateCreated() { return dateCreated; }
+    public void setDateCreated(DateTime dateCreated) { this.dateCreated = dateCreated; }
 
-    public DateTime getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(DateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public DateTime getDateModified() {
-        return dateModified;
-    }
-
-    public void setDateModified(DateTime dateModified) {
-        this.dateModified = dateModified;
-    }
+    public DateTime getDateModified() { return dateModified; }
+    public void setDateModified(DateTime dateModified) { this.dateModified = dateModified; }
 
 
-    public String getProblemStatement() {
-        return problemStatement;
-    }
+    public String getProblemStatement() { return problemStatement; }
+    public void setProblemStatement(String problemStatement) { this.problemStatement = problemStatement; }
 
-    public void setProblemStatement(String problemStatement) {
-        this.problemStatement = problemStatement;
-    }
+    public String getOverProductionWaste() { return overProductionWaste; }
+    public void setOverProductionWaste(String overProductionWaste) { this.overProductionWaste = overProductionWaste; }
 
-    public String getOverProductionWaste() {
-        return overProductionWaste;
-    }
+    public String getTransportationWaste() { return transportationWaste; }
+    public void setTransportationWaste(String transportationWaste) { this.transportationWaste = transportationWaste; }
 
-    public void setOverProductionWaste(String overProductionWaste) {
-        this.overProductionWaste = overProductionWaste;
-    }
+    public String getWaitingWaste() { return waitingWaste; }
+    public void setWaitingWaste(String waitingWaste) { this.waitingWaste = waitingWaste; }
 
-    public String getTransportationWaste() {
-        return transportationWaste;
-    }
+    public String getProcessingWaste() { return processingWaste; }
+    public void setProcessingWaste(String processingWaste) { this.processingWaste = processingWaste; }
 
-    public void setTransportationWaste(String transportationWaste) {
-        this.transportationWaste = transportationWaste;
-    }
+    public String getInventoryWaste() { return inventoryWaste; }
+    public void setInventoryWaste(String inventoryWaste) { this.inventoryWaste = inventoryWaste; }
 
-    public String getWaitingWaste() {
-        return waitingWaste;
-    }
+    public String getDefectsWaste() { return defectsWaste; }
+    public void setDefectsWaste(String defectsWaste) { this.defectsWaste = defectsWaste; }
 
-    public void setWaitingWaste(String waitingWaste) {
-        this.waitingWaste = waitingWaste;
-    }
+    public String getRootCauses() { return rootCauses; }
+    public void setRootCauses(String rootCauses) { this.rootCauses = rootCauses; }
 
-    public String getProcessingWaste() {
-        return processingWaste;
-    }
+    public int getTotalWaste() { return totalWaste; }
+    public void setTotalWaste(int totalWaste) { this.totalWaste = totalWaste; }
 
-    public void setProcessingWaste(String processingWaste) {
-        this.processingWaste = processingWaste;
-    }
+    public String getMotionWaste() { return motionWaste; }
+    public void setMotionWaste(String motionWaste) { this.motionWaste = motionWaste; }
 
-    public String getInventoryWaste() {
-        return inventoryWaste;
-    }
-
-    public void setInventoryWaste(String inventoryWaste) {
-        this.inventoryWaste = inventoryWaste;
-    }
-
-    public String getDefectsWaste() {
-        return defectsWaste;
-    }
-
-    public void setDefectsWaste(String defectsWaste) {
-        this.defectsWaste = defectsWaste;
-    }
-
-    public String getRootCauses() {
-        return rootCauses;
-    }
-
-    public void setRootCauses(String rootCauses) {
-        this.rootCauses = rootCauses;
-    }
-
-    public int getTotalWaste() {
-        return totalWaste;
-    }
-
-    public void setTotalWaste(int totalWaste) {
-        this.totalWaste = totalWaste;
-    }
-
-    public String getMotionWaste() {
-        return motionWaste;
-    }
-
-    public void setMotionWaste(String motionWaste) {
-        this.motionWaste = motionWaste;
-    }
-
-    public ArrayList<ImageFile> getImageFiles() {
-        return imageFiles;
-    }
-
-    public void setImageFiles(ArrayList<ImageFile> imageFiles) {
-        this.imageFiles = imageFiles;
-    }
-
-    public ImageFile addImageFile(ImageFile imageFile) {
-        imageFiles.add(imageFile);
-        return imageFiles.get(imageFiles.size()-1);
-    }
-
-    public ImageFile removeImageFile(int i) {
-        return imageFiles.remove(i);
-    }
+    public ArrayList<ImageFile> getImageFiles() { return imageFiles; }
+    public void setImageFiles(ArrayList<ImageFile> imageFiles) { this.imageFiles = imageFiles; }
 
     public int getItemID() { return itemID; }
+    public void setItemID(int itemID) { this.itemID = itemID; }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID; }
+    public boolean isDeleteMe() { return deleteMe; }
+    public void setDeleteMe(boolean deleteMe) { this.deleteMe = deleteMe; }
 
-    public boolean isDeleteMe() {
-        return deleteMe;
+    public Solution getSolution() { return solution; }
+    public void setSolution(Solution solution) { this.solution = solution; }
+
+    /**
+     * add an ImageFile to the list
+     *
+     * @param f -- the ImageFile to add
+     * @return the added ImageFile
+     */
+    public ImageFile addImageFile(ImageFile f) {
+        imageFiles.add(f);
+        return f;
     }
 
-    public void setDeleteMe(boolean deleteMe) {
-        this.deleteMe = deleteMe;
-    }
+    /**
+     * remove an ImageFile from the list
+     *
+     * @param f -- the ImageFile to remove
+     * @return the removed ImageFile
+     */
+    public ImageFile removeImageFile(int f) { return imageFiles.remove(f); }
 
+    /**
+     * get a string representation of the date created
+     *
+     * @return the date created formatted as a string
+     */
     public String getDateCreatedAsString() {
         return dateCreated.toString("MM/dd/yyyy");
     }
 
 
+    /**
+     * set the date modified to the current time
+     */
     public void updateDateModified() {
-        // TODO: update date modified when solution/countermeasures are updated
         dateModified = DateTime.now();
     }
 
-    public Solution getSolution() {
-        return solution;
-    }
-
-    public void setSolution(Solution solution) {
-        this.solution = solution;
-    }
-
+    /**
+     * create a new Kaizen object using example values
+     *
+     * @return the new Kaizen
+     */
     public static Kaizen getTestKaizen() {
         DateTime today = DateTime.now();
 
@@ -262,21 +215,40 @@ public class Kaizen implements Comparable<Kaizen> {
         return test;
     }
 
-    public String toJson() {
-        String jsonString = new Gson().toJson(this);
-        return jsonString;
-    }
+    /**
+     * Serialize the Kaizen object as a json representation
+     *
+     * @return the string containing the serialized object
+     */
+    public String toJson() { return new Gson().toJson(this); }
 
+    /**
+     * create a new Kaizen object from a json string
+     *
+     * @param jsonString the json to deserialize
+     * @return the new Kaizen object
+     */
     public static Kaizen fromJson(String jsonString) {
-        Kaizen kaizen = new Gson().fromJson(jsonString, Kaizen.class);
-        return kaizen;
+        return new Gson().fromJson(jsonString, Kaizen.class);
     }
 
+    /**
+     * compare two Kaizen objects
+     *
+     * @param another the second Kaizen to compare this Kaizen to
+     * @return an int indicating their sort order
+     */
     @Override
     public int compareTo(Kaizen another) {
         return another.dateModified.compareTo(this.dateModified);
     }
 
+    /**
+     * check if one Kaizen equals another
+     *
+     * @param o the second Kaizen to compare this one to
+     * @return true if equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -315,6 +287,11 @@ public class Kaizen implements Comparable<Kaizen> {
 
     }
 
+    /**
+     * generate a unique hash code for the current Kaizen object
+     *
+     * @return the hash code
+     */
     @Override
     public int hashCode() {
         int result = itemID;
@@ -337,6 +314,11 @@ public class Kaizen implements Comparable<Kaizen> {
         return result;
     }
 
+    /**
+     * generate a string representation of the current Kaizen
+     *
+     * @return the string representation
+     */
     @Override
     public String toString() {
         if(null != problemStatement) {
@@ -348,9 +330,12 @@ public class Kaizen implements Comparable<Kaizen> {
     }
 
     /**
+     * remove any ImageFiles which have been deleted from the filesystem
+     * @// FIXME: 3/14/2016 should be moved to datamanager. files will still be listed in database
      *
      * @return the number of files removed
      */
+    @Deprecated
     public int removeDeletedImageFiles() {
         int numRemoved = 0;
         int i = 0;
@@ -368,6 +353,12 @@ public class Kaizen implements Comparable<Kaizen> {
         return numRemoved;
     }
 
+    /**
+     * get an ImageFile using its id
+     *
+     * @param id the id of the requested ImageFile
+     * @return the requested ImageFile
+     */
     public ImageFile getImage(int id) {
         if(id < 0)
             return null;

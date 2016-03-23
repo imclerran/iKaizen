@@ -17,23 +17,33 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+/**
+ * An Activity class for displaying solution details, or a list of countermeasures
+ * This is achieved using tabs, and a separate fragment for each tab
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
+ */
 public class SolutionOverviewTabbedActivity extends AppCompatActivity
         implements SolutionDetailsFragment.OnFragmentInteractionListener,
         CountermeasureListFragment.OnFragmentInteractionListener,
         SortCountermeasureByDialogFragment.SortCountermeasureByDialogListener{
 
     private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
-
     private final static int SOLUTION_DETAILS_FRAGMENT_ID = 1;
     private final static int COUNTERMEASURE_LIST_FRAGMENT_ID = 2;
-    private int activeTab;
 
+    private int activeTab;
     private DataManager dm;
     private Kaizen kaizen;
     int sortBy = CountermeasureComparator.COMPARE_DATE_MODIFIED;
-
     FloatingActionButton fab;
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +64,8 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
             setActiveTabHighlight();
         }
 
-        fab = (FloatingActionButton) this.findViewById(R.id.fab);
-        //fab.setTranslationY(fab.getHeight() + 48);
-        fab.setVisibility(View.INVISIBLE);
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +102,12 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Android lifecycle onSaveInstanceState() method
+     * store active tab and sort by info to restore when app resumes
+     *
+     * @param outState -- the save state bundle
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -103,23 +116,41 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         outState.putInt("sortBy", sortBy);
     }
 
+    /**
+     * Android lifecycle onResume() method
+     * restore the active tab
+     * if the current tab is the countermeasure list, delete any flagged countermeasures
+     */
     @Override
     protected void onResume() {
         super.onResume();
-        CountermeasureListFragment cmlfrag = (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
+        CountermeasureListFragment cmlfrag =
+                (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
         if(COUNTERMEASURE_LIST_FRAGMENT_ID == activeTab && null != cmlfrag) {
+            fab.show();
             cmlfrag.deleteCountermeasure();
         }
     }
 
+    /**
+     * required method
+     */
     @Override
     public void onFragmentInteraction() {
     }
 
+    /**
+     * respond when the solution details tab is clicked
+     *
+     * @param view -- the clicked view
+     */
     public void btnSolutionDetailsTabOnClick(View view) {
         setFragmentToSolutionDetails();
     }
 
+    /**
+     * set solution details as the active tab
+     */
     public void setFragmentToSolutionDetails() {
         activeTab = SOLUTION_DETAILS_FRAGMENT_ID;
         setActiveTabHighlight();
@@ -140,10 +171,18 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    /**
+     * respond when the solution details tab is clicked
+     *
+     * @param view -- the clicked view
+     */
     public void btnCountermeasureListTabOnClick(View view) {
         setFragmentToCountermeasureList();
     }
 
+    /**
+     * set the countermeasure list as the active tab
+     */
     public void setFragmentToCountermeasureList() {
         activeTab = COUNTERMEASURE_LIST_FRAGMENT_ID;
         setActiveTabHighlight();
@@ -164,6 +203,9 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    /**
+     * set the correct active tab highlight
+     */
     public void setActiveTabHighlight() {
         View vSolutionDetailsTabHighlight = findViewById(R.id.vSolutionDetailsTabHighlight);
         View vCountermeasureListTabHighlight = findViewById(R.id.vCountermeasureListTabHighlight);
@@ -181,6 +223,12 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * inflate the options menu
+     *
+     * @param menu -- the menu to inflate
+     * @return success or failure
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -188,6 +236,12 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the item selected from the options menu
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -210,41 +264,49 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * launch the activity to edit a solution
+     */
     public void editSolution() {
         Intent intent = new Intent(this, SolutionEditActivity.class);
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivityForResult(intent, SolutionEditActivity.EDIT_SOLUTION_REQUEST);
     }
 
+    /**
+     * launch the activity to create a new countermeasure
+     */
     public void createCountermeasure() {
         Intent intent = new Intent(this, CountermeasureEditActivity.class);
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivityForResult(intent, CountermeasureEditActivity.CREATE_COUNTERMEASURE_REQUEST);
     }
 
+    /**
+     * launch the settings activity
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * show a dialog to allow the use to choose a sorting option
+     */
     public void promptForSortBy() {
-        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
         FragmentManager fm = getFragmentManager();
         SortCountermeasureByDialogFragment sortCountermeasureByDialog = (SortCountermeasureByDialogFragment) SortCountermeasureByDialogFragment.newInstance("SortCountermeasureByDialogFragment");
         sortCountermeasureByDialog.show(fm, "sort_countermeasure_by_dialog_fragment");
     }
 
-    /*public void showOverflowMenu(boolean showMenu){
-        if(menu == null)
-            return;
-        menu.setGroupVisible(R.id.main_menu_group, showMenu);
-    }*/
-
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
+    /**
+     * handle completed activity requests
+     * set the active tab, according to which request completed
+     *
+     * @param requestCode -- the request which completed
+     * @param resultCode -- success or failure of the request
+     * @param data -- any data returned by the requested activity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -267,6 +329,13 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * after the sort by dialog resolves,
+     * sort the countermeasure list according to the user input
+     *
+     * @param dialog -- the resolved dialog
+     * @param which -- the index of the option chosen
+     */
     @Override
     public void onDialogItemClick(DialogFragment dialog, int which) {
         switch (which) {
@@ -288,11 +357,13 @@ public class SolutionOverviewTabbedActivity extends AppCompatActivity
         cmlfrag.sortBy(sortBy);
     }
 
-    // TEST FIX for CountermeasureListFragment:
-    /*@Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        CountermeasureListFragment cmlfrag = (CountermeasureListFragment) getSupportFragmentManager().findFragmentByTag("countermeasure_list_fragment");
-        cmlfrag.onCreateContextMenu(menu, v, menuInfo);
-    }*/
+    /**
+     * navigate up in the app
+     *
+     * @return always true
+     */
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

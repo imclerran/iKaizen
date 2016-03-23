@@ -16,15 +16,29 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Fragment class to allow the user to pick an emoji from a list
+ *
+ * @author Ian McLerran
+ * @version 2/16/16
  */
 public class EmojiPickerActivityFragment extends Fragment {
 
     GridView grdEmojiPicker;
 
+    /**
+     * default constructor
+     */
     public EmojiPickerActivityFragment() {
     }
 
+    /**
+     * Android lifecycle onCreateView() method
+     *
+     * @param inflater -- the LayoutInflater
+     * @param container -- the ViewGroup which contains the fragment
+     * @param savedInstanceState -- the saved application state
+     * @return the inflated fragment view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +62,9 @@ public class EmojiPickerActivityFragment extends Fragment {
         return view;
     }
 
+    /**
+     * set the number of columns the GridView should used, based on the screen width
+     */
     private void refreshGridView() {
         int gridViewEntrySize = getResources().getDimensionPixelSize(R.dimen.grid_view_entry_size);
         int gridViewSpacing = getResources().getDimensionPixelSize(R.dimen.grid_view_spacing);
@@ -56,19 +73,13 @@ public class EmojiPickerActivityFragment extends Fragment {
         Display display = wm.getDefaultDisplay();
 
         int numColumns = (display.getWidth() - gridViewSpacing) / (gridViewEntrySize + gridViewSpacing);
-
         grdEmojiPicker.setNumColumns(numColumns);
-
-        //int size = (int) getResources().getDimension(R.dimen.grid_view_entry_size);
-        //grdEmojiPicker.setLayoutParams(new RelativeLayout.LayoutParams(gridViewEntrySize, gridViewEntrySize));
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        refreshGridView();
-    }
-
+    /**
+     * Android lifecycle onResume() method
+     * call method to set the number of grid columns when the activity is resumed
+     */
     @Override
     public void onResume() {
         super.onResume();

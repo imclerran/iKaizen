@@ -3,7 +3,10 @@ package mclerrani.ikaizen;
 import java.util.Comparator;
 
 /**
- * Created by Ian on 2/14/2016.
+ * comparator for sorting Countermeasure objects
+ *
+ * @author Ian McLerran
+ * @version 2/16/2016
  */
 public class CountermeasureComparator implements Comparator<Countermeasure> {
 
@@ -13,11 +16,23 @@ public class CountermeasureComparator implements Comparator<Countermeasure> {
 
     private int compareBy;
 
+    /**
+     * constructor
+     *
+     * @param compareBy and integer indicating the value to compare the countermeasures by
+     */
     public CountermeasureComparator(int compareBy) {
         super();
         this.compareBy = compareBy;
     }
 
+    /**
+     * compare two Countermeasure objects
+     *
+     * @param lhs -- the left hand object to compare
+     * @param rhs -- the right hand object to compare
+     * @return an integer indicating the sort order of the objects
+     */
     @Override
     public int compare(Countermeasure lhs, Countermeasure rhs) {
         float rhsCost;

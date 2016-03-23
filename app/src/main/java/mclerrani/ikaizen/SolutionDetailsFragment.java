@@ -18,13 +18,10 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SolutionDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SolutionDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A fragment class for displaying solution details
  *
+ * @author Ian McLerran
+ * @version 3/12/16
  */
 public class SolutionDetailsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -45,8 +42,8 @@ public class SolutionDetailsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param kaizenId ID used to fetch kaizen from DataManager
-     * @return A new instance of fragment SolutionDetailsFragment.
+     * @param kaizenId -- ID used to fetch kaizen from DataManager
+     * @return a new instance of fragment SolutionDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static SolutionDetailsFragment newInstance(int kaizenId) {
@@ -57,10 +54,18 @@ public class SolutionDetailsFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * default constructor
+     */
     public SolutionDetailsFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         dm = DataManager.getInstance(getContext());
@@ -84,6 +89,14 @@ public class SolutionDetailsFragment extends Fragment {
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
     }
 
+    /**
+     * Android lifecycle onCreateView() method
+     *
+     * @param inflater -- the LayoutInflater
+     * @param container -- the ViewGroup which contains the fragment
+     * @param savedInstanceState -- the saved application state
+     * @return the inflated fragment view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,8 +106,11 @@ public class SolutionDetailsFragment extends Fragment {
         return view;
     }
 
-
-
+    /**
+     * populate the fragment layout with Solution data
+     *
+     * @param view
+     */
     public void populate(View view) {
         TextView txtTodaysFix           = (TextView) view.findViewById(R.id.lblTodaysFix);
         txtTodaysFix.setText(solution.getTodaysFix());
@@ -110,13 +126,11 @@ public class SolutionDetailsFragment extends Fragment {
         btnFeelsEmoji.setImageResource(solution.getSolvedEmote());
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction();
-        }
-    }
-
+    /**
+     * Android lifecycle onAttach() method
+     *
+     * @param context -- the context in which the fragment has been attached
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -128,12 +142,18 @@ public class SolutionDetailsFragment extends Fragment {
         }
     }
 
+    /**
+     * Android lifecycle onDetach() method
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     * Android lifecycle onResume() methods
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -155,6 +175,12 @@ public class SolutionDetailsFragment extends Fragment {
         void onFragmentInteraction();
     }
 
+    /**
+     * Android lifecycle onPrepareOptionsMenu() method
+     * set the visibility of the menu items relevant to this fragment
+     *
+     * @param menu -- the options menu used by the activity
+     */
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.setGroupVisible(R.id.solution_details_group, true);

@@ -21,40 +21,35 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CountermeasureListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CountermeasureListFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment class to display a list of countermeasure objects
+ *
+ * @author Ian McLerran
+ * @version 3/14/16
  */
 public class CountermeasureListFragment extends Fragment {
 
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     public final static String EXTRA_COUNTERMEASURE_POSITION = "mclerrani.ikaizen.COUNTERMEASURE_POSITION";
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // the fragment initialization parameters
     public static final String ARG_KAIZEN_ID = "kaizenId";
 
-    private int kaizenId;
-    private int sortBy = CountermeasureComparator.COMPARE_DATE_MODIFIED;
 
+    private int sortBy = CountermeasureComparator.COMPARE_DATE_MODIFIED;
+    private int kaizenId;
     private DataManager dm;
-    //private PreferencesManager pm;
     private Kaizen kaizen;
-    //private Countermeasure cm;
     private ArrayList<Countermeasure> countermeasureList;
     private static CountermeasureRecyclerAdapter recAdapter;
     private CoordinatorLayout coordinatorLayout;
     private ContextMenuRecyclerView recCountermeasureList;
     private StaggeredGridLayoutManager sglm;
-    //private LinearLayoutManager llm;
     private Countermeasure toDelete;
-
-    //private int mShortAnimationDuration;
-
     private OnFragmentInteractionListener mListener;
 
+    /**
+     * default constructor
+     */
     public CountermeasureListFragment() {
         // Required empty public constructor
     }
@@ -63,10 +58,9 @@ public class CountermeasureListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param kaizenId Parameter 1.
+     * @param kaizenId -- the id of the parent kaizen
      * @return A new instance of fragment CountermeasureListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static CountermeasureListFragment newInstance(int kaizenId) {
         CountermeasureListFragment fragment = new CountermeasureListFragment();
         Bundle args = new Bundle();
@@ -75,6 +69,11 @@ public class CountermeasureListFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         dm = DataManager.getInstance(getContext());
@@ -88,6 +87,14 @@ public class CountermeasureListFragment extends Fragment {
         getActivity().invalidateOptionsMenu();
     }
 
+    /**
+     * Android lifecycle onCreateView() method
+     *
+     * @param inflater -- the LayoutInflater
+     * @param container -- the ViewGroup which contains the fragment
+     * @param savedInstanceState -- the saved application state
+     * @return the inflated fragment view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,6 +104,7 @@ public class CountermeasureListFragment extends Fragment {
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinatorLayout);
         countermeasureList = kaizen.getSolution().getPossibleCounterMeasures();
 
+        // set up the recycler
         recCountermeasureList = (ContextMenuRecyclerView) view.findViewById(R.id.recCountermeasureList);
         recCountermeasureList.setHasFixedSize(false);
         int orientation = this.getResources().getConfiguration().orientation;
@@ -107,20 +115,17 @@ public class CountermeasureListFragment extends Fragment {
             sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         }
         recCountermeasureList.setLayoutManager(sglm);
-        //llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        //recCountermeasureList.setLayoutManager(llm);
 
         recAdapter = new CountermeasureRecyclerAdapter(countermeasureList);
         recCountermeasureList.setAdapter(recAdapter);
 
-        // TODO: add on touch listeners
-        // Kaizen CardView touch event handler
+        // handle touch events
         recCountermeasureList.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        //cm = recAdapter.getCountermeasureList().get(position);
                         if (null != kaizen) {
+                            // TODO: use id instead of position
                             editCountermeasure(position);
                         }
                     }
@@ -131,33 +136,51 @@ public class CountermeasureListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Android lifecycle onActivityCreated() method
+     * register for context menu here
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         registerForContextMenu(recCountermeasureList);
         super.onActivityCreated(savedInstanceState);
     }
 
+    /**
+     * Android lifecycle onCreateContextMenu() method
+     *
+     * @param menu -- the context menu to be inflated
+     * @param v -- the parent view
+     * @param menuInfo -- additional info about the menu
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getActivity().getMenuInflater().inflate(R.menu.context_menu_countermeasure_list, menu);
     }
 
+    /**
+     * complete the action the user selects from the context menu
+     *
+     * @param item -- the item selected from the menu
+     * @return -- success or failure
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int id = item.getItemId();
         ContextMenuRecyclerView.RecyclerContextMenuInfo info
                 = (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
         int position = info.position;
-        //cm = recAdapter.getCountermeasureList().get(position);
+        Countermeasure cm = recAdapter.getCountermeasureList().get(position);
 
         switch (id) {
             case R.id.action_edit_countermeasure:
                 editCountermeasure(position);
                 return true;
             case R.id.action_delete_countermeasure:
-                // TODO: implement delete method
-                //deleteCountermeasure(kaizen);
+                deleteCountermeasure(cm);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -165,21 +188,24 @@ public class CountermeasureListFragment extends Fragment {
     }
 
 
-
+    /**
+     * flag a countermeasure for deletion, then initiate the undoable delete sequence
+     * @param cm -- the countermeasure to delete
+     */
     public void deleteCountermeasure(Countermeasure cm) {
         cm.setDeleteMe(true);
         deleteCountermeasure();
     }
 
     /**
-     * remove a Kaizen from kaizenList
-     * give the user a chance to undo the delete with a snackbar action
+     * if a Countermeasure has been flagged for deletion, remove it from the list
+     * give the user a chance to restore it, or delete it from the DB if they do not
      */
-    public boolean deleteCountermeasure() {
+    public void deleteCountermeasure() {
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinatorLayout);
 
-        // if there is a Kaizen object with deleteMe flag set
-        // remove it from the kaizenList, keep it in a temp var
+        // if there is a Countermeasure object with deleteMe flag set
+        // remove it from the countermeasureList, keep it in a temp var
         for (int i = 0; i < countermeasureList.size(); i++) {
             if (countermeasureList.get(i).isDeleteMe()) {
                 toDelete = countermeasureList.remove(i);
@@ -227,10 +253,14 @@ public class CountermeasureListFragment extends Fragment {
             });
             snackbar.show();
         }
-
-        return true;
     }
 
+    /**
+     * launch the CountermeasureEditActivity
+     *
+     * @todo use id instead of position
+     * @param position -- the position of the countermeasure in the recycler
+     */
     public void editCountermeasure(int position) {
         Intent intent = new Intent(getContext(), CountermeasureEditActivity.class);
         intent.putExtra(EXTRA_KAIZEN_ID, kaizenId);
@@ -238,13 +268,18 @@ public class CountermeasureListFragment extends Fragment {
         startActivityForResult(intent, CountermeasureEditActivity.EDIT_COUNTERMEASURE_REQUEST);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    /*// TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction();
         }
-    }
+    }*/
 
+    /**
+     * Android lifecycle onAttach() method
+     *
+     * @param context -- the context in which the fragment has been attached
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -256,6 +291,9 @@ public class CountermeasureListFragment extends Fragment {
         }
     }
 
+    /**
+     * Android lifecycle onDetach() method
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -273,10 +311,15 @@ public class CountermeasureListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 
+    /**
+     * Android lifecycle onPrepareOptionsMenu() method
+     * set the visibility of the menu items relevant to this fragment
+     *
+     * @param menu -- the options menu used by the activity
+     */
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.setGroupVisible(R.id.solution_details_group, false);
@@ -284,24 +327,45 @@ public class CountermeasureListFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Android lifecycle onResume() methods
+     */
     @Override
     public void onResume() {
         super.onResume();
         sort();
-        //recAdapter.notifyDataSetChanged();
+        recAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * set the sortBy value
+     *
+     * @param sortBy -- an integer indicating the value to sort Countermeasures by
+     */
     public void setSortBy(int sortBy) { this.sortBy = sortBy; }
 
+    /**
+     * set the sortBy value, then call the sort() method
+     *
+     * @param sortBy -- an integer indicating the value to sort Countermeasures by
+     */
     public void sortBy(int sortBy) {
         this.sortBy = sortBy;
         sort();
     }
 
+    /**
+     * sort the Countermeasure list
+     */
     private void sort() {
         recAdapter.sortCountermeasureList(this.sortBy);
         recAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * provide outside access to the recycler adapter
+     *
+     * @return the recyclerAdapter
+     */
     public static CountermeasureRecyclerAdapter getRecyclerAdapter() { return recAdapter; }
 }

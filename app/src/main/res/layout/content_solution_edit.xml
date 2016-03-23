@@ -158,7 +158,8 @@
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textColor="@android:color/black"
                                 android:layout_marginLeft="4dp"
-                                android:hint="@string/lblDateSolvedHintStr" />
+                                android:hint="@string/lblDateSolvedHintStr"
+                                android:inputType="date" />
                         </LinearLayout>
 
                         <LinearLayout

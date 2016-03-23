@@ -25,6 +25,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Activity class for an image gallery
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
+ */
 public class ImageGalleryActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 3;
@@ -39,6 +45,11 @@ public class ImageGalleryActivity extends AppCompatActivity {
     private Kaizen kaizen;
     String newPhotoPath = null;
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +105,7 @@ public class ImageGalleryActivity extends AppCompatActivity {
                             }
                         });
 
-        // we now add a touch listerner to the recycler view
+        // we now add a touch listener to the recycler view
         recImageList.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
@@ -126,6 +137,11 @@ public class ImageGalleryActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Android lifecycle onSavedInstanceState() method
+     *
+     * @param outState -- the bundle to save the current application state to
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -133,6 +149,12 @@ public class ImageGalleryActivity extends AppCompatActivity {
         outState.putString("newPhotoPath", newPhotoPath);
     }
 
+    /**
+     * Android lifecycle onCreateOptionsMenu() method
+     *
+     * @param menu -- the menu to inflate
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -140,6 +162,12 @@ public class ImageGalleryActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the menu item selectedk
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -156,19 +184,29 @@ public class ImageGalleryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * launch the settings activity
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * launch the ImageViewerActivity to view the selected image
+     *
+     * @param image -- the image to view
+     */
     public void launchImageViewerActivity(ImageFile image) {
         Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
-        //Intent viewImageIntent = new Intent(this, ImageViewerActivity.class);
         viewImageIntent.putExtra(EXTRA_IMAGE_ID, image.getItemID());
         viewImageIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivity(viewImageIntent);
     }
 
+    /**
+     * use an implicit intent to launch the camera and take a picture
+     */
     private void dispatchTakePictureIntent() {
         // if android ver. >= marshmallow, check camera permissions
         if(PermissionsManager.canMakeSmores())
@@ -194,7 +232,12 @@ public class ImageGalleryActivity extends AppCompatActivity {
         }
     }
 
-    // TODO: delete the temp file from FS if no picture is taken
+    /**
+     * create a file in external storage to hold the captured image
+     *
+     * @return the new file
+     * @throws IOException -- throw exception if file cannot be created
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -227,6 +270,13 @@ public class ImageGalleryActivity extends AppCompatActivity {
         return image;
     }
 
+    /**
+     * handle completed activity requests
+     *
+     * @param requestCode -- the request that has been completed
+     * @param resultCode -- the result of the request
+     * @param data -- any data returned by the request
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -235,30 +285,33 @@ public class ImageGalleryActivity extends AppCompatActivity {
                 if (null != newPhotoPath) {
                     ImageFile image = new ImageFile(newPhotoPath);
                     dm.insertImageFile(image, kaizen);
-                    //ImageFile image = kaizen.addImageFile(new ImageFile(newPhotoPath));
                     launchImageViewerActivity(image);
                 }
             }
             else {
                 if(null != newPhotoPath) {
                     ImageFile.deleteFile(newPhotoPath);
-                    /*String path = newPhotoPath.substring(5);
-                    File badImage = new File(path);
-
-                    if(badImage.exists()) {
-                        badImage.delete();
-                    }*/
                 }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * navigate up in the app
+     *
+     * @return true if navigation successful
+     */
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+    /**
+     * allow outside access to the recycler adapter
+     *
+     * @return a reference to the RecyclerAdapter
+     */
     public static ImageRecyclerAdapter getRecyclerAdapter() {
         return recAdapter;
     }

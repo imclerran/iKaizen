@@ -9,63 +9,71 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 
 /**
- * Created by imcle on 3/1/2016.
+ * Data class to used to store information about an image file in the filesystem
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
  */
 public class ImageFile {
-    private String path;
+
+    // meta data:
     private int itemID;
+    private boolean deleteMe;
+
+    // primary data:
+    private String path;
     private Bitmap thumbnail;
     private float aspectRatio;
-    private static int count;
 
+    /**
+     * default constructor
+     */
     public ImageFile() {
         path = null;
+        deleteMe = false;
     }
 
+    /**
+     * constructor
+     *
+     * @param path -- the path of the image stored in the filesystem
+     */
     public ImageFile(String path) {
         this.path = path;
+        deleteMe = false;
     }
 
-    public String getPath() {
-        return path;
-    }
+    // getters and setters:
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+    public String getPath() { return path; }
+    public void setPath(String path) { this.path = path; }
 
-    public int getItemID() {
-        return itemID;
-    }
+    public int getItemID() { return itemID; }
+    public void setItemID(int itemID) { this.itemID = itemID; }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
-    }
+    public Bitmap getThumbnail() { return thumbnail; }
+    public void setThumbnail(Bitmap thumbnail) { this.thumbnail = thumbnail; }
 
-    public Bitmap getThumbnail() {
-        return thumbnail;
-    }
+    public float getAspectRatio() { return aspectRatio; }
+    public void setAspectRatio(float aspectRatio) { this.aspectRatio = aspectRatio; }
 
-    public void setThumbnail(Bitmap thumbnail) {
-        this.thumbnail = thumbnail;
-    }
+    public boolean isDeleteMe() { return isDeleteMe(); }
+    public void setDeleteMe(boolean deleteMe) { this.deleteMe = deleteMe; }
 
-    public float getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public void setAspectRatio(float aspectRatio) {
-        this.aspectRatio = aspectRatio;
-    }
-
-    public static boolean deleteFile(final String deletePath) {
+    /**
+     * delete a file in the file system
+     *
+     * @param filePath -- the path to the file to delete
+     * @return success or failure
+     */
+    public static boolean deleteFile(final String filePath) {
         String path;
-        String prefix = deletePath.substring(0, 5);
+        String prefix = filePath.substring(0, 5);
 
         if(prefix.equals("file:")) {
-            path = deletePath.substring(5);
+            path = filePath.substring(5);
         }
-        else { path = deletePath; }
+        else { path = filePath; }
 
         File toDelete = new File(path);
         if(!toDelete.exists()) {

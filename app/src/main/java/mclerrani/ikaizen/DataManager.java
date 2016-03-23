@@ -8,28 +8,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by Ian on 1/21/2016.
+ * A singleton class to provide access to a single data set throughout the app
+ * 
+ * @// TODO: 3/14/2016 only update date modified if the kaizen/countermeasure has changed
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
  */
 public class DataManager { /* SINGLETON */
 
     private static DataManager dm;
     private DatabaseHelper dbh;
     private static Context context;
-
     private ArrayList<Kaizen> kaizenList;
-    private ArrayList<Countermeasure> countermeasureList;
-    //private int nextListId;
     private int kParentId;
 
+    /**
+     * default constructor
+     */
     private DataManager() {
         kaizenList          = new ArrayList<>();
-        countermeasureList  = new ArrayList<>();
         dbh = new DatabaseHelper(context);
         new PopulateListsTask().execute();
     }
 
-    // get the data manager
-    // if it doesn't exist, instantiate it
+    /**
+     * create a new DataManager if not yet instantiated
+     * return a reference to the DataManager
+     *
+     * @param context -- the application context
+     * @return a reference to the DataManager
+     */
     public static DataManager getInstance(Context context) {
         DataManager.context = context;
         if(null == dm) {
@@ -38,16 +47,13 @@ public class DataManager { /* SINGLETON */
         return dm;
     }
 
-    public void sortKaizenList() { Collections.sort(kaizenList); }
-
-
+    /**
+     * get the kaizen list
+     *
+     * @return the kaizenList
+     */
     public ArrayList<Kaizen> getKaizenList() {
-        //Collections.sort(kaizenList);
         return kaizenList;
-    }
-
-    public ArrayList<Countermeasure> getCountermeasureList() {
-        return countermeasureList;
     }
 
     public Kaizen getKaizen(int id) {
@@ -64,17 +70,31 @@ public class DataManager { /* SINGLETON */
         return kaizenList.get(i);
     }
 
-    //--------------------
-    // kaizen db interface
-    //--------------------
+    /**
+     * insert a Kaizen in the database
+     *
+     * @param k -- the kaizen to insert
+     */
     public void insertKaizen(Kaizen k) {
         k.updateDateModified();
         new InsertKaizenTask().execute(k);
     }
+
+    /**
+     * update a Kaizen in the database
+     *
+     * @param k -- the kaizen to update
+     */
     public void updateKaizen(Kaizen k) {
         k.updateDateModified();
         new UpdateKaizenTask().execute(k);
     }
+
+    /**
+     * delete a Kaizen
+     *
+     * @param k -- the Kaizen to delete
+     */
     public void deleteKaizen(Kaizen k) {
         if(null != k.getSolution()) {
             deleteSolution(k.getSolution(), k);
@@ -85,37 +105,71 @@ public class DataManager { /* SINGLETON */
         new DeleteKaizenTask().execute(k);
     }
 
-    //----------------------
-    // imagefile db interface
-    //----------------------
+    /**
+     * insert an ImageFile
+     *
+     * @param f -- the ImageFile to insert
+     * @param parent -- the parent kaizen
+     */
     public void insertImageFile(ImageFile f, Kaizen parent) {
         parent.updateDateModified();
         kParentId = parent.getItemID();
         new InsertImageFileTask().execute(f);
     }
+
+    /**
+     * update an ImageFile
+     *
+     * @param f -- the
+     * @param parent
+     */
     public void updateImageFile(ImageFile f, Kaizen parent) {
         parent.updateDateModified();
         kParentId = parent.getItemID();
         new UpdateImageFileTask().execute(f);
     }
+
+    /**
+     * delete an ImageFile
+     *
+     * @param f -- the ImageFile to delete
+     * @param parent -- the parent Kaizen
+     */
     public void deleteImageFile(ImageFile f, Kaizen parent) {
         parent.updateDateModified();
         new DeleteImageFileTask().execute(f);
     }
 
-    //----------------------
-    // solution db interface
-    //----------------------
+    /**
+     * insert a solution
+     *
+     * @param s -- the solution to insert
+     * @param parent -- the parent kaizen
+     */
     public void insertSolution(Solution s, Kaizen parent) {
         parent.updateDateModified();
         kParentId = parent.getItemID();
         new InsertSolutionTask().execute(s);
     }
+
+    /**
+     * update a solution
+     *
+     * @param s the solution to update
+     * @param parent -- the parent kaizen
+     */
     public void updateSolution(Solution s, Kaizen parent) {
         parent.updateDateModified();
         kParentId = parent.getItemID();
         new UpdateSolutionTask().execute(s);
     }
+
+    /**
+     * delete a solution
+     *
+     * @param s the solution to delete
+     * @param parent the parent kaizen
+     */
     public void deleteSolution(Solution s, Kaizen parent) {
         parent.updateDateModified();
         while(0 < s.getPossibleCounterMeasures().size()) {
@@ -124,19 +178,36 @@ public class DataManager { /* SINGLETON */
         new DeleteSolutionTask().execute(s);
     }
 
-    //----------------------------
-    // countermeasure db interface
-    //----------------------------
+    /**
+     * insert a countermeasure
+     *
+     * @param cm -- the countermeasure to insert
+     * @param parent -- the parent kaizen
+     */
     public void insertCountermeasure(Countermeasure cm, Kaizen parent) {
         parent.updateDateModified();
         kParentId = parent.getItemID();
         new InsertCountermeasureTask().execute(cm);
     }
+
+    /**
+     * update a countermeasure
+     *
+     * @param cm -- the countermeasure to update
+     * @param parent -- the parent kaizen
+     */
     public void updateCountermeasure(Countermeasure cm, Kaizen parent) {
         parent.updateDateModified();
         kParentId = parent.getItemID();
         new UpdateCountermeasureTask().execute(cm);
     }
+
+    /**
+     * delete a countermeasure
+     *
+     * @param cm -- the countermeasure to delete
+     * @param parent -- the parent kaizen
+     */
     public void deleteCountermeasure(Countermeasure cm, Kaizen parent) {
         parent.updateDateModified();
         new DeleteCountermeasureTask().execute(cm);
@@ -165,7 +236,7 @@ public class DataManager { /* SINGLETON */
     }
 
     /**
-     * An asyncronous task to allow deleting a Kaizen from the db in a second thread
+     * An asynchronous task to allow deleting a Kaizen from the db in a second thread
      */
     private class InsertKaizenTask extends AsyncTask<Kaizen, Void, Boolean> {
         @Override
@@ -191,6 +262,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow updating a Kaizen from the db in a second thread
+     */
     private class UpdateKaizenTask extends AsyncTask<Kaizen, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Kaizen... params) {
@@ -208,6 +282,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow deleting a Kaizen from the db in a second thread
+     */
     private class DeleteKaizenTask extends AsyncTask<Kaizen, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Kaizen... params) {
@@ -226,6 +303,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow inserting a Solution from the db in a second thread
+     */
     private class InsertSolutionTask extends AsyncTask<Solution, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Solution... params) {
@@ -247,6 +327,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow updating a Solution from the db in a second thread
+     */
     private class UpdateSolutionTask extends AsyncTask<Solution, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Solution... params) {
@@ -261,6 +344,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow deleting a Solution from the db in a second thread
+     */
     private class DeleteSolutionTask extends AsyncTask<Solution, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Solution... params) {
@@ -276,6 +362,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow inserting an ImageFile from the db in a second thread
+     */
     private class InsertImageFileTask extends AsyncTask<ImageFile, Void, Boolean> {
         @Override
         protected Boolean doInBackground(ImageFile... params) {
@@ -297,6 +386,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow updating an ImageFile from the db in a second thread
+     */
     private class UpdateImageFileTask extends AsyncTask<ImageFile, Void, Boolean> {
         @Override
         protected Boolean doInBackground(ImageFile... params) {
@@ -311,6 +403,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow deleting an ImageFile from the db in a second thread
+     */
     private class DeleteImageFileTask extends AsyncTask<ImageFile, Void, Boolean> {
         @Override
         protected Boolean doInBackground(ImageFile... params) {
@@ -329,6 +424,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow inserting a Countermeasure from the db in a second thread
+     */
     private class InsertCountermeasureTask extends AsyncTask<Countermeasure, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Countermeasure... params) {
@@ -358,6 +456,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow updating a Countermeasure from the db in a second thread
+     */
     private class UpdateCountermeasureTask extends AsyncTask<Countermeasure, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Countermeasure... params) {
@@ -377,6 +478,9 @@ public class DataManager { /* SINGLETON */
         }
     }
 
+    /**
+     * An asynchronous task to allow deleting a Countermeasure from the db in a second thread
+     */
     private class DeleteCountermeasureTask extends AsyncTask<Countermeasure, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Countermeasure... params) {

@@ -7,12 +7,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Switch;
 
+/**
+ * Activity class to handle setting user preferences
+ *
+ * @author Ian McLerran
+ * @version 2/18/16
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     PreferencesManager pm = PreferencesManager.getInstance(this);
     Switch swcShowOwnerData;
     Switch swcEnableWelcomeMessage;
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +47,12 @@ public class SettingsActivity extends AppCompatActivity {
             swcEnableWelcomeMessage.setChecked(false);
     }
 
+    /**
+     * when swcShowOwnerData switch is clicked,
+     * toggle settings appropriately
+     *
+     * @param view -- the view clicked on
+     */
     public void swcShowOwnerDataOnClick(View view) {
         if(swcShowOwnerData.isChecked())
             pm.setShowOwnerData(true);
@@ -43,6 +60,12 @@ public class SettingsActivity extends AppCompatActivity {
             pm.setShowOwnerData(false);
     }
 
+    /**
+     * when swcShowWelcomeMessage switch is clicked,
+     * toggle settings appropriately
+     *
+     * @param view -- the view clicked on
+     */
     public void swcShowWelcomeMessageOnClick(View view) {
         if(swcEnableWelcomeMessage.isChecked())
             pm.setEnableWelcomeMessage(true);
@@ -50,11 +73,22 @@ public class SettingsActivity extends AppCompatActivity {
             pm.setEnableWelcomeMessage(false);
     }
 
+    /**
+     * navigate up in the app
+     *
+     * @return always true
+     */
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
+
+    /**
+     * launch AboutActivity when settings item is clicked
+     *
+     * @param view
+     */
     public void llAboutOnClick(View view) {
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);

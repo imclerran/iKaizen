@@ -14,6 +14,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+/**
+ * An activity class to edit a given kaizen
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
+ */
 public class KaizenEditActivity extends AppCompatActivity {
     public final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
     public final static int EDIT_KAIZEN_REQUEST = 1;
@@ -21,9 +27,13 @@ public class KaizenEditActivity extends AppCompatActivity {
 
     private DataManager dm;
     private PreferencesManager pm;
-    //private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
     private Kaizen kaizen;
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,12 @@ public class KaizenEditActivity extends AppCompatActivity {
         populate(kaizen);
     }
 
+    /**
+     * inflate the options menu
+     *
+     * @param menu the menu to inflate
+     * @return success or failure
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -57,39 +73,17 @@ public class KaizenEditActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        hideOwnerData();
-    }
-
-    public void hideOwnerData() {
-        LinearLayout llOwnerLayout = (LinearLayout)findViewById(R.id.llOwnerLayout);
-        LinearLayout llDeptLayout = (LinearLayout)findViewById(R.id.llDeptLayout);
-
-        LinearLayout.LayoutParams paramsShow =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams paramsHide =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-
-
-        if(pm.isShowOwnerData()) {
-
-            llOwnerLayout.setLayoutParams(paramsShow);
-            llDeptLayout.setLayoutParams(paramsShow);
-        }
-        else {
-            llOwnerLayout.setLayoutParams(paramsHide);
-            llDeptLayout.setLayoutParams(paramsHide);
-        }
-    }
-
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the item selected from the options menu
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -100,11 +94,51 @@ public class KaizenEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Android lifecycle onResume() method
+     * call method to hide/show owner info at this time
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideOwnerData();
+    }
+
+    /**
+     * hide or show the owner information according to user preferences
+     */
+    public void hideOwnerData() {
+        LinearLayout llOwnerLayout = (LinearLayout)findViewById(R.id.llOwnerLayout);
+        LinearLayout llDeptLayout = (LinearLayout)findViewById(R.id.llDeptLayout);
+
+        if(pm.isShowOwnerData()) {
+            LinearLayout.LayoutParams paramsShow =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                  LinearLayout.LayoutParams.WRAP_CONTENT);
+            llOwnerLayout.setLayoutParams(paramsShow);
+            llDeptLayout.setLayoutParams(paramsShow);
+        }
+        else {
+            LinearLayout.LayoutParams paramsHide =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+            llOwnerLayout.setLayoutParams(paramsHide);
+            llDeptLayout.setLayoutParams(paramsHide);
+        }
+    }
+
+    /**
+     * launch the settings activity
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * populate the layout with Kaizen data
+     *
+     * @param kaizen the Kaizen to display
+     */
     private void populate(Kaizen kaizen) {
         EditText txtOwner = (EditText)findViewById(R.id.txtOwner);
         txtOwner.setText(kaizen.getOwner());
@@ -134,10 +168,18 @@ public class KaizenEditActivity extends AppCompatActivity {
         txtTotalWaste.setText(String.valueOf(kaizen.getTotalWaste()));
     }
 
+    /**
+     * respond to btnSaveKaizen click events
+     *
+     * @param view the view clicked on
+     */
     public void btnSaveKaizenOnClick(View view) {
         saveKaizen();
     }
 
+    /**
+     * save user input to the kaizen object
+     */
     private void saveKaizen() {
         // get user inputs and store in Kaizen object
         EditText txtOwner = (EditText)findViewById(R.id.txtOwner);
@@ -176,13 +218,23 @@ public class KaizenEditActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * navigate up in the app
+     * save user input at this time
+     *
+     * @return true if navigation successful
+     */
     public boolean onSupportNavigateUp() {
-        // TODO: replace with discard changes dialog?
         saveKaizen();
         onBackPressed();
         return true;
     }
 
+    /**
+     * get the username from device contacts
+     *
+     * @return the username formatted as "FirstName LastInitial"
+     */
     public String getUserName() {
 
         if(PermissionsManager.canMakeSmores()) {
@@ -190,7 +242,6 @@ public class KaizenEditActivity extends AppCompatActivity {
         }
 
         String fullName = null;
-
         Cursor c = this.getContentResolver().query(ContactsContract.Profile.CONTENT_URI, null, null, null, null);
         int count = c.getCount();
         String[] columnNames = c.getColumnNames();

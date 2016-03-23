@@ -9,8 +9,8 @@ android {
         applicationId "mclerrani.ikaizen"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.1.6"
+        versionCode 5
+        versionName "0.2.0"
     }
     buildTypes {
         release {

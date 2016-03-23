@@ -5,7 +5,9 @@ import android.util.Log;
 import java.util.Comparator;
 
 /**
- * Created by Ian on 2/4/2016.
+ * comparator class for sorting Kaizen objects
+ * @author Ian McLerran
+ * @version 2/18/16
  */
 public class KaizenComparator implements Comparator<Kaizen> {// may be it would be Model
 
@@ -14,20 +16,31 @@ public class KaizenComparator implements Comparator<Kaizen> {// may be it would 
 
     private int compareBy;
 
+    /**
+     * constructor
+     * @param compareBy -- an integer indicating which value to compare the Kaizen by
+     */
     public KaizenComparator(int compareBy) {
         super();
         this.compareBy = compareBy;
     }
 
+    /**
+     * compare two Kaizen objects
+     *
+     * @param lhs -- the left hand object to compare
+     * @param rhs -- the right hand object to compare
+     * @return an integer indicating the sort order of the objects
+     */
     @Override
-    public int compare(Kaizen first, Kaizen second) {
+    public int compare(Kaizen lhs, Kaizen rhs) {
         switch(compareBy) {
             case COMPARE_DATE_MODIFIED:
-                return second.getDateModified().compareTo(first.getDateModified());
+                return rhs.getDateModified().compareTo(lhs.getDateModified());
             case COMPARE_TOTAL_WASTE:
-                return first.getTotalWaste() > second.getTotalWaste() ? -1 : first.getTotalWaste() < second.getTotalWaste() ? 1 : 0;
+                return lhs.getTotalWaste() > rhs.getTotalWaste() ? -1 : lhs.getTotalWaste() < rhs.getTotalWaste() ? 1 : 0;
             default:
-                return first.getDateModified().compareTo(second.getDateModified());
+                return lhs.getDateModified().compareTo(rhs.getDateModified());
         }
     }
 }

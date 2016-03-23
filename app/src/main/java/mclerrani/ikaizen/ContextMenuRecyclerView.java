@@ -8,6 +8,7 @@ import android.view.View;
 
 /**
  * An extension of the RecyclerView class that supports context menus
+ *
  * @author Renaud Cerrato
  * @version 2/4/16
  */
@@ -17,6 +18,7 @@ public class ContextMenuRecyclerView extends android.support.v7.widget.RecyclerV
 
     /**
      * constructor
+     *
      * @param context -- the context in which the Recycler is instantiated
      */
     public ContextMenuRecyclerView(Context context) {
@@ -24,6 +26,7 @@ public class ContextMenuRecyclerView extends android.support.v7.widget.RecyclerV
     }
 
     /**
+     * constructor
      *
      * @param context -- the context in which the Recycler is instantiated
      * @param attrs -- a collection of xml attributes
@@ -33,6 +36,7 @@ public class ContextMenuRecyclerView extends android.support.v7.widget.RecyclerV
     }
 
     /**
+     * constructor
      *
      * @param context -- the context in which the RecyclerView is instantiated
      * @param attrs -- a collection of xml attributes
@@ -44,6 +48,7 @@ public class ContextMenuRecyclerView extends android.support.v7.widget.RecyclerV
 
     /**
      * getter for ContextMenuInfo
+     *
      * @return additional info about the creation of the context menu
      */
     @Override
@@ -53,6 +58,7 @@ public class ContextMenuRecyclerView extends android.support.v7.widget.RecyclerV
 
     /**
      * show the context menu
+     *
      * @param originalView -- the view to create a context menu for
      * @return success or failure
      */
@@ -68,13 +74,14 @@ public class ContextMenuRecyclerView extends android.support.v7.widget.RecyclerV
     }
 
     /**
-     * implementation ContextMenuInfo class
+     * implementation of ContextMenuInfo class
      * adds fields to store position and id of context-clicked item
      */
     public static class RecyclerContextMenuInfo implements ContextMenu.ContextMenuInfo {
 
         /**
          * constructor
+         *
          * @param position -- position of context-clicked item
          * @param id -- id of context-clicked item
          */

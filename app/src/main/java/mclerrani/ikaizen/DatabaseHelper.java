@@ -11,22 +11,29 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 /**
- * Created by Ian on 2/18/2016.
+ * class used to read and write to the database
  *
  * @author Ian McLerran
- * @version 2/19/2016
+ * @version 3/12/2016
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "kaizendb";
     public static final int DB_VERSION = 1;
 
+    /**
+     * constructor
+     *
+     * @param context -- the application context
+     */
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     /**
-     * @param db - a SQLiteDatabase
+     * create the database tables
+     *
+     * @param db -- a SQLiteDatabase
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -75,11 +82,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
     }
 
+    /**
+     * handle changes in database version
+     *
+     * @param db -- the SQLite database
+     * @param oldVersion -- version number of the database being upgraded
+     * @param newVersion -- version number of the database to upgrade to
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 
+    /**
+     * insert a kaizen object into the database
+     *
+     * @param k -- the kaizen to insert
+     * @return the id assigned to the kaizen
+     */
     public synchronized int insertKaizen(Kaizen k) {
         SQLiteDatabase db = null;
         try {
@@ -113,6 +133,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * update a kaizen in the database
+     *
+     * @param k -- the kaizen to update
+     * @return the number of kaizen updated
+     */
     public synchronized int updateKaizen(Kaizen k) {
         SQLiteDatabase db = null;
         try {
@@ -147,6 +173,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * delete a kaizen in the database
+     *
+     * @param k -- the kaizen to delete
+     * @return the number of kaizen deleted
+     */
     public synchronized int deleteKaizen(Kaizen k) {
         SQLiteDatabase db = null;
         try {
@@ -164,6 +196,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * insert a Solution in the database
+     *
+     * @param s -- the solution to update
+     * @param parentId -- the id of the parent kaizen
+     * @return the id assigned to the solution
+     */
     public synchronized int insertSolution(Solution s, int parentId) {
         SQLiteDatabase db = null;
         try {
@@ -199,6 +238,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * update a solution in the database
+     *
+     * @param s -- the solution to update
+     * @param parentId -- the id of the parent kaizen
+     * @return the number of solutioins updated
+     */
     public synchronized int updateSolution(Solution s, int parentId) {
         SQLiteDatabase db = null;
         try {
@@ -235,6 +281,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * delete a solution from the database
+     *
+     * @param s -- the solution to delete
+     * @return the number of solutions deleted
+     */
     public synchronized int deleteSolution(Solution s) {
         SQLiteDatabase db = null;
         try {
@@ -252,6 +304,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * insert an ImageFile in the database
+     *
+     * @param f -- the ImageFile to insert
+     * @param parentId -- the id of the parent kaizen
+     * @return the id assigned to the ImageFile
+     */
     public synchronized int insertImageFile(ImageFile f, int parentId) {
         SQLiteDatabase db = null;
         try {
@@ -273,6 +332,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * update an ImageFile in the database
+     *
+     * @param f -- the ImageFile to update
+     * @param parentId -- the id of the parent kaizen
+     * @return the number of ImageFiles updated
+     */
     public synchronized int updateImageFile(ImageFile f, int parentId) {
         SQLiteDatabase db = null;
         try {
@@ -295,6 +361,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * delete an ImageFile from the database
+     *
+     * @param f -- the ImageFile to delete
+     * @return the number of ImageFiles deleted
+     */
     public synchronized int deleteImageFile(ImageFile f) {
         SQLiteDatabase db = null;
         try {
@@ -312,6 +384,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * insert a countermeasure in the database
+     *
+     * @param cm -- the countermeasure to insert
+     * @param parentId -- the id of the parent solution
+     * @return the id assigned to the countermeasure
+     */
     public synchronized int insertCountermeasure(Countermeasure cm, int parentId) {
         SQLiteDatabase db = null;
         try {
@@ -340,6 +419,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * update a countermeasure in the database
+     *
+     * @param cm -- the countermeasure to update
+     * @param parentId the id of the parent solution
+     * @return the number of countermeasures updated
+     */
     public synchronized int updateCountermeasure(Countermeasure cm, int parentId) {
         SQLiteDatabase db = null;
         try {
@@ -369,6 +455,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * delete a countermeasure from the database
+     *
+     * @param cm the countermeasure to delete
+     * @return the number of countermeasures to delete
+     */
     public synchronized int deleteCountermeasure(Countermeasure cm) {
         SQLiteDatabase db = null;
         try {
@@ -393,6 +485,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * read all data stored in the database
+     *
+     * @param kaizenList a list of kaizen to store database data in
+     * @return success or failure
+     */
     public synchronized boolean populateLists(ArrayList<Kaizen> kaizenList) {
         SQLiteDatabase db = null;
         Cursor kResults = null;
@@ -446,6 +544,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * create a new kaizen object from data stored in a cursor
+     *
+     * @param results a cursor containing the kaizen
+     * @return the new kaizen
+     */
     public Kaizen createKaizen(Cursor results) {
         int id = (int) results.getLong(results.getColumnIndex("_id"));
         String owner = results.getString(results.getColumnIndex("owner"));
@@ -470,6 +574,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return k;
     }
 
+    /**
+     * create a new solution object from data stored in a cursor
+     *
+     * @param results a cursor containing the solution
+     * @return the new solution
+     */
     public Solution createSolution(Cursor results) {
         int id = (int) results.getLong(results.getColumnIndex("_id"));
         String todaysFix = results.getString(results.getColumnIndex("todaysFix"));
@@ -492,6 +602,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return s;
     }
 
+    /**
+     * create a new imagefile object from data stored in a cursor
+     *
+     * @param results a cursor containing the imagefile
+     * @return the new imagefile
+     */
     private ImageFile createImageFile(Cursor results) {
         int id = (int) results.getLong(results.getColumnIndex("_id"));
         String imagePath = results.getString(results.getColumnIndex("imagePath"));
@@ -502,6 +618,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return f;
     }
 
+    /**
+     * create a new countermeasure object from data stored in a cursor
+     *
+     * @param results a cursor containing the countermeasure
+     * @return the new countermeasure
+     */
     public Countermeasure createCountermeasure(Cursor results) {
         int id = (int) results.getLong(results.getColumnIndex("_id"));
         DateTime dateModified = new DateTime(results.getLong(results.getColumnIndex("dateModified")));

@@ -8,20 +8,26 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 /**
- * Created by Ian on 2/4/2016.
+ * A dialog fragment to display a choice of sorting options
+ *
+ * @author Ian McLerran
+ * @version 2/16/16
  */
 public class SortKaizenByDialogFragment extends DialogFragment {
 
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
     public interface SortKaizenByDialogListener {
-        public void onDialogItemClick(DialogFragment dialog, int which);
+        void onDialogItemClick(DialogFragment dialog, int which);
     }
 
     // Use this instance of the interface to deliver action events
     SortKaizenByDialogListener mListener;
 
+    /**
+     * create a new instance of the dialog fragment
+     *
+     * @param title -- the title of the dialog fragment
+     * @return the new fragment
+     */
     public static SortKaizenByDialogFragment newInstance(String title) {
         SortKaizenByDialogFragment frag = new SortKaizenByDialogFragment();
         Bundle args = new Bundle();
@@ -30,6 +36,12 @@ public class SortKaizenByDialogFragment extends DialogFragment {
         return frag;
     }
 
+    /**
+     * use the AlertDialog.builder to generate the dialog
+     *
+     * @param savedInstanceState -- the saved application state
+     * @return the generated dialog
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -45,7 +57,11 @@ public class SortKaizenByDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    /**
+     * attach the dialog to an activity
+     *
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

@@ -21,6 +21,12 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
+/**
+ * Activity class to display list of Kaizen objects and a welcome message
+ *
+ * @author Ian McLerran
+ * @version 3/14/16
+ */
 public class KaizenRecyclerActivity extends AppCompatActivity
         implements SortKaizenByDialogFragment.SortKaizenByDialogListener {
 
@@ -40,6 +46,11 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     private Kaizen toDelete = null;
     private int sortBy = KaizenComparator.COMPARE_DATE_MODIFIED;
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +115,12 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         );
     }
 
+    /**
+     * inflate the options menu
+     *
+     * @param menu the menu to inflate
+     * @return success or failure
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -111,6 +128,12 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the item selected from the options menu
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -129,15 +152,25 @@ public class KaizenRecyclerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * inflate the context menu
+     *
+     * @param menu the menu to inflate
+     * @param v the view in which the menu has context
+     * @param menuInfo additional info about the context menu
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.context_menu_kaizen_recycler, menu);
-
-        /*MenuInflater menuInflater = getActivity().getMenuInflater();
-        menuInflater.inflate(R.menu.context_menu_documents_fragment, menu);*/
     }
 
+    /**
+     * respond to the user selection from the context menu
+     *
+     * @param item -- the item selected from the context menu
+     * @return success or failure
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -160,7 +193,6 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * launch the settings activity
-     * @version
      */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
@@ -169,7 +201,7 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * launch the edit kaizen activity
-     * @version
+     *
      * @param k -- the kaizen to edit
      */
     public void editKaizen(Kaizen k) {
@@ -182,8 +214,8 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * flag a kaizen for deletion, then call the method to delete it
-     * @version
-     * @param k
+     *
+     * @param k -- the kaizen to delete
      */
     public void deleteKaizen(Kaizen k) {
         k.setDeleteMe(true);
@@ -193,10 +225,8 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     /**
      * if a Kaizen has been flagged for deletion, remove it from the list
      * give the user a chance to restore it, or delete it from the DB if they do not
-     * @version
-     * @return -- success or failure
      */
-    public boolean deleteKaizen() {
+    public void deleteKaizen() {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         // if there is a Kaizen object with deleteMe flag set
@@ -248,25 +278,21 @@ public class KaizenRecyclerActivity extends AppCompatActivity
             });
             snackbar.show();
         }
-
-        return true;
     }
 
     /**
      * show the sort kaizen dialog
-     * @version
      */
     public void promptForSortBy() {
-        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
         FragmentManager fm = getFragmentManager();
-        SortKaizenByDialogFragment sortByDialog = (SortKaizenByDialogFragment) SortKaizenByDialogFragment.newInstance("SortKaizenByDialogFragment");
+        SortKaizenByDialogFragment sortByDialog = SortKaizenByDialogFragment.newInstance("SortKaizenByDialogFragment");
         sortByDialog.show(fm, "sort_by_dialog_fragment");
     }
 
     /**
-     * when the sort dialog completes, determine which option was selected
-     * then sort the kaizen list
-     * @version
+     * when the sort dialog resolves, determine which option was selected
+     * then sort the kaizen list accordingly
+     *
      * @param dialog -- the resolved dialog
      * @param which -- the index of the option chosen
      */
@@ -289,7 +315,6 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * launch the KaizenEditActivity with request code CREATE_KAIZEN_REQUEST
-     * @version
      */
     public void newKaizen() {
         Intent intent = new Intent(this, KaizenEditActivity.class);
@@ -297,7 +322,8 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     }
 
     /**
-     * set the visibility of the welcome message, and delete any flagged kaizen
+     * Android lifecycle onResume() method
+     * set the visibility of the welcome message and delete any flagged kaizen at this time
      */
     @Override
     protected void onResume() {
@@ -310,8 +336,9 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     }
 
     /**
+     * handle completed activity requests
      * switch to details activity after editing a kaizen
-     * @version
+     *
      * @param requestCode -- the request which completed
      * @param resultCode -- success or failure of the request
      * @param data -- any data returned by the requested activity
@@ -334,7 +361,6 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * show or hide the welcome message according to number of kaizen and user preferences
-     * version
      */
     public void updateWelcomeMessageVisibility() {
         pm.isEnableWelcomeMessage();
@@ -355,7 +381,9 @@ public class KaizenRecyclerActivity extends AppCompatActivity
     }
 
     /**
+     * Android lifecycle onSaveInstanceState() method
      * save the sort option the user has selected
+     *
      * @param outState -- the save state bundle
      */
     @Override
@@ -367,14 +395,16 @@ public class KaizenRecyclerActivity extends AppCompatActivity
 
     /**
      * provide outside access to the recycler adapter
-     * @return -- the kaizen recycler adapter
+     *
+     * @return the kaizen recycler adapter
      */
     public static KaizenRecyclerAdapter getRecyclerAdapter() { return recAdapter; }
 
     /**
      * get application context
      * this method must be in the launch activity
-     * @return -- the application context
+     *
+     * @return the application context
      */
     public static Context getContext() { return appContext; }
 

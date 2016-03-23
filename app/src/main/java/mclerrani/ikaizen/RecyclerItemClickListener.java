@@ -7,18 +7,29 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
+ * implement the RecyclerView.OnItemTouchListener to handle item clicks
+ *
+ * @// TODO: 3/14/2016 phase out. Use built in OnItemTouchListener instead.
+ *
  * @author Jacob Tabak
- * Created by Ian on 2/2/2016.
+ * @version 2/4/16
  */
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
+
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
     GestureDetector mGestureDetector;
 
+    /**
+     * constructor
+     *
+     * @param context -- the activity context
+     * @param listener the item click listener
+     */
     public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
@@ -28,6 +39,13 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
         });
     }
 
+    /**
+     * intercept a touch event, and return true if the event is handled.
+     *
+     * @param view -- the RecyclerView clicked on
+     * @param e -- the motion event that triggered OnItemTouchListener
+     * @return true if event is handled
+     */
     @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
         View childView = view.findChildViewUnder(e.getX(), e.getY());
         if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
@@ -37,8 +55,21 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
         return false;
     }
 
+    /**
+     * required method
+     * not implemented
+     *
+     * @param view -- the RecyclerView
+     * @param motionEvent -- the motion event that triggered the handler
+     */
     @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
 
+    /**
+     * required method
+     * not implemented
+     *
+     * @param disallowIntercept -- should disallow intercept?
+     */
     @Override
     public void onRequestDisallowInterceptTouchEvent (boolean disallowIntercept){}
 }

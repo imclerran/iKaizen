@@ -18,15 +18,26 @@ import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
+/**
+ * Activity class to allow user input of Solution data
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
+ */
 public class SolutionEditActivity extends AppCompatActivity {
 
     public final static int EDIT_SOLUTION_REQUEST = 3;
-
     private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
 
     private DataManager dm;
     private Kaizen kaizen;
     private Solution solution;
+
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +60,12 @@ public class SolutionEditActivity extends AppCompatActivity {
         populate();
     }
 
+    /**
+     * inflate the opstions menu
+     *
+     * @param menu -- the menu to inflate
+     * @return the inflated menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -56,6 +73,12 @@ public class SolutionEditActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the item selected from the options menu
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -72,17 +95,17 @@ public class SolutionEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * launch the settings activity
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        save();
-    }
-
+    /**
+     * populate the layout with Solution data
+     */
     public void populate() {
         EditText txtTodaysFix           = (EditText) findViewById(R.id.txtTodaysFix);
         txtTodaysFix.setText(solution.getTodaysFix());
@@ -99,6 +122,9 @@ public class SolutionEditActivity extends AppCompatActivity {
         btnFeelsEmoji.setImageResource(solution.getSolvedEmote());
     }
 
+    /**
+     * save user input to the Solution object
+     */
     public void save() {
         EditText txtTodaysFix           = (EditText) findViewById(R.id.txtTodaysFix);
         solution.setTodaysFix(String.valueOf(txtTodaysFix.getText()));
@@ -117,6 +143,12 @@ public class SolutionEditActivity extends AppCompatActivity {
         dm.updateSolution(solution, kaizen);
     }
 
+    /**
+     * convert a date stored as a string into a DateTime object
+     *
+     * @param dateStr the string containing date information
+     * @return a new DateTime object
+     */
     private DateTime extractDateFromString(final String dateStr) {
         // extract month
         String tempStr = dateStr;
@@ -162,16 +194,23 @@ public class SolutionEditActivity extends AppCompatActivity {
         return new DateTime(year, month, day, 0, 0);
     }
 
+    /**
+     * when the user clicks the emoji button, launch the emoji picker activity
+     *
+     * @param view -- the view clicked on
+     */
     public void btnFeelsEmojiOnClick(View view) {
         Intent intent = new Intent(this, EmojiPickerActivity.class);
         startActivityForResult(intent, EmojiPickerActivity.REQUEST_EMOJI_ID);
     }
 
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
+    /**
+     * handle completed activity requests
+     *
+     * @param requestCode -- the request which completed
+     * @param resultCode -- success or failure of the request
+     * @param data -- any data returned by the requested activity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -183,14 +222,25 @@ public class SolutionEditActivity extends AppCompatActivity {
                     emojiId = (int)data.getLongExtra(EmojiPickerActivity.RESULT_EMOJI_ID, -1);
                 }
 
+                // if an emoji was chosen, store it in the solution, and show it on the button
                 ImageButton btnEmojiFeels = (ImageButton) findViewById(R.id.btnFeelsEmoji);
                 if(-1 != emojiId) {
                     solution.setSolvedEmote(emojiId);
                     btnEmojiFeels.setImageResource(emojiId);
-                    //btnEmojiFeels.setImageDrawable(getResources().getDrawable(emojiId));
                 }
             }
         }
+    }
 
+    /**
+     * navigate up in the app
+     * save user input at this time
+     *
+     * @return always true
+     */
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        save();
+        return true;
     }
 }

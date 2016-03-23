@@ -19,14 +19,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by imcle on 3/5/2016.
+ * a custom extension of the RecyclerView.Adapter class to display Images in a RecyclerView
+ *
+ * @author Ian McLerran
+ * @version 3/14/16
  */
 public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdapter.ImageViewHolder> {
 
     private ArrayList<ImageFile> imageList;
 
+    /**
+     * constructor
+     *
+     * @param imageList the list of images to display in the RecyclerView
+     */
     public ImageRecyclerAdapter(ArrayList<ImageFile> imageList) { this.imageList = imageList; }
 
+    /**
+     * called when a new object is added to the recycler. Inflates a view using the designated layout
+     *
+     * @param parent -- the containing view group
+     * @param viewType -- used if displaying more view type in the recycler
+     * @return a ViewHolder containing the newly inflated view
+     */
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -36,15 +51,23 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
         ViewTreeObserver observer = vh.itemView.getViewTreeObserver();
 
+        // Trigger an event at the pre-draw step.
+        // This will allow us to generate a thumbnail image
+        // and set the itemView height after the itemView width has been measured
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 ImageFile image = vh.getImage();
                 int targetWidth = vh.itemView.getMeasuredWidth();
+
+                // if a thumbnail has not been generated, do so.
                 if (null == image.getThumbnail()) {
-                    setPic(image, vh, targetWidth);
+                    setThumb(image, targetWidth);
+                    vh.setAspectRatio(image.getAspectRatio());
                 }
 
+                // if the width of the of view, or the aspect ratio of the image has changed
+                // store the new dimensions in the ViewHolder, then calculate and set the view height
                 if (targetWidth != vh.getCurrentWidth() || image.getAspectRatio() != vh.getAspectRatio()) {
                     vh.setCurrentWidth(targetWidth);
                     vh.setAspectRatio(image.getAspectRatio());
@@ -59,10 +82,18 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         return vh;
     }
 
+    /**
+     * bind a ViewHolder to an ImageFile
+     *
+     * @param holder -- the viewholder to use
+     * @param position -- the position of the viewholder
+     */
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
         ImageFile image = imageList.get(position);
         if(null != image && null != holder.getImage()) {
+            // if the ImageFile bound to the ViewHolder has changed,
+            // set aspect ratio to 0 to force recalculating the view height
             if (image.getItemID() != holder.getImage().getItemID()) {
                 holder.setAspectRatio(0.0f);
             }
@@ -70,11 +101,16 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         holder.setImage(image);
     }
 
-    // TODO: needs optimization
-    // try storing thumbnail and aspect ratio in viewholder
-    // then set view layout params according to aspect ratio
-    // no need to recreate bitmaps everytime gallery is redrawn
-    private boolean setPic(ImageFile image, ImageViewHolder holder, int targetWidth) {
+
+
+    /**
+     * load an image from the filesystem and generate a thumbnail
+     *
+     * @param image -- the image on the filesystem to decode
+     * @param targetWidth -- the desired width of the thumbnail
+     * @return success or failure
+     */
+    private boolean setThumb(ImageFile image, int targetWidth) {
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
@@ -96,21 +132,17 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         int photoH = bmOptions.outHeight;
 
         float aspectRatio = (float)photoW/(float)photoH;
-        int targetHeight = (int)((float)targetWidth/aspectRatio);
         image.setAspectRatio(aspectRatio);
-        holder.setAspectRatio(aspectRatio);
 
         // Determine how much to scale down the image
         int scaleFactor = photoW/targetWidth;
 
-        // Decode the image file into a Bitmap sized to fill the View
+        // Decode the image file into a Bitmap approximately the target width
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true; // deprecated
 
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fd, null, bmOptions);
-        //Bitmap thumb = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false);
-        //holder.imgThumbnail.setImageBitmap(thumb);
         image.setThumbnail(bitmap);
 
         try {
@@ -123,11 +155,31 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         return true;
     }
 
+    /**
+     * get the number of images stored in the adapter
+     *
+     * @return the number of items
+     */
     @Override
     public int getItemCount() {
         return imageList.size();
     }
 
+    /**
+     * get an ImageFile at the specified position
+     *
+     * @param position the position of the requested image
+     * @return the requested ImageFile
+     */
+    public ImageFile getImage(int position) {
+        if(0 <= position && imageList.size() > position)
+            return imageList.get(position);
+        else return null;
+    }
+
+    /**
+     * A ViewHolder class containing information about a single view item in the RecyclerView
+     */
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
         protected ImageView imgThumbnail;
 
@@ -135,10 +187,17 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         float aspectRatio;
         int currentWidth = 0;
 
+        /**
+         * constructor
+         *
+         * @param itemView -- an inflated view associated with one ImageFile item
+         */
         public ImageViewHolder(View itemView) {
             super(itemView);
             imgThumbnail = (ImageView) itemView.findViewById(R.id.imgThumbnail);
         }
+
+        // getters and setters:
 
         public void setImage(ImageFile image) { this.image = image; }
         public ImageFile getImage() { return image; }
@@ -148,11 +207,5 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
         public int getCurrentWidth() { return currentWidth; }
         public void setCurrentWidth(int currentWidth) { this.currentWidth = currentWidth; }
-    }
-
-    public ImageFile getImage(int position) {
-        if(0 <= position && imageList.size() > position)
-            return imageList.get(position);
-        else return null;
     }
 }

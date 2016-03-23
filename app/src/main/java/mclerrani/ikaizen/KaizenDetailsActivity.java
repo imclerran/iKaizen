@@ -20,106 +20,119 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Activity class for displaying the full details of a Kaizen
+ *
+ * @author Ian McLerran
+ * @version 3/14/16
+ */
 public class KaizenDetailsActivity extends AppCompatActivity {
-    static final int REQUEST_IMAGE_CAPTURE = 3;
-    static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-    private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
-    //private final static String EXTRA_FILE_PATH = "mclerrani.ikaizen.FILE_PATH";
 
-    //private PreferencesManager pm = PreferencesManager.getInstance(KaizenListActivity.getContext());
+    private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
+
     private PreferencesManager pm = PreferencesManager.getInstance(KaizenRecyclerActivity.getContext());
     private DataManager dm = DataManager.getInstance(KaizenRecyclerActivity.getContext());
     private Kaizen kaizen = null;
-    String currentPhotoPath = null;
 
+    /**
+     * Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved application state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kaizen_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // check if intent contains EXTRA_KAIZEN
-        // if it does, deserialize
+        // check if intent contains EXTRA_KAIZEN_ID
         Intent intent = getIntent();
-        if(intent.hasExtra(EXTRA_KAIZEN_ID)) {
+        if (intent.hasExtra(EXTRA_KAIZEN_ID)) {
             kaizen = dm.getKaizen(intent.getIntExtra(EXTRA_KAIZEN_ID, -1));
         }
-        // if intent does not contain EXTRA_KAIZEN
-        // get the test kaizen
-        else {
-            if(null == kaizen) {
-                kaizen = Kaizen.getTestKaizen();
-                dm.getKaizenList().add(kaizen);
-            }
+        // if failed load a Kaizen, finish the activity
+        if (null == kaizen) {
+            finish();
         }
 
         populate(kaizen);
-
-
     }
 
+    /**
+     * Android lifecycle onResume() method
+     * call method to hide/show owner info at this time
+     */
     @Override
     protected void onResume() {
         super.onResume();
         hideOwnerData();
     }
 
+    /**
+     * hide or show the owner information according to user preferences
+     */
     public void hideOwnerData() {
-        LinearLayout llOwnerLayout = (LinearLayout)findViewById(R.id.llOwnerLayout);
-        LinearLayout llDeptLayout = (LinearLayout)findViewById(R.id.llDeptLayout);
+        LinearLayout llOwnerLayout = (LinearLayout) findViewById(R.id.llOwnerLayout);
+        LinearLayout llDeptLayout = (LinearLayout) findViewById(R.id.llDeptLayout);
 
-        LinearLayout.LayoutParams paramsShow =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams paramsHide =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-
-
-        if(pm.isShowOwnerData()) {
-
+        if (pm.isShowOwnerData()) {
+            LinearLayout.LayoutParams paramsShow =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                                  LinearLayout.LayoutParams.WRAP_CONTENT);
             llOwnerLayout.setLayoutParams(paramsShow);
             llDeptLayout.setLayoutParams(paramsShow);
         }
         else {
+            LinearLayout.LayoutParams paramsHide =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
             llOwnerLayout.setLayoutParams(paramsHide);
             llDeptLayout.setLayoutParams(paramsHide);
         }
     }
 
 
-
-    // populate layout with kaizen data
+    /**
+     * populate the layout with Kaizen data
+     *
+     * @param kaizen the Kaizen to display
+     */
     private void populate(Kaizen kaizen) {
-        TextView lblOwner = (TextView)findViewById(R.id.lblOwnerData);
+        TextView lblOwner = (TextView) findViewById(R.id.lblOwnerData);
         lblOwner.setText(kaizen.getOwner());
-        TextView lblDept = (TextView)findViewById(R.id.lblDepartmentData);
+        TextView lblDept = (TextView) findViewById(R.id.lblDepartmentData);
         lblDept.setText(kaizen.getDept());
-        TextView lblDate = (TextView)findViewById(R.id.lblDateData);
+        TextView lblDate = (TextView) findViewById(R.id.lblDateData);
         lblDate.setText(kaizen.getDateCreatedAsString());
-        TextView lblProblemStatement = (TextView)findViewById(R.id.lblProblemStatementData);
+        TextView lblProblemStatement = (TextView) findViewById(R.id.lblProblemStatementData);
         lblProblemStatement.setText(kaizen.getProblemStatement());
-        TextView lblOverProduction = (TextView)findViewById(R.id.lblOverProductionData);
+        TextView lblOverProduction = (TextView) findViewById(R.id.lblOverProductionData);
         lblOverProduction.setText(kaizen.getOverProductionWaste());
-        TextView lblTransportation = (TextView)findViewById(R.id.lblTransportationData);
+        TextView lblTransportation = (TextView) findViewById(R.id.lblTransportationData);
         lblTransportation.setText(kaizen.getTransportationWaste());
-        TextView lblMotion = (TextView)findViewById(R.id.lblMotionData);
+        TextView lblMotion = (TextView) findViewById(R.id.lblMotionData);
         lblMotion.setText(kaizen.getMotionWaste());
-        TextView lblWaiting = (TextView)findViewById(R.id.lblWaitingData);
+        TextView lblWaiting = (TextView) findViewById(R.id.lblWaitingData);
         lblWaiting.setText(kaizen.getWaitingWaste());
-        TextView lblProcessing = (TextView)findViewById(R.id.lblProcessingData);
+        TextView lblProcessing = (TextView) findViewById(R.id.lblProcessingData);
         lblProcessing.setText(kaizen.getProcessingWaste());
-        TextView lblInventory = (TextView)findViewById(R.id.lblInventoryData);
+        TextView lblInventory = (TextView) findViewById(R.id.lblInventoryData);
         lblInventory.setText(kaizen.getInventoryWaste());
-        TextView lblDefects = (TextView)findViewById(R.id.lblDefectsData);
+        TextView lblDefects = (TextView) findViewById(R.id.lblDefectsData);
         lblDefects.setText(kaizen.getDefectsWaste());
-        TextView lblRootCauses = (TextView)findViewById(R.id.lblRootCausesData);
+        TextView lblRootCauses = (TextView) findViewById(R.id.lblRootCausesData);
         lblRootCauses.setText(kaizen.getRootCauses());
-        TextView lblTotalWaste = (TextView)findViewById(R.id.lblTotalWasteData);
+        TextView lblTotalWaste = (TextView) findViewById(R.id.lblTotalWasteData);
         lblTotalWaste.setText(String.valueOf(kaizen.getTotalWaste()));
     }
 
+    /**
+     * inflate the options menu
+     *
+     * @param menu -- the menu to inflate
+     * @return success or failure
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -127,19 +140,24 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the item selected from the options menu
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         switch (item.getItemId()) {
             case R.id.action_edit_kaizen:
                 editKaizen();
                 return true;
             case R.id.action_delete_kaizen:
-                deleteKaizen(kaizen);
+                deleteKaizen();
                 return true;
             case R.id.action_settings:
                 launchSettings();
@@ -149,29 +167,45 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * launch the EditKaizenActivity and pass it the current Kaizen id via intent extra
+     */
     public void editKaizen() {
         Intent intent = new Intent(this, KaizenEditActivity.class);
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivityForResult(intent, KaizenEditActivity.EDIT_KAIZEN_REQUEST);
     }
 
-    public void deleteKaizen(Kaizen k) {
-        k.setDeleteMe(true);
+    /**
+     * flag the current kaizen for deletion
+     */
+    public void deleteKaizen() {
+        kaizen.setDeleteMe(true);
         finish();
     }
 
+    /**
+     * launch the settings activity
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * handle completed activity requests
+     *
+     * @param requestCode -- the request that has been completed
+     * @param resultCode -- the result of the request
+     * @param data -- any data returned by the request
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == KaizenEditActivity.EDIT_KAIZEN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                if(data.hasExtra(EXTRA_KAIZEN_ID)) {
+                if (data.hasExtra(EXTRA_KAIZEN_ID)) {
                     kaizen = dm.getKaizen(data.getIntExtra(EXTRA_KAIZEN_ID, -1));
                 }
                 populate(kaizen);
@@ -180,23 +214,47 @@ public class KaizenDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * respond to btnImages click events
+     *
+     * @param view -- the view clicked on
+     */
     public void btnImagesOnClick(View view) {
         launchImageGalleryActivity();
     }
 
+    /**
+     * launch the ImageGalleryActivity
+     */
     public void launchImageGalleryActivity() {
         Intent imageGalleryIntent = new Intent(this, ImageGalleryActivity.class);
-        //Intent imageGalleryIntent = new Intent(this, ImageViewerActivity.class);
         imageGalleryIntent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivity(imageGalleryIntent);
     }
 
+    /**
+     * respond to btnSolutions click events
+     *
+     * @param view the view clicked on
+     */
     public void btnSolutionsOnClick(View view) {
+        launchSolutionOverviewviewActivity();
+    }
+
+    /**
+     * launch SolutionOverviewTabbedActivity and pass it the current kaizen using an intent extra
+     */
+    public void launchSolutionOverviewviewActivity() {
         Intent intent = new Intent(this, SolutionOverviewTabbedActivity.class);
         intent.putExtra(EXTRA_KAIZEN_ID, kaizen.getItemID());
         startActivity(intent);
     }
 
+    /**
+     * navigate up in the app
+     *
+     * @return true if navigation successful
+     */
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

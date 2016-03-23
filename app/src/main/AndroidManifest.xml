@@ -21,11 +21,11 @@
         <activity
             android:name=".KaizenDetailsActivity"
             android:label="@string/title_activity_kaizen_details"
-            android:parentActivityName=".KaizenListActivity"
+            android:parentActivityName=".KaizenRecyclerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="KaizenListActivity" />
+                android:value=".KaizenRecyclerActivity" />
         </activity>
         <activity
             android:name=".KaizenEditActivity"
@@ -37,9 +37,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="KaizenDetailsActivity" />
         </activity>
-        <activity
-            android:name=".KaizenListActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"

@@ -6,17 +6,17 @@ import org.joda.time.DateTime;
  * data class for tracking countermeasures for a given kaizen
  *
  * @author Ian McLerran
- * @version 2/16/2016
+ * @version 3/12/2016
  */
 public class Countermeasure {
 
-    // meta data
+    // meta data:
     private static int count;
     private int itemID;
     private DateTime dateModified;
     private boolean deleteMe;
 
-    // primary data
+    // primary data:
     private String preventativeAction;
     private boolean cutMuri;
     private boolean threeXBetter;
@@ -34,8 +34,11 @@ public class Countermeasure {
     //---------------------------------------------------------------
     // private boolean phasedOut;
 
+
+    /**
+     * default constructor
+     */
     public Countermeasure() {
-        //itemID = count++;
         deleteMe = false;
 
         preventativeAction = "";
@@ -49,6 +52,18 @@ public class Countermeasure {
         dateModified = DateTime.now();
     }
 
+    /**
+     * constructor
+     *
+     * @param dateModified -- the last time the counermeasure was modified
+     * @param preventativeAction -- how to prevent the problem in future
+     * @param cutMuri -- does it reduce burden?
+     * @param threeXBetter -- three times more efficient?
+     * @param truePull -- implement true pull?
+     * @param costToImplement -- how much will it cost to implement
+     * @param implemented -- has it been implemented?
+     * @param dateWalkedOn -- the date the countermeasure was tested
+     */
     public Countermeasure(DateTime dateModified, String preventativeAction, boolean cutMuri, boolean threeXBetter, boolean truePull,
                           float costToImplement, boolean implemented, String dateWalkedOn) {
         this.deleteMe = false;
@@ -60,7 +75,6 @@ public class Countermeasure {
         this.implemented = implemented;
         this.dateWalkedOn = dateWalkedOn;
 
-        //itemID = count++;
         deleteMe = false;
 
         if(null != dateModified)
@@ -68,6 +82,8 @@ public class Countermeasure {
         else
             this.dateModified = DateTime.now();
     }
+
+    // getters and setters:
 
     public int getItemID() {
         return itemID;
@@ -149,6 +165,12 @@ public class Countermeasure {
         this.dateWalkedOn = dateWalkedOn;
     }
 
+    /**
+     * get a string containing the improvements attained by countermeasure
+     * eg: "cut muri", "3X better", and "true pull"
+     *
+     * @return a string containing the implemented improvements
+     */
     public String getImprovements() {
         String improvements = "";
         if (cutMuri) {
@@ -170,10 +192,18 @@ public class Countermeasure {
         return improvements;
     }
 
+    /**
+     * update the date modified to the current time
+     */
     public void updateDateModified() {
         dateModified = DateTime.now();
     }
 
+    /**
+     * create a string representation of the object
+     *
+     * @return the preventative action
+     */
     @Override
     public String toString() {
         if (preventativeAction != null) {
@@ -183,6 +213,11 @@ public class Countermeasure {
         return "No preventative action defined";
     }
 
+    /**
+     * create a new Countermeaure object with example values
+     *
+     * @return the new Countermeasure
+     */
     public static Countermeasure getTestCountermeasure() {
         Countermeasure cm = new Countermeasure(null, "Doing this will eliminate a root cause of the problem.",
                 false, false, false, 0.00f, false, null);

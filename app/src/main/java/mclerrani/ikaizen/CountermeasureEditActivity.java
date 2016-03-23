@@ -12,6 +12,12 @@ import android.widget.TextView;
 
 import org.joda.time.DateTime;
 
+/**
+ * Activity class to allow user input of data for a given Countermeausure
+ *
+ * @author Ian McLerran
+ * @version 3/12/16
+ */
 public class CountermeasureEditActivity extends AppCompatActivity {
 
     private final static String EXTRA_KAIZEN_ID = "mclerrani.ikaizen.KAIZEN_ID";
@@ -25,6 +31,11 @@ public class CountermeasureEditActivity extends AppCompatActivity {
     private Countermeasure cm;
     private DataManager dm;
 
+    /**
+     * the Android lifecycle onCreate() method
+     *
+     * @param savedInstanceState -- the saved state of the app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +67,12 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * inflate the options menu
+     *
+     * @param menu -- the menu to inflate
+     * @return success or failure
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -63,6 +80,12 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * respond to the user selection from the options menu
+     *
+     * @param item -- the item selected from the options menu
+     * @return success or failure
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -76,7 +99,6 @@ public class CountermeasureEditActivity extends AppCompatActivity {
                 //dm.deleteCountermeasure(cm, kaizen);
                 //solution.getPossibleCounterMeasures().remove(cm);
                 deleteCountermeasure(cm);
-                finish();
                 return true;
             case R.id.action_settings:
                 launchSettings();
@@ -86,27 +108,37 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * flag countermeasure for deletion, and finish the activity
+     *
+     * @param cm the countermeasure to be flagged
+     */
     public void deleteCountermeasure(Countermeasure cm) {
         cm.setDeleteMe(true);
+        finish();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //save();
-    }
-
+    /**
+     * Android lifecycle onResume() method
+     * call the populate() method at this time
+     */
     @Override
     protected void onResume() {
         super.onResume();
         populate();
     }
 
+    /**
+     * launch the settings activity
+     */
     public void launchSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * use the Countermeasure cm to populate data to the layout
+     */
     public void populate() {
         EditText txtPreventativeAction = (EditText) findViewById(R.id.txtPreventativeAction);
         txtPreventativeAction.setText(cm.getPreventativeAction());
@@ -123,6 +155,9 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         chkTruePull.setChecked(cm.isTruePull());
     }
 
+    /**
+     * save the input by the user from the layout to the Countermeasure cm
+     */
     public void save() {
         EditText txtPreventativeAction = (EditText) findViewById(R.id.txtPreventativeAction);
         cm.setPreventativeAction(String.valueOf(txtPreventativeAction.getText()));
@@ -143,6 +178,10 @@ public class CountermeasureEditActivity extends AppCompatActivity {
         dm.updateCountermeasure(cm, kaizen);
     }
 
+    /**
+     * Navigate up in the app
+     * @return true if navigation successful
+     */
     public boolean onSupportNavigateUp() {
         onBackPressed();
         save();

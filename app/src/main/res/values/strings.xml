@@ -21,6 +21,7 @@
     <string name="btnSolutionsStr">Solutions</string>
     <string name="lblWasteCaptionStr">Total Waste:</string>
     <string name="lblWasteUnitsStr">min/year</string>
+
     <!-- strings for menu_kaizen_details -->
     <string name="action_edit_kaizen">Edit</string>
     <string name="action_delete_kaizen">Delete</string>
@@ -30,13 +31,6 @@
     <string name="btnSaveKaizenStr">Save Kaizen</string>
     <string name="title_activity_kaizen_list">KaizenListActivity</string>
     <string name="title_activity_temp">TempActivity</string>
-
-    <!-- strings for KaizenListActivity -->
-    <string name="btnEditKaizenStr">Edit</string>
-    <string name="btnViewKaizenDetailsStr">Details</string>
-    <string name="lblWelcomeStr">Hi there!</string>
-    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list below to get started!</string>
-    <string name="btnDeleteKaizenStr">Delete</string>
 
     <!-- strings for SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
@@ -51,9 +45,9 @@
     <string name="action_delete_image">Delete</string>
 
     <!-- strings for KaizenRecyclerActivity -->
-    <string name="title_activity_recycler">Kaizen List</string>
     <string name="action_sort_by">Sort by...</string>
-    <!--<string name="lblInstructionsStr">Let\'s get started! Press the create button below to create a new Kaizen.</string>-->
+    <string name="lblWelcomeStr">Hi there!</string>
+    <string name="lblInstructionsStr">Create a new Kaizen or select one from the list below to get started!</string>
     <string name="lblTipCaptionStr">TIP:</string>
     <string name="lblTipDetailsStr">You can long-press a card to edit or delete it.</string>
 
@@ -86,6 +80,7 @@
     <string name="action_delete_countermeasure">Delete</string>
 
     <!-- TODO: sort strings by activities and fragments -->
+
     <!-- SolutionOverviewTabbedActivity -->
     <string name="title_activity_solution_overview_tabbed">Solution Overview</string>
     <string name="lblTodaysFixCaptionStr">Today\'s fix:</string>
@@ -114,7 +109,7 @@
     <string name="title_activity_emoji_picker">Emoji Picker</string>
 
     <!-- SortCountermeasureByDialogFragment -->
-    <string name="sort_countermeasure_by_dialog_title">Sort Kaizen by...</string>
+    <string name="sort_countermeasure_by_dialog_title">Sort Countermeasures by...</string>
     <string name="sort_by_cost_ascending">Cost (ascending)</string>
     <string name="sort_by_cost_descending">Cost (descending)</string>
     <string-array name="arrSortCountermeasureByOptions">
